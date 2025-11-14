@@ -1,6 +1,7 @@
 <?php
-require_once '../../app/config.php';
-require_once '../../app/auth.php';
+require_once '../app/config.php';
+require_once '../app/auth.php';
+
 require_login();
 
 $current_page = basename($_SERVER['PHP_SELF']);
@@ -19,10 +20,9 @@ $sistem_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   
-  <link rel="stylesheet" href="../css/header.css">
-  <link rel="stylesheet" href="../css/sidebar.css">
-
-  <link rel="stylesheet" href="../css/sistemUtama.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/sistemUtama.css">
 </head>
 
 <script>
@@ -43,12 +43,12 @@ $sistem_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <!-- SIDEBAR -->
 <div class="sidebar">
   <div class="logo">
-    <img src="../../assets/img/span-logo.png">
+    <img src="../assets/img/span-logo.png">
   </div>
 
   <div class="title">S I S T E M &nbsp; P R O F I L</div>
 
-  <a href="../dashboard.php" class="nav-link">
+  <a href="dashboard.php" class="nav-link">
     <i class="bi bi-grid-1x2-fill"></i> Dashboard
   </a>
 
@@ -56,14 +56,14 @@ $sistem_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <i class="bi bi-pc-display"></i> Sistem Utama
   </a>
 
-  <a href="../peralatan/peralatan.php" class="nav-link">
+  <a href="peralatan/peralatan.php" class="nav-link">
     <i class="bi bi-hdd-stack"></i> Peralatan
   </a>
 </div>
 
 <div class="content">
 <!-- HEADER -->
-<?php include '../header.php'; ?>
+<?php include 'header.php'; ?>
 
   <!-- CONTENT -->
   <div class="main-header mt-3"><i class="bi bi-pc-display"></i> Sistem Utama</div>
@@ -94,7 +94,7 @@ $sistem_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php foreach ($sistem_list as $sistem): ?>
           <div class="profile-card">
             <span><?= htmlspecialchars($sistem['nama_sistem']) ?></span>
-            <a href="view_sistem.php?id=<?= $sistem['id_sistemutama'] ?>" class="btn-view btn btn-sm">
+            <a href="sistem_utama/view_sistem.php?id=<?= $sistem['id_sistemutama'] ?>" class="btn-view btn btn-sm">
               <i class="bi bi-eye-fill me-1"></i>View
             </a>
           </div>
@@ -257,7 +257,7 @@ $sistem_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
   </div>
 </div>
 
-<script src="../js/sistemUtama.js"></script>
+<script src="js/sistemUtama.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

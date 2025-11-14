@@ -1,14 +1,46 @@
 <?php
 // header.php
 ?>
-
 <head>
   <link rel="stylesheet" href="css/header.css">
 </head>
 
 <div class="header">
-    <h3><?= htmlspecialchars($_SESSION['user']['nama']) ?></h3>
-    <div class="profile-icon">
-      <i class="bi bi-person-fill"></i>
-    </div>
+
+  <!-- Nama pengguna -->
+  <h3><?= htmlspecialchars($_SESSION['user']['nama']) ?></h3>
+
+  <!-- Profile + Dropdown -->
+  <div class="profile-wrapper">
+      
+      <!-- Profile Icon -->
+      <div class="profile-icon" id="profileToggle">
+        <i class="bi bi-person-fill"></i>
+      </div>
+
+      <!-- Dropdown -->
+      <div class="profile-dropdown" id="profileDropdown">
+        <a href="profil.php">Profil</a>
+        <a href="logout.php">Logout</a>
+      </div>
+  </div>
+
 </div>
+
+<!-- Dropdown Script -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const toggle = document.getElementById("profileToggle");
+    const dropdown = document.getElementById("profileDropdown");
+
+    toggle.addEventListener("click", function(e) {
+      dropdown.classList.toggle("show");
+      e.stopPropagation(); // prevent closing immediately
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function() {
+      dropdown.classList.remove("show");
+    });
+  });
+</script>

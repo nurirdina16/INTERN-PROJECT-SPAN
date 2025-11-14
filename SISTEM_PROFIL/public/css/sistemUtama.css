@@ -1,15 +1,4 @@
 /* SISTEM UTAMA */
-
-.content {
-  margin-left: 260px; /* follow sidebar width */
-  padding: 20px;
-}
-
-.header {
-  margin-bottom: 20px; /* space bawah header */
-}
-
-
 body {
   background-color: #eaf4f9;
   font-family: 'Poppins', sans-serif;

@@ -27,6 +27,7 @@ if (!$data) {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="ms">
 <head>
@@ -47,7 +48,7 @@ if (!$data) {
 
 <body>
   <div class="container-box">
-    <a href="sistemUtama.php" class="back-btn">&larr; Kembali ke Senarai</a>
+    <a href="../sistemUtama.php" class="back-btn">&larr; Kembali ke Senarai</a>
 
     <button class="edit-btn" data-bs-toggle="modal" data-bs-target="#editModal"><i class="bi bi-pencil-square"></i> Edit Profil</button>
 

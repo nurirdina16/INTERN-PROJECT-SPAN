@@ -38,7 +38,7 @@ $peralatan = ['list appliances'];
       <i class="bi bi-grid-1x2-fill"></i> Dashboard
     </a>
 
-    <a href="sistem_utama/sistemUtama.php" class="nav-link">
+    <a href="sistemUtama.php" class="nav-link">
       <i class="bi bi-pc-display"></i> Sistem Utama
     </a>
 
@@ -47,9 +47,8 @@ $peralatan = ['list appliances'];
     </a>
   </div>
 
-
-  <!-- HEADER -->
   <div class="content">
+  <!-- HEADER -->
   <?php include 'header.php'; ?>
 
   <!-- Sistem Utama -->
