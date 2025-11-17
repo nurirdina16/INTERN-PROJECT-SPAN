@@ -1,4 +1,5 @@
 /* SISTEM UTAMA */
+
 body {
   background-color: #eaf4f9;
   font-family: 'Poppins', sans-serif;
@@ -72,19 +73,21 @@ body {
   color: #004b73;
   font-size: 15px;
 }
-.btn-view {
-  background: linear-gradient(135deg, #0096C7, #006EA0);
-  color: #fff !important;
-  border: none;
-  border-radius: 8px;
-  padding: 6px 18px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 110, 160, 0.3);
+btn-view {
+    background: #006EA0;          
+    color: #fff !important;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 16px;
+    font-weight: 500;
+    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(0, 110, 160, 0.2);
+    transition: all 0.2s ease;
 }
 .btn-view:hover {
-  background: linear-gradient(135deg, #007fb0, #005f8c);
-  transform: translateY(-2px);
+    background: #005380;        
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 110, 160, 0.25);
 }
 
 /* Modal */
@@ -189,6 +192,8 @@ textarea.form-control {
 
 /* Top Edit Button */
 .edit-profile-btn {
+  color: #ffffff;
+  background-color: #005A83;
   padding: 10px 22px;
   font-size: 15px;
   border-radius: 8px;
@@ -219,7 +224,7 @@ textarea.form-control {
   border-radius: 12px;
   margin-bottom: 10px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  border-left: 6px solid #0096C7;
+  border-left: 6px solid #005A83;
 }
 
 /* Section Header */
@@ -227,7 +232,7 @@ textarea.form-control {
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 25px;
-  color: #004b73;
+  color: #005A83;
   padding-bottom: 6px;
   border-bottom: 1px solid #e0eef7;
 }
@@ -236,6 +241,7 @@ textarea.form-control {
   display: flex;
   flex-wrap: wrap;
   gap: 18px 40px; /* row & column spacing */
+  color: #005A83;
 }
 
 .info-grid > div {
@@ -247,7 +253,7 @@ textarea.form-control {
 .info-grid span {
   font-size: 13px;
   font-weight: 600;
-  color: #0072a8;
+  color: #006EA0;
   width: 160px; /* label width */
   flex-shrink: 0;
 }
@@ -345,7 +351,7 @@ select.form-control:focus {
   border: none;
 }
 .modal-footer .btn-success:hover {
-  background: linear-gradient(135deg, #007fb0, #005f8c);
+  background: linear-gradient(135deg, #0173a8, #005A83);
 }
 
 /* Scrollbar inside modal */
@@ -375,8 +381,8 @@ select.form-control:focus {
   animation: fadeInDown 0.4s ease;
 }
 
-/* VIEW SISTEM */
 
+/* VIEW SISTEM */
 body.view-sistem {
   background-color: #f5faff;
   font-family: "Poppins", sans-serif;
@@ -401,3 +407,41 @@ body.view-sistem h2 {
   text-underline-offset: 6px;
 }
 
+
+/* DELETE BUTTON */
+.btn-delete {
+    background: #E53935;          
+    color: #fff !important;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 16px;
+    font-weight: 500;
+    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(229, 57, 53, 0.2);
+    transition: all 0.2s ease;
+}
+.btn-delete:hover {
+    background: #B71C1C;           
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(229, 57, 53, 0.3);
+}
+
+#deletePopup {
+  animation: fadeInDown 0.4s ease;
+}
+
+.profile-card .btn-group {
+    display: flex;
+    gap: 5px; /* spacing between buttons */
+}
+
+.profile-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile-card .btn-group a {
+    display: flex;
+    align-items: center;
+}

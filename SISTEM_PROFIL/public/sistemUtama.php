@@ -69,12 +69,22 @@ $sistem_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <div class="main-header mt-3"><i class="bi bi-pc-display"></i> Sistem Utama</div>
 
     <div class="main-body mt-1">
+      <!-- SAVE DATA ALERT -->
       <?php if (isset($_GET['success'])): ?>
         <div id="successPopup" class="alert alert-success alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3 shadow" 
             style="z-index: 1055; min-width: 300px; text-align:center;">
           ✅ Profil sistem berjaya disimpan!
         </div>
       <?php endif; ?>
+
+      <!-- DELETE DATA ALERT -->
+      <?php if (isset($_GET['delete'])): ?>
+          <div id="deletePopup" class="alert alert-<?= $_GET['delete']=='success' ? 'success' : 'danger' ?> alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3 shadow" 
+              style="z-index: 1055; min-width: 300px; text-align:center;">
+            <?= $_GET['delete']=='success' ? '✅ Profil sistem berjaya dipadam!' : '❌ Gagal memadam profil sistem.' ?>
+          </div>
+      <?php endif; ?>
+
 
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="fw-semibold mb-0">Senarai Profil</h5>
@@ -93,10 +103,19 @@ $sistem_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <?php else: ?>
         <?php foreach ($sistem_list as $sistem): ?>
           <div class="profile-card">
-            <span><?= htmlspecialchars($sistem['nama_sistem']) ?></span>
-            <a href="sistem_utama/view_sistem.php?id=<?= $sistem['id_sistemutama'] ?>" class="btn-view btn btn-sm">
-              <i class="bi bi-eye-fill me-1"></i>View
-            </a>
+              <span><?= htmlspecialchars($sistem['nama_sistem']) ?></span>
+              
+              <div class="btn-group">
+                  <a href="sistem_utama/view_sistem.php?id=<?= $sistem['id_sistemutama'] ?>" class="btn-view btn btn-sm">
+                      <i class="bi bi-eye-fill me-1"></i>View
+                  </a>
+
+                  <a href="sistem_utama/delete_sistem.php?id=<?= $sistem['id_sistemutama'] ?>" 
+                      class="btn-delete btn btn-sm" 
+                      onclick="return confirm('⚠️ Adakah anda pasti mahu memadam profil sistem ini?');">
+                      <i class="bi bi-trash-fill me-1"></i>Delete
+                  </a>
+              </div>
           </div>
         <?php endforeach; ?>
       <?php endif; ?>
