@@ -9,26 +9,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// DELETE BUTTON
-document.addEventListener("DOMContentLoaded", function() {
-  const popup = document.getElementById("successPopup") || document.getElementById("deletePopup");
-  if (popup) {
+// DELETE POPUP HANDLER
+document.addEventListener("DOMContentLoaded", function () {
+  const deletePopup = document.getElementById("deletePopup");
+
+  if (deletePopup) {
+    // Stay for 3 seconds
     setTimeout(() => {
-      popup.classList.remove("show");
-      popup.classList.add("fade");
+      deletePopup.classList.add("fade");
+      deletePopup.classList.remove("show");
     }, 3000);
-    setTimeout(() => popup.remove(), 300);
+
+    // Fully remove after fade animation
+    setTimeout(() => deletePopup.remove(), 3500);
   }
 });
 
-// Auto-redirect after delete success
-document.addEventListener("DOMContentLoaded", function() {
-  const deletePopup = document.getElementById("deletePopup");
-  if (deletePopup && deletePopup.classList.contains("alert-success")) {
-    setTimeout(() => {
-      window.location.href = "sistemUtama.php";
-    }, 300); // wait 1.5s to let user see popup
-  }
-});
 
 

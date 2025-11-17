@@ -222,7 +222,7 @@ textarea.form-control {
   background: #ffffff;
   padding: 30px;
   border-radius: 12px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.06);
   border-left: 6px solid #005A83;
 }
@@ -432,7 +432,7 @@ body.view-sistem h2 {
 
 .profile-card .btn-group {
     display: flex;
-    gap: 5px; /* spacing between buttons */
+    gap: 20px; /* spacing between buttons */
 }
 
 .profile-card {

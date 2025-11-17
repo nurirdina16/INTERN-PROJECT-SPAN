@@ -25,20 +25,6 @@ $sistem_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <link rel="stylesheet" href="css/sistemUtama.css">
 </head>
 
-<script>
-  // Auto-hide success popup after 3 seconds
-  document.addEventListener("DOMContentLoaded", function() {
-    const popup = document.getElementById("successPopup");
-    if (popup) {
-      setTimeout(() => {
-        popup.classList.remove("show");
-        popup.classList.add("fade");
-      }, 3000); // 3 seconds
-      setTimeout(() => popup.remove(), 3500);
-    }
-  });
-</script>
-
 <body>
 <!-- SIDEBAR -->
 <div class="sidebar">
@@ -106,10 +92,11 @@ $sistem_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <span><?= htmlspecialchars($sistem['nama_sistem']) ?></span>
               
               <div class="btn-group">
+                  <!-- VIEW BUTTON -->
                   <a href="sistem_utama/view_sistem.php?id=<?= $sistem['id_sistemutama'] ?>" class="btn-view btn btn-sm">
                       <i class="bi bi-eye-fill me-1"></i>View
                   </a>
-
+                  <!-- DELETE BUTTON -->
                   <a href="sistem_utama/delete_sistem.php?id=<?= $sistem['id_sistemutama'] ?>" 
                       class="btn-delete btn btn-sm" 
                       onclick="return confirm('⚠️ Adakah anda pasti mahu memadam profil sistem ini?');">
@@ -216,7 +203,7 @@ $sistem_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <div class="col-md-6"><label class="form-label">Integrasi</label><textarea name="integrasi" class="form-control" rows="2"></textarea></div>
             </div>
 
-            <div class="mb-3"><label class="form-label">Penyelenggaraan</label><input type="text" name="penyelenggaraan" class="form-control"></div>
+            <div class="mb-3"><label class="form-label">Penyelenggaraan Sistem</label><input type="text" name="penyelenggaraan" class="form-control"></div>
           </div>
 
           <!-- C. Kos Sistem -->
@@ -230,7 +217,7 @@ $sistem_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
 
             <div class="row g-3 mb-3">
-              <div class="col-md-4"><label class="form-label">Lesen Perisian (RM)</label><input type="number" step="0.01" name="lesen_perisian" class="form-control"></div>
+              <div class="col-md-4"><label class="form-label">Kos Lesen Perisian (RM)</label><input type="number" step="0.01" name="lesen_perisian" class="form-control"></div>
               <div class="col-md-4"><label class="form-label">Penyelenggaraan (RM)</label><input type="number" step="0.01" name="penyelenggaraan_kos" class="form-control"></div>
               <div class="col-md-4"><label class="form-label">Kos Lain (RM)</label><input type="number" step="0.01" name="kos_lain" class="form-control"></div>
             </div>
@@ -268,8 +255,8 @@ $sistem_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <div class="modal-footer bg-light">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle me-1"></i>Batal</button>
-          <button type="submit" class="btn btn-success px-4"><i class="bi bi-save2 me-1"></i>Simpan Profil</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle me-1"></i>Cancel</button>
+          <button type="submit" class="btn btn-success px-4"><i class="bi bi-save2 me-1"></i>Save</button>
         </div>
       </form>
     </div>

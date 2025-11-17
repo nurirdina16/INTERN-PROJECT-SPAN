@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 perkakasan = :perkakasan,
                 perisian = :perisian,
                 lesen_perisian = :lesen_perisian,
-                penyelenggaraan = :penyelenggaraan,
+                penyelenggaraan_kos = :penyelenggaraan_kos,
                 kos_lain = :kos_lain
             WHERE id_sistemutama = :id_sistemutama
         ");
@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':perkakasan' => $_POST['perkakasan'] ?? 0,
             ':perisian' => $_POST['perisian'] ?? 0,
             ':lesen_perisian' => $_POST['lesen_perisian'] ?? 0,
-            ':penyelenggaraan' => $_POST['penyelenggaraan_kos'] ?? 0,
+            ':penyelenggaraan_kos' => $_POST['penyelenggaraan_kos'] ?? 0,
             ':kos_lain' => $_POST['kos_lain'] ?? 0,
             ':id_sistemutama' => $id_sistemutama
         ]);

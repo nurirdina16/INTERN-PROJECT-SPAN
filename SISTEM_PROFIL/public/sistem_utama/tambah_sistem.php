@@ -75,10 +75,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt3 = $pdo->prepare("
             INSERT INTO kos_sistem (
                 id_sistemutama, keseluruhan, perkakasan, perisian,
-                lesen_perisian, penyelenggaraan, kos_lain
+                lesen_perisian, penyelenggaraan_kos, kos_lain
             ) VALUES (
                 :id_sistemutama, :keseluruhan, :perkakasan, :perisian,
-                :lesen_perisian, :penyelenggaraan, :kos_lain
+                :lesen_perisian, :penyelenggaraan_kos, :kos_lain
             )
         ");
         $stmt3->execute([
@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':perkakasan' => $_POST['perkakasan'] ?? 0,
             ':perisian' => $_POST['perisian'] ?? 0,
             ':lesen_perisian' => $_POST['lesen_perisian'] ?? 0,
-            ':penyelenggaraan' => $_POST['penyelenggaraan_kos'] ?? 0,
+            ':penyelenggaraan_kos' => $_POST['penyelenggaraan_kos'] ?? 0,
             ':kos_lain' => $_POST['kos_lain'] ?? 0
         ]);
 
