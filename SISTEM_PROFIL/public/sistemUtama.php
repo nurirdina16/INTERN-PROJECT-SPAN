@@ -114,7 +114,7 @@ $sistem_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
 
-      <form action="tambah_sistem.php" method="POST">
+      <form action="sistem_utama/tambah_sistem.php" method="POST">
         <input type="hidden" name="id_user" value="<?= isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : '' ?>">
 
         <div class="modal-body p-4" style="background-color:#f7fbfd; max-height: 75vh; overflow-y:auto;">
