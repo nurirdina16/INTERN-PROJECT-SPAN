@@ -128,13 +128,12 @@
 
     <div class="view-container">      
 
-      <!-- DISPLAY DETAILS -->
-
+<!-- DISPLAY DETAILS -->
       <!-- HEADER BOX -->
       <div class="profile-header d-flex justify-content-between align-items-center">
         <h2 class="system-title">
           <i class="bi bi-grid-fill me-1"></i> 
-          <?= htmlspecialchars($data['nama_sistem'] ?? 'Maklumat Sistem') ?>
+          <?= htmlspecialchars($data['sa_nama_sistem'] ?? 'Nama Sistem') ?>
         </h2>
 
         <button class="btn btn-primary shadow-sm edit-profile-btn" data-bs-toggle="modal" data-bs-target="#editModal">
@@ -201,7 +200,7 @@
       <div class="profile-section">
         <h4 class="section-header"><i class="bi bi-shield-lock"></i>   AKSES SISTEM</h4>
         <div class="info-grid">
-          <div><span>Kategori Jenis Pengguna</span></div>
+          <div>Kategori Jenis Pengguna</div>
           <div><span>Kategori: Dalaman</span><p><?= $data['ak_kategori_dalaman'] ? 'Ya' : 'Tidak' ?></p></div>
           <div><span>Kategori: Umum</span><p><?= $data['ak_kategori_umum'] ? 'Ya' : 'Tidak' ?></p></div>
           <div><span>Pegawai Mengurus Akses Pengguna</span><p><?= $data['ak_pegawai_urus_akses'] ?></p></div>
@@ -223,163 +222,189 @@
     </div>
   </div>
 
-  <!-- KEMASKINI PROFIL FORM -->
-<div class="modal fade" id="editModal" tabindex="-1">
-  <div class="modal-dialog modal-xl modal-dialog-scrollable">
-    <div class="modal-content shadow-lg border-0">
+<!-- KEMASKINI PROFIL FORM -->
+  <div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content shadow-lg border-0">
 
-      <div class="modal-header text-white" style="background: linear-gradient(90deg, #006EA0, #0096C7);">
-        <h5 class="modal-title fw-semibold"><i class="bi bi-pencil-square me-2"></i>Kemaskini Profil Sistem Utama</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        <div class="modal-header text-white" style="background: linear-gradient(90deg, #006EA0, #0096C7);">
+          <h5 class="modal-title fw-semibold"><i class="bi bi-pencil-square me-2"></i>Kemaskini Profil Sistem Utama</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+
+        <form action="kemaskini_sistem.php" method="POST">
+          <input type="hidden" name="id_sistemutama" value="<?= $data['su_id'] ?>">
+
+          <div class="modal-body p-4" style="background-color:#f7fbfd; max-height: 75vh; overflow-y:auto;">
+
+            <!-- A. Maklumat Am Entiti -->
+            <div class="section-card">
+              <div class="section-title">A. Maklumat Am Entiti</div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Nama Entiti</label>
+                  <input type="text" name="nama_entiti" class="form-control" value="<?= htmlspecialchars($data['su_nama_entiti'] ?? '') ?>" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Tarikh Kemaskini</label>
+                  <input type="date" name="tarikh_kemaskini" class="form-control" value="<?= htmlspecialchars($data['su_tarikh_kemaskini'] ?? '') ?>">
+                </div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6"><label class="form-label">Nama Bahagian</label><input type="text" name="bahagian" class="form-control" value="<?= htmlspecialchars($data['su_bahagian'] ?? '') ?>"></div>
+                <div class="col-md-6"><label class="form-label">Alamat Pejabat</label><input type="text" name="alamat" class="form-control" value="<?= htmlspecialchars($data['su_alamat'] ?? '') ?>"></div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-4"><label class="form-label">Nama Ketua Bahagian IT</label><input type="text" name="nama_ketua" class="form-control" value="<?= htmlspecialchars($data['su_nama_ketua'] ?? '') ?>"></div>
+                <div class="col-md-4"><label class="form-label">No. Telefon</label><input type="text" name="no_telefon" class="form-control" value="<?= htmlspecialchars($data['su_no_telefon'] ?? '') ?>"></div>
+                <div class="col-md-4"><label class="form-label">No. Faks</label><input type="text" name="no_faks" class="form-control" value="<?= htmlspecialchars($data['su_no_faks'] ?? '') ?>"></div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-4"><label class="form-label">Emel Ketua Bahagian IT</label><input type="email" name="emel_ketua" class="form-control" value="<?= htmlspecialchars($data['su_emel_ketua'] ?? '') ?>"></div>
+                <div class="col-md-4"><label class="form-label">Nama CIO</label><input type="text" name="cio" class="form-control" value="<?= htmlspecialchars($data['su_cio'] ?? '') ?>"></div>
+                <div class="col-md-4"><label class="form-label">Nama ICTSO</label><input type="text" name="ictso" class="form-control" value="<?= htmlspecialchars($data['su_ictso'] ?? '') ?>"></div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Carta Organisasi</label>
+                <input type="text" name="carta_organisasi" class="form-control" value="<?= htmlspecialchars($data['su_carta_organisasi'] ?? '') ?>">
+              </div>
+            </div>
+
+            <!-- B. Maklumat Sistem Aplikasi -->
+            <div class="section-card">
+              <div class="section-title">B. Maklumat Sistem Aplikasi</div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6"><label class="form-label">Nama Sistem</label><input type="text" name="nama_sistem" class="form-control" value="<?= htmlspecialchars($data['sa_nama_sistem'] ?? '') ?>"></div>
+                <div class="col-md-6"><label class="form-label">Objektif</label><textarea name="objektif" class="form-control" rows="1"><?= htmlspecialchars($data['sa_objektif'] ?? '') ?></textarea></div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6"><label class="form-label">Pemilik Sistem</label><input type="text" name="pemilik" class="form-control" value="<?= htmlspecialchars($data['sa_pemilik'] ?? '') ?>"></div>
+                <div class="col-md-2"><label class="form-label">Tarikh Mula</label><input type="date" name="tarikh_mula" class="form-control" value="<?= htmlspecialchars($data['sa_tarikh_mula'] ?? '') ?>"></div>
+                <div class="col-md-2"><label class="form-label">Tarikh Siap</label><input type="date" name="tarikh_siap" class="form-control" value="<?= htmlspecialchars($data['sa_tarikh_siap'] ?? '') ?>"></div>
+                <div class="col-md-2"><label class="form-label">Tarikh Guna</label><input type="date" name="tarikh_guna" class="form-control" value="<?= htmlspecialchars($data['sa_tarikh_guna'] ?? '') ?>"></div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-3"><label class="form-label">Bil. Pengguna</label><input type="number" name="bil_pengguna" class="form-control" value="<?= htmlspecialchars($data['sa_bil_pengguna'] ?? '') ?>"></div>
+                <div class="col-md-3"><label class="form-label">Kaedah Pembangunan</label>
+                  <select name="kaedah_pembangunan" class="form-control">
+                    <option value="In-House" <?= ($data['sa_kaedah_pembangunan'] ?? '')=='In-House' ? 'selected' : '' ?>>In-House</option>
+                    <option value="Outsource" <?= ($data['sa_kaedah_pembangunan'] ?? '')=='Outsource' ? 'selected' : '' ?>>Outsource</option>
+                  </select>
+                </div>
+                <div class="col-md-3"><label class="form-label">In-House</label><input type="text" name="inhouse" class="form-control" value="<?= htmlspecialchars($data['sa_inhouse'] ?? '') ?>"></div>
+                <div class="col-md-3"><label class="form-label">Outsource</label><input type="text" name="outsource" class="form-control" value="<?= htmlspecialchars($data['sa_outsource'] ?? '') ?>"></div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-3"><label class="form-label">Bilangan Modul</label><input type="text" name="bil_modul" class="form-control" value="<?= htmlspecialchars($data['sa_bil_modul'] ?? '') ?>"></div>
+                <div class="col-md-3"><label class="form-label">Kategori Sistem</label><input type="text" name="kategori" class="form-control" value="<?= htmlspecialchars($data['sa_kategori'] ?? '') ?>"></div>
+                <div class="col-md-3"><label class="form-label">Bahasa Pengaturcaraan</label><input type="text" name="bahasa_pengaturcaraan" class="form-control" value="<?= htmlspecialchars($data['sa_bahasa_pengaturcaraan'] ?? '') ?>"></div>
+                <div class="col-md-3"><label class="form-label">Jenis Pangkalan Data</label><input type="text" name="pangkalan_data" class="form-control" value="<?= htmlspecialchars($data['sa_pangkalan_data'] ?? '') ?>"></div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6"><label class="form-label">Rangkaian</label><textarea name="rangkaian" class="form-control" rows="2"><?= htmlspecialchars($data['sa_rangkaian'] ?? '') ?></textarea></div>
+                <div class="col-md-6"><label class="form-label">Integrasi Sistem Lain</label><textarea name="integrasi" class="form-control" rows="2"><?= htmlspecialchars($data['sa_integrasi'] ?? '') ?></textarea></div>
+              </div>
+
+              <div class="mb-3"><label class="form-label">Penyelenggaraan Sistem</label><input type="text" name="penyelenggaraan" class="form-control" value="<?= htmlspecialchars($data['sa_penyelenggaraan'] ?? '') ?>"></div>
+
+            </div>
+
+            <!-- C. Kos Sistem -->
+            <div class="section-card">
+              <div class="section-title">C. Kos Sistem</div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-4"><label class="form-label">Kos Keseluruhan (RM)</label><input type="number" step="0.01" name="keseluruhan" class="form-control" value="<?= htmlspecialchars($data['ks_keseluruhan'] ?? 0) ?>"></div>
+                <div class="col-md-4"><label class="form-label">Kos Perkakasan (RM)</label><input type="number" step="0.01" name="perkakasan" class="form-control" value="<?= htmlspecialchars($data['ks_perkakasan'] ?? 0) ?>"></div>
+                <div class="col-md-4"><label class="form-label">Kos Perisian (RM)</label><input type="number" step="0.01" name="perisian" class="form-control" value="<?= htmlspecialchars($data['ks_perisian'] ?? 0) ?>"></div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-4"><label class="form-label">Kos Lesen Perisian (RM)</label><input type="number" step="0.01" name="lesen_perisian" class="form-control" value="<?= htmlspecialchars($data['ks_lesen_perisian'] ?? 0) ?>"></div>
+                <div class="col-md-4"><label class="form-label">Kos Penyelenggaraan (RM)</label><input type="number" step="0.01" name="penyelenggaraan_kos" class="form-control" value="<?= htmlspecialchars($data['ks_penyelenggaraan_kos'] ?? 0) ?>"></div>
+                <div class="col-md-4"><label class="form-label">Kos Lain (RM)</label><input type="number" step="0.01" name="kos_lain" class="form-control" value="<?= htmlspecialchars($data['ks_kos_lain'] ?? 0) ?>"></div>
+              </div>
+            </div>
+
+            <!-- D. Akses Sistem -->
+            <div class="section-card">
+              <div class="section-title">D. Akses Sistem</div>
+              <div class="row g-3 mb-3">
+                <div class="col-md-4"><label class="form-label">Kategori Jenis Pengguna</label>
+                <div class="col-md-4"><label class="form-label">Dalaman</label>
+                  <select name="kategori_dalaman" class="form-control">
+                    <option value="1" <?= ($data['ak_kategori_dalaman'] ?? 0)==1?'selected':'' ?>>Ya</option>
+                    <option value="0" <?= ($data['ak_kategori_dalaman'] ?? 0)==0?'selected':'' ?>>Tidak</option>
+                  </select>
+                </div>
+                <div class="col-md-4"><label class="form-label">Umum</label>
+                  <select name="kategori_umum" class="form-control">
+                    <option value="1" <?= ($data['ak_kategori_umum'] ?? 0)==1?'selected':'' ?>>Ya</option>
+                    <option value="0" <?= ($data['ak_kategori_umum'] ?? 0)==0?'selected':'' ?>>Tidak</option>
+                  </select>
+                </div>
+                <div class="col-md-4"><label class="form-label">Pegawai Mengurus Akses Pengguna</label><input type="text" name="pegawai_urus_akses" class="form-control" value="<?= htmlspecialchars($data['ak_pegawai_urus_akses'] ?? '') ?>"></div>
+              </div>
+            </div>
+
+            <!-- E. Pegawai Rujukan Sistem -->
+            <div class="section-card mb-2">
+              <div class="section-title">E. Pegawai Rujukan Sistem</div>
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Nama Pegawai</label>
+                  <input type="text" name="nama_pegawai" class="form-control" 
+                  value="<?= htmlspecialchars($data['pr_nama_pegawai'] ?? '') ?>">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Jawatan & Gred</label>
+                  <input type="text" name="jawatan_gred" class="form-control" 
+                  value="<?= htmlspecialchars($data['pr_jawatan_gred'] ?? '') ?>">
+                </div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                  <label class="form-label">Bahagian / Seksyen / Unit</label>
+                  <input type="text" name="bahagian_pegawai" class="form-control" 
+                  value="<?= htmlspecialchars($data['pr_bahagian'] ?? '') ?>">
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Emel Pegawai</label>
+                  <input type="email" name="emel_pegawai" class="form-control" 
+                  value="<?= htmlspecialchars($data['pr_emel_pegawai'] ?? '') ?>">
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">No. Telefon</label>
+                  <input type="text" name="no_telefon_pegawai" class="form-control" 
+                  value="<?= htmlspecialchars($data['pr_no_telefon'] ?? '') ?>">
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle me-1"></i>Cancel</button>
+            <button type="submit" class="btn btn-success px-4"><i class="bi bi-save2 me-1"></i>Save</button>
+          </div>
+        </form>
       </div>
-
-      <form action="kemaskini_sistem.php" method="POST">
-        <input type="hidden" name="id_sistemutama" value="<?= $data['su_id'] ?>">
-
-        <div class="modal-body p-4" style="background-color:#f7fbfd; max-height: 75vh; overflow-y:auto;">
-
-          <!-- A. Maklumat Am Entiti -->
-          <div class="section-card">
-            <div class="section-title">A. Maklumat Am Entiti</div>
-
-            <div class="row g-3 mb-3">
-              <div class="col-md-6">
-                <label class="form-label">Nama Entiti</label>
-                <input type="text" name="nama_entiti" class="form-control" value="<?= htmlspecialchars($data['nama_entiti'] ?? '') ?>" required>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Tarikh Kemaskini</label>
-                <input type="date" name="tarikh_kemaskini" class="form-control" value="<?= htmlspecialchars($data['tarikh_kemaskini'] ?? '') ?>">
-              </div>
-            </div>
-
-            <div class="row g-3 mb-3">
-              <div class="col-md-6"><label class="form-label">Nama Bahagian</label><input type="text" name="bahagian" class="form-control" value="<?= htmlspecialchars($data['su_bahagian'] ?? '') ?>"></div>
-              <div class="col-md-6"><label class="form-label">Alamat Pejabat</label><input type="text" name="alamat" class="form-control" value="<?= htmlspecialchars($data['alamat'] ?? '') ?>"></div>
-            </div>
-
-            <div class="row g-3 mb-3">
-              <div class="col-md-4"><label class="form-label">Nama Ketua Bahagian IT</label><input type="text" name="nama_ketua" class="form-control" value="<?= htmlspecialchars($data['nama_ketua'] ?? '') ?>"></div>
-              <div class="col-md-4"><label class="form-label">No. Telefon</label><input type="text" name="no_telefon" class="form-control" value="<?= htmlspecialchars($data['no_telefon'] ?? '') ?>"></div>
-              <div class="col-md-4"><label class="form-label">No. Faks</label><input type="text" name="no_faks" class="form-control" value="<?= htmlspecialchars($data['no_faks'] ?? '') ?>"></div>
-            </div>
-
-            <div class="row g-3 mb-3">
-              <div class="col-md-4"><label class="form-label">Emel Ketua Bahagian IT</label><input type="email" name="emel_ketua" class="form-control" value="<?= htmlspecialchars($data['emel_ketua'] ?? '') ?>"></div>
-              <div class="col-md-4"><label class="form-label">Nama CIO</label><input type="text" name="cio" class="form-control" value="<?= htmlspecialchars($data['cio'] ?? '') ?>"></div>
-              <div class="col-md-4"><label class="form-label">Nama ICTSO</label><input type="text" name="ictso" class="form-control" value="<?= htmlspecialchars($data['ictso'] ?? '') ?>"></div>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Carta Organisasi</label>
-              <input type="text" name="carta_organisasi" class="form-control" value="<?= htmlspecialchars($data['carta_organisasi'] ?? '') ?>">
-            </div>
-          </div>
-
-          <!-- B. Maklumat Sistem Aplikasi -->
-          <div class="section-card">
-            <div class="section-title">B. Maklumat Sistem Aplikasi</div>
-
-            <div class="row g-3 mb-3">
-              <div class="col-md-6"><label class="form-label">Nama Sistem</label><input type="text" name="nama_sistem" class="form-control" value="<?= htmlspecialchars($data['nama_sistem'] ?? '') ?>"></div>
-              <div class="col-md-6"><label class="form-label">Objektif</label><textarea name="objektif" class="form-control" rows="1"><?= htmlspecialchars($data['objektif'] ?? '') ?></textarea></div>
-            </div>
-
-            <div class="row g-3 mb-3">
-              <div class="col-md-6"><label class="form-label">Pemilik Sistem</label><input type="text" name="pemilik" class="form-control" value="<?= htmlspecialchars($data['pemilik'] ?? '') ?>"></div>
-              <div class="col-md-2"><label class="form-label">Tarikh Mula</label><input type="date" name="tarikh_mula" class="form-control" value="<?= htmlspecialchars($data['tarikh_mula'] ?? '') ?>"></div>
-              <div class="col-md-2"><label class="form-label">Tarikh Siap</label><input type="date" name="tarikh_siap" class="form-control" value="<?= htmlspecialchars($data['tarikh_siap'] ?? '') ?>"></div>
-              <div class="col-md-2"><label class="form-label">Tarikh Guna</label><input type="date" name="tarikh_guna" class="form-control" value="<?= htmlspecialchars($data['tarikh_guna'] ?? '') ?>"></div>
-            </div>
-
-            <div class="row g-3 mb-3">
-              <div class="col-md-3"><label class="form-label">Bil. Pengguna</label><input type="number" name="bil_pengguna" class="form-control" value="<?= htmlspecialchars($data['bil_pengguna'] ?? '') ?>"></div>
-              <div class="col-md-3"><label class="form-label">Kaedah Pembangunan</label>
-                <select name="kaedah_pembangunan" class="form-control">
-                  <option value="In-House" <?= ($data['kaedah_pembangunan'] ?? '')=='In-House' ? 'selected' : '' ?>>In-House</option>
-                  <option value="Outsource" <?= ($data['kaedah_pembangunan'] ?? '')=='Outsource' ? 'selected' : '' ?>>Outsource</option>
-                </select>
-              </div>
-              <div class="col-md-3"><label class="form-label">In-House</label><input type="text" name="inhouse" class="form-control" value="<?= htmlspecialchars($data['inhouse'] ?? '') ?>"></div>
-              <div class="col-md-3"><label class="form-label">Outsource</label><input type="text" name="outsource" class="form-control" value="<?= htmlspecialchars($data['outsource'] ?? '') ?>"></div>
-            </div>
-
-            <div class="row g-3 mb-3">
-              <div class="col-md-3"><label class="form-label">Bilangan Modul</label><input type="text" name="bil_modul" class="form-control" value="<?= htmlspecialchars($data['bil_modul'] ?? '') ?>"></div>
-              <div class="col-md-3"><label class="form-label">Kategori Sistem</label><input type="text" name="kategori" class="form-control" value="<?= htmlspecialchars($data['kategori'] ?? '') ?>"></div>
-              <div class="col-md-3"><label class="form-label">Bahasa Pengaturcaraan</label><input type="text" name="bahasa_pengaturcaraan" class="form-control" value="<?= htmlspecialchars($data['bahasa_pengaturcaraan'] ?? '') ?>"></div>
-              <div class="col-md-3"><label class="form-label">Jenis Pangkalan Data</label><input type="text" name="pangkalan_data" class="form-control" value="<?= htmlspecialchars($data['pangkalan_data'] ?? '') ?>"></div>
-            </div>
-
-            <div class="row g-3 mb-3">
-              <div class="col-md-6"><label class="form-label">Rangkaian</label><textarea name="rangkaian" class="form-control" rows="2"><?= htmlspecialchars($data['rangkaian'] ?? '') ?></textarea></div>
-              <div class="col-md-6"><label class="form-label">Integrasi Sistem Lain</label><textarea name="integrasi" class="form-control" rows="2"><?= htmlspecialchars($data['integrasi'] ?? '') ?></textarea></div>
-            </div>
-
-            <div class="mb-3"><label class="form-label">Penyelenggaraan Sistem</label><input type="text" name="penyelenggaraan" class="form-control" value="<?= htmlspecialchars($data['penyelenggaraan'] ?? '') ?>"></div>
-
-          </div>
-
-          <!-- C. Kos Sistem -->
-          <div class="section-card">
-            <div class="section-title">C. Kos Sistem</div>
-
-            <div class="row g-3 mb-3">
-              <div class="col-md-4"><label class="form-label">Kos Keseluruhan (RM)</label><input type="number" step="0.01" name="keseluruhan" class="form-control" value="<?= htmlspecialchars($data['keseluruhan'] ?? 0) ?>"></div>
-              <div class="col-md-4"><label class="form-label">Kos Perkakasan (RM)</label><input type="number" step="0.01" name="perkakasan" class="form-control" value="<?= htmlspecialchars($data['perkakasan'] ?? 0) ?>"></div>
-              <div class="col-md-4"><label class="form-label">Kos Perisian (RM)</label><input type="number" step="0.01" name="perisian" class="form-control" value="<?= htmlspecialchars($data['perisian'] ?? 0) ?>"></div>
-            </div>
-
-            <div class="row g-3 mb-3">
-              <div class="col-md-4"><label class="form-label">Kos Lesen Perisian (RM)</label><input type="number" step="0.01" name="lesen_perisian" class="form-control" value="<?= htmlspecialchars($data['lesen_perisian'] ?? 0) ?>"></div>
-              <div class="col-md-4"><label class="form-label">Kos Penyelenggaraan (RM)</label><input type="number" step="0.01" name="penyelenggaraan_kos" class="form-control" value="<?= htmlspecialchars($data['penyelenggaraan_kos'] ?? 0) ?>"></div>
-              <div class="col-md-4"><label class="form-label">Kos Lain (RM)</label><input type="number" step="0.01" name="kos_lain" class="form-control" value="<?= htmlspecialchars($data['kos_lain'] ?? 0) ?>"></div>
-            </div>
-          </div>
-
-          <!-- D. Akses Sistem -->
-          <div class="section-card">
-            <div class="section-title">D. Akses Sistem</div>
-            <div class="row g-3 mb-3">
-              <div class="col-md-4"><label class="form-label">Kategori Jenis Pengguna</label>
-              <div class="col-md-4"><label class="form-label">Dalaman</label>
-                <select name="kategori_dalaman" class="form-control">
-                  <option value="1" <?= ($data['kategori_dalaman'] ?? 0)==1?'selected':'' ?>>Ya</option>
-                  <option value="0" <?= ($data['kategori_dalaman'] ?? 0)==0?'selected':'' ?>>Tidak</option>
-                </select>
-              </div>
-              <div class="col-md-4"><label class="form-label">Umum</label>
-                <select name="kategori_umum" class="form-control">
-                  <option value="1" <?= ($data['kategori_umum'] ?? 0)==1?'selected':'' ?>>Ya</option>
-                  <option value="0" <?= ($data['kategori_umum'] ?? 0)==0?'selected':'' ?>>Tidak</option>
-                </select>
-              </div>
-              <div class="col-md-4"><label class="form-label">Pegawai Mengurus Akses Pengguna</label><input type="text" name="pegawai_urus_akses" class="form-control" value="<?= htmlspecialchars($data['pegawai_urus_akses'] ?? '') ?>"></div>
-            </div>
-          </div>
-
-          <!-- E. Pegawai Rujukan Sistem -->
-          <div class="section-card mb-2">
-            <div class="section-title">E. Pegawai Rujukan Sistem</div>
-            <div class="row g-3 mb-3">
-              <div class="col-md-3"><label class="form-label">Nama Pegawai</label><input type="text" name="nama_pegawai" class="form-control" value="<?= htmlspecialchars($data['pr_nama_pegawai'] ?? '') ?>"></div>
-              <div class="col-md-3"><label class="form-label">Jawatan & Gred</label><input type="text" name="jawatan_gred" class="form-control" value="<?= htmlspecialchars($data['jawatan_gred'] ?? '') ?>"></div>
-              <div class="col-md-3"><label class="form-label">Bahagian/Seksyen/Unit</label><input type="text" name="bahagian_pegawai" class="form-control" value="<?= htmlspecialchars($data['pr_bahagian'] ?? '') ?>"></div>
-              <div class="col-md-3"><label class="form-label">Emel</label><input type="email" name="emel_pegawai" class="form-control" value="<?= htmlspecialchars($data['emel_pegawai'] ?? '') ?>"></div>
-            </div>
-            <div class="mb-3"><label class="form-label">No. Telefon</label><input type="text" name="no_telefon_pegawai" class="form-control" value="<?= htmlspecialchars($data['no_telefon'] ?? '') ?>"></div>
-          </div>
-
-        </div>
-
-        <div class="modal-footer bg-light">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle me-1"></i>Cancel</button>
-          <button type="submit" class="btn btn-success px-4"><i class="bi bi-save2 me-1"></i>Save</button>
-        </div>
-      </form>
     </div>
   </div>
-</div>
 
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
