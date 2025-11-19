@@ -8,7 +8,7 @@
 <div class="header">
 
   <!-- Nama pengguna -->
-  <h3><?= htmlspecialchars($_SESSION['user']['nama']) ?></h3>
+  <h3><?= htmlspecialchars($_SESSION['userlog']['nama']) ?></h3>
 
   <!-- Profile + Dropdown -->
   <div class="profile-wrapper">
@@ -20,7 +20,7 @@
 
       <!-- Dropdown -->
       <div class="profile-dropdown" id="profileDropdown">
-        <a href="profil.php">Profil</a>
+        <a href="user_profil.php">Profil</a>
         <a href="logout.php">Logout</a>
       </div>
   </div>

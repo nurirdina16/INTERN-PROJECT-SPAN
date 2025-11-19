@@ -74,9 +74,10 @@
 
 /* Dropdown Container */
 .dropdown-container {
-  display: none;
-  padding-left: 35px;
+  display: none; /* default hidden */
+  padding: 0px 10px;
   flex-direction: column;
+  padding-left: 35px;
 }
 
 .dropdown-container a {
@@ -105,5 +106,19 @@
 
 /* rotate arrow when active */
 .dropdown-btn.active .dropdown-arrow {
-  transform: rotate(180deg);
+    transform: rotate(180deg);
+    transition: transform 0.25s ease;
+}
+
+/* Active link inside dropdown */
+.dropdown-container a.active {
+    background-color: #006EA0;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.sidebar .dropdown-container a.active {
+    background-color: #006EA0 !important;
+    color: #fff !important;
+    border-radius: 5px;
 }
