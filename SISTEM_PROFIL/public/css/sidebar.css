@@ -8,43 +8,102 @@
   top: 0;
   left: 0;
   padding-top: 30px;
+  overflow-y: auto;
   box-shadow: 2px 0 5px rgba(0,0,0,0.1);
 }
 
+/* Logo */
 .sidebar .logo {
   text-align: center;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
-
 .sidebar .logo img {
   width: 150px;
 }
 
+/* Title */
 .sidebar .title {
   text-align: center;
-  font-weight: 700;       /* BOLD */
+  font-weight: 700;
   font-size: 14px;
   letter-spacing: 3px;
-  color: #1b2e46;      
-  margin-bottom: 25px;
+  color: #1b2e46;
+  margin-bottom: 20px;
 }
 
+/* Normal nav link */
 .sidebar .nav-link {
   color: #1b2e46;
   padding: 10px 20px;
+  margin: 6px 10px;
   border-radius: 8px;
-  margin: 5px 10px;
   display: flex;
   align-items: center;
   gap: 10px;
+  text-decoration: none;
 }
 
+/* Active */
 .sidebar .nav-link.active {
   background-color: #006EA0;
   color: #fff;
 }
 
+/* Hover */
 .sidebar .nav-link:hover {
   background-color: #d9edf7;
   color: #000;
+}
+
+/* Dropdown Button */
+.dropdown-btn {
+  padding: 10px 20px;
+  margin: 6px 10px;
+  border-radius: 8px;
+  color: #1b2e46;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+  align-items: center;
+}
+
+.dropdown-btn:hover {
+  background-color: #d9edf7;
+}
+
+/* Dropdown Container */
+.dropdown-container {
+  display: none;
+  padding-left: 35px;
+  flex-direction: column;
+}
+
+.dropdown-container a {
+  padding: 8px 10px;
+  font-size: 14px;
+  color: #1b2e46;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-container a:hover {
+  background-color: #e3f2fd;
+  border-radius: 5px;
+}
+
+/* Dropdown arrow rotate */
+.dropdown-btn.active .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+/* small additions for dropdown animation/arrow */
+.dropdown-arrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+/* rotate arrow when active */
+.dropdown-btn.active .dropdown-arrow {
+  transform: rotate(180deg);
 }

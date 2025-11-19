@@ -20,6 +20,7 @@ $peralatan = ['list appliances'];
   
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/sidebar.css">
+  <script src="js/sidebar.js" defer></script>
 
   <link rel="stylesheet" href="css/dashboard.css">
 </head>
@@ -27,25 +28,7 @@ $peralatan = ['list appliances'];
 <body>
 
   <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="logo">
-      <img src="../assets/img/span-logo.png">
-    </div>
-
-    <div class="title">S I S T E M &nbsp; P R O F I L</div>
-
-    <a href="dashboard.php" class="nav-link active">
-      <i class="bi bi-grid-1x2-fill"></i> Dashboard
-    </a>
-
-    <a href="sistemUtama.php" class="nav-link">
-      <i class="bi bi-pc-display"></i> Sistem Utama
-    </a>
-
-    <a href="peralatan/peralatan.php" class="nav-link">
-      <i class="bi bi-hdd-stack"></i> Peralatan
-    </a>
-  </div>
+  <?php include 'sidebar.php'; ?>
 
   <div class="content">
   <!-- HEADER -->
