@@ -1,0 +1,12 @@
+.main-header {
+  background: linear-gradient(90deg, #006EA0, #0096C7);
+  color: #fff;
+  font-weight: 700;
+  font-size: 26px;
+  padding: 18px 25px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
