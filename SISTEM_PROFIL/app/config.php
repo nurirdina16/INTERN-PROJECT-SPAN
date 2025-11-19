@@ -1,9 +1,9 @@
 <?php
 // app/config.php
 $host = '127.0.0.1';
-$db   = 'sistem_profil_span';
+$db   = 'profiling_span';
 $user = 'root';
-$pass = ''; // default XAMPP password kosong
+$pass = ''; // default empty password
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8mb4", $user, $pass);

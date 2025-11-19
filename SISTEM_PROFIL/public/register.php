@@ -6,18 +6,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama = trim($_POST['nama_penuh']);
     $emel = trim($_POST['emel']);
     $kata_laluan = $_POST['kata_laluan'];
-    $peranan = 'staff'; // default role
+    $peranan = $_POST['peranan'] ?? 'staff';
 
-    // Hash password
     $hashed = password_hash($kata_laluan, PASSWORD_DEFAULT);
 
-    // Semak kalau emel dah wujud
-    $check = $pdo->prepare("SELECT * FROM user WHERE emel = ?");
+    // CHECK EMAIL
+    $check = $pdo->prepare("SELECT * FROM userlog WHERE emel = ?");
     $check->execute([$emel]);
     if ($check->fetch()) {
         $message = '<div class="alert alert-warning text-center">⚠️ Emel sudah digunakan. Sila guna emel lain.</div>';
     } else {
-        $stmt = $pdo->prepare("INSERT INTO user (nama_penuh, emel, kata_laluan, peranan) VALUES (?, ?, ?, ?)");
+
+        // INSERT INTO NEW TABLE
+        $stmt = $pdo->prepare("INSERT INTO userlog (nama_penuh, emel, kata_laluan, peranan, created_at) 
+                               VALUES (?, ?, ?, ?, NOW())");
+
         if ($stmt->execute([$nama, $emel, $hashed, $peranan])) {
             $message = '<div class="alert alert-success text-center">✅ Akaun berjaya didaftarkan! Anda boleh log masuk sekarang.</div>';
         } else {
@@ -26,6 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="ms">
 <head>
@@ -116,6 +121,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label class="form-label">Kata Laluan</label>
             <input type="password" name="kata_laluan" class="form-control" required>
         </div>
+        <div class="mb-4">
+            <label class="form-label">Peranan</label>
+            <select name="peranan" class="form-control" required>
+                <option value="staff">Staff</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+
         <div class="d-grid mb-4">
             <button type="submit" class="btn btn-primary">Daftar Akaun</button>
         </div>
