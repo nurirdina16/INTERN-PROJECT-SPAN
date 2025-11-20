@@ -10,3 +10,62 @@
   gap: 10px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* Card Improvement */
+.section-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Section Title */
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #005f85;
+  position: relative;
+  padding-bottom: 8px;
+}
+.section-title::after {
+  content: "";
+  width: 50px;
+  height: 4px;
+  background: #0096C7;
+  border-radius: 2px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+/* Input Styling */
+.form-input {
+  border-radius: 8px !important;
+  padding: 10px 14px !important;
+}
+.form-input:focus {
+  border-color: #0096C7 !important;
+  box-shadow: 0 0 0 0.15rem rgba(0,150,199,0.25) !important;
+}
+
+.form-icon {
+  background: #eaf4fa;
+  border-radius: 8px 0 0 8px !important;
+  color: #006EA0;
+}
+
+/* Save Button */
+.btn-save {
+  background: linear-gradient(90deg, #006EA0, #0096C7);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+}
+.btn-save:hover {
+  opacity: 0.9;
+}
+
+.fade-alert {
+  transition: opacity 0.8s ease;
+}
