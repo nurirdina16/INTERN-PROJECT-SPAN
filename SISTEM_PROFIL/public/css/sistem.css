@@ -1,0 +1,54 @@
+.main-header {
+  background: linear-gradient(90deg, #006EA0, #0096C7);
+  color: #fff;
+  font-weight: 700;
+  font-size: 26px;
+  padding: 18px 25px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.section-title {
+  background: #e1f1fa;
+  color: #004b73;
+  font-weight: 600;
+  padding: 10px 15px;
+  border-left: 5px solid #0096C7;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.section-card .row > [class*="col-"] {
+  display: flex;
+  flex-direction: column;
+}
+
+.conditional-box {
+  background: #f8fcff;
+  border: 1px solid #d9edf7;
+  padding: 15px 18px;
+  border-radius: 8px;
+  margin-top: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.sub-section-header {
+  font-weight: 600;
+  color: #0077a6;
+  background: #e7f6ff;
+  padding: 8px 12px;
+  border-left: 5px solid #0096C7;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
