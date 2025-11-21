@@ -52,3 +52,34 @@
   border-radius: 5px;
   margin-bottom: 15px;
 }
+
+/* CSS tambahan untuk outsource & PIC box */
+.conditional-box .row .col-md-6 {
+  margin-bottom: 12px;
+}
+
+#manualOutsource, #manualPIC {
+  margin-top: 10px;
+  padding: 10px;
+  background: #f0f8ff;
+  border-radius: 6px;
+  border: 1px dashed #a0c4e8;
+}
+
+#manualOutsource .col-md-6, #manualPIC .col-md-6 {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.sub-section-header {
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive: pastikan fields susun 2 lajur di desktop, 1 lajur di mobile */
+@media (max-width: 768px) {
+  #manualOutsource .col-md-6, #manualPIC .col-md-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
