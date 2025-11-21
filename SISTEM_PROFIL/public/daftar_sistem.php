@@ -15,6 +15,8 @@ $penyelenggaraans = $pdo->query("SELECT * FROM LOOKUP_PENYELENGGARAAN")->fetchAl
 $kaedahPembangunans = $pdo->query("SELECT * FROM LOOKUP_KAEDAHPEMBANGUNAN")->fetchAll(PDO::FETCH_ASSOC);
 $outsources = $pdo->query("SELECT * FROM LOOKUP_OUTSOURCE")->fetchAll(PDO::FETCH_ASSOC);
 $userprofiles = $pdo->query("SELECT * FROM LOOKUP_USERPROFILE")->fetchAll(PDO::FETCH_ASSOC);
+$bahagianunits = $pdo->query("SELECT * FROM LOOKUP_BAHAGIANUNIT ORDER BY bahagianunit ASC")->fetchAll(PDO::FETCH_ASSOC);
+$kategoriusers = $pdo->query("SELECT * FROM LOOKUP_KATEGORIUSER")->fetchAll(PDO::FETCH_ASSOC);
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -108,7 +110,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
 
         // Insert to AKSES
+        $stmtAkses = $pdo->prepare("
+            INSERT INTO AKSES 
+            (id_profilsistem, id_bahagianunit, id_kategoriuser)
+            VALUES (?, ?, ?)
+        ");
 
+        $stmtAkses->execute([
+            $last_profilsistem_id,
+            $_POST['akses_bahagianunit'],
+            $_POST['akses_kategoriuser']
+        ]);
 
         $pdo->commit();
         $message = "<div class='alert alert-success'>Profil Sistem Berjaya Disimpan!</div>";
@@ -377,8 +389,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <!-- AKSES -->
             <div class="section-title">C. MAKLUMAT AKSES SISTEM</div>
-            <div class="row g-4 mb-4">
-            
+            <div class="akses-card p-3 mb-3">
+                <div class="row g-4">
+                    <!-- Pegawai Urus Akses -->
+                    <div class="col-md-6">
+                        <label class="form-label akses-subtitle">
+                            <i class="bi bi-shield-lock"></i> Pegawai Mengurus Akses Sistem
+                        </label>
+                        <select name="akses_bahagianunit" class="form-select akses-input" required>
+                            <option value="">-- Pilih Bahagian / Unit --</option>
+                            <?php foreach ($bahagianunits as $b): ?>
+                                <option value="<?= $b['id_bahagianunit'] ?>"><?= $b['bahagianunit'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <!-- Divider line -->
+                    <div class="akses-divider my-3"></div>
+                    <!-- Kategori Pengguna -->
+                    <div class="col-12">
+                        <label class="form-label akses-subtitle">
+                            <i class="bi bi-people"></i> Kategori Pengguna Sistem
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Dalaman (Jabatan / Bahagian)</label>
+                        <select name="akses_dalaman" class="form-select akses-input" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="1">Ya</option>
+                            <option value="0">Tidak</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Umum (Orang Awam)</label>
+                        <select name="akses_umum" class="form-select akses-input" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="1">Ya</option>
+                            <option value="0">Tidak</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             
 
