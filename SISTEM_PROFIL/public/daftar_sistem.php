@@ -91,7 +91,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
 
         // Insert to KOS
-    
+        $stmtKos = $pdo->prepare("
+            INSERT INTO KOS 
+            (id_profilsistem, kos_keseluruhan, kos_perkakasan, kos_perisian, kos_lesen_perisian, kos_penyelenggaraan, kos_lain)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ");
+
+        $stmtKos->execute([
+            $last_profilsistem_id,
+            $_POST['kos_keseluruhan'] ?: 0,
+            $_POST['kos_perkakasan'] ?: 0,
+            $_POST['kos_perisian'] ?: 0,
+            $_POST['kos_lesen_perisian'] ?: 0,
+            $_POST['kos_penyelenggaraan'] ?: 0,
+            $_POST['kos_lain'] ?: 0
+        ]);
 
         // Insert to AKSES
 
@@ -161,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <!-- SISTEM -->
             <div class="section-title">A. MAKLUMAT SISTEM</div>
-            <div class="row g-4 mb-4">
+            <div class="row g-4 mb-3">
                 <div class="col-md-6">
                     <label>Nama Sistem</label>
                     <input type="text" name="nama_sistem" class="form-control" required>
@@ -333,8 +347,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <!-- KOS -->
             <div class="section-title">B. MAKLUMAT KOS SISTEM</div>
-            <div class="row g-4 mb-4">
-                
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <label>Jumlah Kos Keseluruhan (RM)</label>
+                    <input type="number" step="0.01" min="0" name="kos_keseluruhan" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label>Kos Perkakasan (RM)</label>
+                    <input type="number" step="0.01" min="0" name="kos_perkakasan" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label>Kos Perisian (RM)</label>
+                    <input type="number" step="0.01" min="0" name="kos_perisian" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label>Kos Lesen Perisian (RM)</label>
+                    <input type="number" step="0.01" min="0" name="kos_lesen_perisian" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label>Kos Penyelenggaraan (RM)</label>
+                    <input type="number" step="0.01" min="0" name="kos_penyelenggaraan" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label>Kos Lain-lain (RM)</label>
+                    <input type="number" step="0.01" min="0" name="kos_lain" class="form-control">
+                </div>
             </div>
 
 
