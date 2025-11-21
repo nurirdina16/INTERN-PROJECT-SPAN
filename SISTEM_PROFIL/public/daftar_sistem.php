@@ -17,6 +17,9 @@ $outsources = $pdo->query("SELECT * FROM LOOKUP_OUTSOURCE")->fetchAll(PDO::FETCH
 $userprofiles = $pdo->query("SELECT * FROM LOOKUP_USERPROFILE")->fetchAll(PDO::FETCH_ASSOC);
 $bahagianunits = $pdo->query("SELECT * FROM LOOKUP_BAHAGIANUNIT ORDER BY bahagianunit ASC")->fetchAll(PDO::FETCH_ASSOC);
 $kategoriusers = $pdo->query("SELECT * FROM LOOKUP_KATEGORIUSER")->fetchAll(PDO::FETCH_ASSOC);
+$bahagianunits = $pdo->query("SELECT * FROM LOOKUP_BAHAGIANUNIT ORDER BY bahagianunit ASC")->fetchAll(PDO::FETCH_ASSOC);
+$userprofiles = $pdo->query("SELECT * FROM LOOKUP_USERPROFILE ORDER BY nama_user ASC")->fetchAll(PDO::FETCH_ASSOC);
+$cartas = $pdo->query("SELECT * FROM LOOKUP_CARTA ORDER BY carta ASC")->fetchAll(PDO::FETCH_ASSOC);
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -122,6 +125,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST['akses_kategoriuser']
         ]);
 
+        // Insert ENTITI
+        $stmtEntiti = $pdo->prepare("
+            INSERT INTO ENTITI 
+            (id_profilsistem, nama_entiti, tarikh_kemaskini, id_bahagianunit, id_userprofile, id_carta)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ");
+
+        $stmtEntiti->execute([
+            $last_profilsistem_id,
+            $_POST['nama_entiti'],
+            $_POST['tarikh_kemaskini'],
+            $_POST['entiti_bahagianunit'],
+            $_POST['entiti_userprofile'],
+            $_POST['entiti_carta']
+        ]);
+
+
         $pdo->commit();
         $message = "<div class='alert alert-success'>Profil Sistem Berjaya Disimpan!</div>";
 
@@ -192,7 +212,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label>Nama Sistem</label>
                     <input type="text" name="nama_sistem" class="form-control" required>
                 </div>
-
                 <div class="col-md-6">
                     <label>Bahagian / Unit</label>
                     <select name="bahagianunit" class="form-select" required>
@@ -202,37 +221,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endforeach; ?>
                     </select>
                 </div>
-
                 <div class="col-md-12">
                     <label>Objektif</label>
                     <textarea name="objektif" rows="3" class="form-control"></textarea>
                 </div>
-
                 <div class="col-md-4">
                     <label>Tarikh Mula</label>
                     <input type="date" name="tarikh_mula" class="form-control">
                 </div>
-
                 <div class="col-md-4">
                     <label>Tarikh Siap</label>
                     <input type="date" name="tarikh_siap" class="form-control">
                 </div>
-
                 <div class="col-md-4">
                     <label>Tarikh Guna</label>
                     <input type="date" name="tarikh_guna" class="form-control">
                 </div>
-
                 <div class="col-md-4">
                     <label>Bilangan Pengguna</label>
                     <input type="text" name="bil_pengguna" class="form-control">
                 </div>
-
                 <div class="col-md-4">
                     <label>Bilangan Modul</label>
                     <input type="text" name="bil_modul" class="form-control">
                 </div>
-
                 <div class="col-md-4">
                     <label>Kategori Sistem</label>
                     <select name="kategori" class="form-select">
@@ -242,27 +254,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endforeach; ?>
                     </select>
                 </div>
-
                 <div class="col-md-6">
                     <label>Bahasa Pengaturcaraan</label>
                     <input type="text" name="bahasa_pengaturcaraan" class="form-control">
                 </div>
-
                 <div class="col-md-6">
                     <label>Pangkalan Data</label>
                     <input type="text" name="pangkalan_data" class="form-control">
                 </div>
-
                 <div class="col-md-6">
                     <label>Rangkaian</label>
                     <textarea name="rangkaian" rows="2" class="form-control"></textarea>
                 </div>
-
                 <div class="col-md-6">
                     <label>Integrasi</label>
                     <textarea name="integrasi" rows="2" class="form-control"></textarea>
                 </div>
-
                 <div class="col-md-4">
                     <label>Penyelenggaraan</label>
                     <select name="penyelenggaraan" class="form-select">
@@ -272,7 +279,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endforeach; ?>
                     </select>
                 </div>
-
                 <div class="col-md-4">
                 <label>Kaedah Pembangunan</label>
                 <select name="kaedahPembangunan" id="kaedahPembangunan" class="form-select" required>
@@ -434,10 +440,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- ENTITI -->
             <div class="section-title">D. MAKLUMAT AM ENTITI</div>
             <div class="row g-3 mb-3">
-                
+                <div class="col-md-6">
+                    <label>Nama Entiti</label>
+                    <input type="text" name="nama_entiti" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label>Tarikh Kemaskini</label>
+                    <input type="date" name="tarikh_kemaskini" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                    <label>Bahagian (Entiti)</label>
+                    <select name="entiti_bahagianunit" class="form-select" required>
+                        <option value="">-- Pilih Bahagian --</option>
+                        <?php foreach ($bahagianunits as $b): ?>
+                            <option value="<?= $b['id_bahagianunit'] ?>"><?= $b['bahagianunit'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Nama Ketua Bahagian</label>
+                    <select name="entiti_userprofile" class="form-select" required>
+                        <option value="">-- Pilih Pegawai --</option>
+                        <?php foreach ($userprofiles as $u): ?>
+                            <option value="<?= $u['id_userprofile'] ?>">
+                                <?= $u['nama_user'] ?> (<?= $u['jawatan_user'] ?>)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Carta Organisasi</label>
+                    <select name="entiti_carta" class="form-select" required>
+                        <option value="">-- Pilih Carta --</option>
+                        <?php foreach ($cartas as $c): ?>
+                            <option value="<?= $c['id_carta'] ?>"><?= $c['carta'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
             </div>
-            
 
+            
             <!-- PEGAWAI RUJUKAN -->
             <div class="section-title">E. MAKLUMAT PEGAWAI RUJUKAN</div>
             <div class="row g-3 mb-3">
