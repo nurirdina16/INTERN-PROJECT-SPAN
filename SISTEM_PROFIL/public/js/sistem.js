@@ -10,12 +10,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const manualPIC = document.getElementById('manualPIC');
 
     kaedahSelect.addEventListener('change', function() {
-        const val = this.value.toLowerCase();
-        if(val === 'outsource') {
+        const val = this.value;
+        if(val === '2') { // outsource ID
             outsourceBox.style.display = 'block';
             inhouseBox.style.display = 'none';
             picBox.style.display = 'block';
-        } else if(val === 'in-house' || val === 'inhouse') {
+        } else if(val === '1') { // inhouse ID
             inhouseBox.style.display = 'block';
             outsourceBox.style.display = 'none';
             manualOutsource.style.display = 'none';

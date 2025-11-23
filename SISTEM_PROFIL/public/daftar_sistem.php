@@ -15,11 +15,10 @@ $penyelenggaraans = $pdo->query("SELECT * FROM LOOKUP_PENYELENGGARAAN")->fetchAl
 $kaedahPembangunans = $pdo->query("SELECT * FROM LOOKUP_KAEDAHPEMBANGUNAN")->fetchAll(PDO::FETCH_ASSOC);
 $outsources = $pdo->query("SELECT * FROM LOOKUP_OUTSOURCE")->fetchAll(PDO::FETCH_ASSOC);
 $userprofiles = $pdo->query("SELECT * FROM LOOKUP_USERPROFILE")->fetchAll(PDO::FETCH_ASSOC);
-$bahagianunits = $pdo->query("SELECT * FROM LOOKUP_BAHAGIANUNIT ORDER BY bahagianunit ASC")->fetchAll(PDO::FETCH_ASSOC);
 $kategoriusers = $pdo->query("SELECT * FROM LOOKUP_KATEGORIUSER")->fetchAll(PDO::FETCH_ASSOC);
-$bahagianunits = $pdo->query("SELECT * FROM LOOKUP_BAHAGIANUNIT ORDER BY bahagianunit ASC")->fetchAll(PDO::FETCH_ASSOC);
-$userprofiles = $pdo->query("SELECT * FROM LOOKUP_USERPROFILE ORDER BY nama_user ASC")->fetchAll(PDO::FETCH_ASSOC);
 $cartas = $pdo->query("SELECT * FROM LOOKUP_CARTA ORDER BY carta ASC")->fetchAll(PDO::FETCH_ASSOC);
+$akses_dalaman = $_POST['akses_dalaman'] ?? null;
+$akses_umum = $_POST['akses_umum'] ?? null;
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -33,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             VALUES (?, ?, ?, ?)
         ");
         $stmt->execute([
-            $_SESSION['user']['id_user'],   // user login
+            $_SESSION['userlog']['id'],   // user login
             $_POST['jenisprofil'],
             $_POST['userprofile'],
             $_POST['status']
@@ -41,37 +40,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $last_profilsistem_id = $pdo->lastInsertId();
 
-        // Tentukan id_outsource jika kaedahPembangunan = outsource
-        $outsource_id = null;
-        if(strtolower($_POST['kaedahPembangunan']) === 'outsource') {
-            if($_POST['outsource'] === 'other' && !empty($_POST['outsource_nama'])) {
-                // insert PIC baru
-                $stmtPIC = $pdo->prepare("INSERT INTO LOOKUP_PIC (nama_PIC, emel_PIC, notelefon_PIC, fax_PIC, jawatan_PIC) VALUES (?, ?, ?, ?, ?)");
-                $stmtPIC->execute([
-                    $_POST['pic_nama'],
-                    $_POST['pic_emel'],
-                    $_POST['pic_notelefon'],
-                    $_POST['pic_fax'],
-                    $_POST['pic_jawatan']
-                ]);
-                $pic_id = $pdo->lastInsertId();
-
-                // update syarikat baru dengan id_PIC
-                $stmtOut = $pdo->prepare("INSERT INTO LOOKUP_OUTSOURCE (nama_syarikat, alamat_syarikat, id_PIC) VALUES (?, ?, ?)");
-                $stmtOut->execute([$_POST['outsource_nama'], $_POST['outsource_alamat'], $pic_id]);
-                $outsource_id = $pdo->lastInsertId();
-            } else {
-                $pic_id = $_POST['pic'];
-                $outsource_id = $_POST['outsource'];
-            }
-        }
-
         // Insert SISTEM
         $stmt2 = $pdo->prepare("
             INSERT INTO SISTEM 
-            (id_profilsistem, nama_sistem, objektif, id_bahagianunit, tarikh_mula, tarikh_siap, tarikh_guna, 
+            (id_profilsistem, nama_sistem, objektif, pemilik_sistem, tarikh_mula, tarikh_siap, tarikh_guna, 
                 bil_pengguna, bil_modul, id_kategori, bahasa_pengaturcaraan, pangkalan_data, rangkaian, integrasi,
-                id_penyelenggaraan, id_kaedahPembangunan, id_outsource)
+                id_penyelenggaraan, id_kaedahPembangunan, id_bahagianunit)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
@@ -79,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $last_profilsistem_id,
             $_POST['nama_sistem'],
             $_POST['objektif'],
-            $_POST['bahagianunit'],
+            $_POST['pemilik_sistem'],
             $_POST['tarikh_mula'],
             $_POST['tarikh_siap'],
             $_POST['tarikh_guna'],
@@ -92,8 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST['integrasi'],
             $_POST['penyelenggaraan'],
             $_POST['kaedahPembangunan'],
-            $_POST['outsource']
+            $_POST['bahagianunit']
         ]);
+
 
         // Insert to KOS
         $stmtKos = $pdo->prepare("
@@ -112,33 +87,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST['kos_lain'] ?: 0
         ]);
 
-        // Insert to AKSES
+        // Query lookup_kategoriuser untuk dapatkan id
+        $stmtKategori = $pdo->prepare("
+            SELECT id_kategoriuser FROM lookup_kategoriuser 
+            WHERE jenis_dalaman = ? AND jenis_umum = ?
+            LIMIT 1
+        ");
+        $stmtKategori->execute([$akses_dalaman, $akses_umum]);
+        $id_kategoriuser = $stmtKategori->fetchColumn();
+
+        if (!$id_kategoriuser) {
+            // fallback jika kombinasi tak wujud
+            $id_kategoriuser = 3; // contoh: 3 = Dalaman & Umum = 0
+        }
+
+        // Insert AKSES
         $stmtAkses = $pdo->prepare("
             INSERT INTO AKSES 
             (id_profilsistem, id_bahagianunit, id_kategoriuser)
             VALUES (?, ?, ?)
         ");
-
         $stmtAkses->execute([
             $last_profilsistem_id,
             $_POST['akses_bahagianunit'],
-            $_POST['akses_kategoriuser']
+            $id_kategoriuser
         ]);
 
         // Insert ENTITI
         $stmtEntiti = $pdo->prepare("
             INSERT INTO ENTITI 
-            (id_profilsistem, nama_entiti, tarikh_kemaskini, id_bahagianunit, id_userprofile, id_carta)
-            VALUES (?, ?, ?, ?, ?, ?)
+            (id_profilsistem, nama_entiti, tarikh_kemaskini, id_bahagianunit, id_userprofile, cio, ictso, id_carta)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ");
-
         $stmtEntiti->execute([
             $last_profilsistem_id,
             $_POST['nama_entiti'],
             $_POST['tarikh_kemaskini'],
             $_POST['entiti_bahagianunit'],
-            $_POST['entiti_userprofile'],
+            $_POST['ketua_userprofile'],
+            $_POST['cio_userprofile'],
+            $_POST['ictso_userprofile'],
             $_POST['entiti_carta']
+        ]);
+
+        // Insert PEGAWAI RUJUKAN SISTEM
+        $stmtPegawai = $pdo->prepare("
+            INSERT INTO PEGAWAI_RUJUKAN_SISTEM 
+            (id_profilsistem, id_userprofile)
+            VALUES (?, ?)
+        ");
+        $stmtPegawai->execute([
+            $last_profilsistem_id,
+            $_POST['pegawai_rujukan_sistem']
         ]);
 
 
@@ -202,6 +202,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endforeach; ?>
                     </select>
                 </div>
+                <div class="col-md-6">
+                    <label>Pegawai Profil</label>
+                    <select name="userprofile" class="form-select" required>
+                        <option value="">-- Pilih Pegawai --</option>
+                        <?php foreach ($userprofiles as $u): ?>
+                            <option value="<?= $u['id_userprofile'] ?>"><?= $u['nama_user'] ?> (<?= $u['jawatan_user'] ?>)</option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
             </div>
 
 
@@ -213,8 +222,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="text" name="nama_sistem" class="form-control" required>
                 </div>
                 <div class="col-md-6">
-                    <label>Bahagian / Unit</label>
-                    <select name="bahagianunit" class="form-select" required>
+                    <label>Pemilik Sistem</label>
+                    <select name="pemilik_sistem" class="form-select" required>
                         <option value="">-- Pilih Bahagian / Unit --</option>
                         <?php foreach ($bahagianunits as $b): ?>
                             <option value="<?= $b['id_bahagianunit'] ?>"><?= $b['bahagianunit'] ?></option>
@@ -247,7 +256,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="col-md-4">
                     <label>Kategori Sistem</label>
-                    <select name="kategori" class="form-select">
+                    <select name="kategori" class="form-select" required>
                         <option value="">-- Pilih Kategori --</option>
                         <?php foreach ($kategoris as $k): ?>
                             <option value="<?= $k['id_kategori'] ?>"><?= $k['kategori'] ?></option>
@@ -284,82 +293,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <select name="kaedahPembangunan" id="kaedahPembangunan" class="form-select" required>
                     <option value="">-- Pilih Kaedah Pembangunan --</option>
                     <?php foreach ($kaedahPembangunans as $kp): ?>
-                        <option value="<?= strtolower(trim(str_replace('-', '', $kp['kaedahPembangunan']))) ?>">
-                            <?= $kp['kaedahPembangunan'] ?>
-                        </option>
+                        <option value="<?= $kp['id_kaedahPembangunan'] ?>"><?= $kp['kaedahPembangunan'] ?></option>
                     <?php endforeach; ?>
                 </select>
-            </div>
-        <!-- Conditional Box -->
-            <!-- OUTSOURCE -->
-            <div id="outsourceBox" class="conditional-box" style="display:none;">
-                <div class="sub-section-header">Outsource Details</div>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label>Nama Syarikat</label>
-                        <select name="outsource" id="outsourceSelect" class="form-select">
-                            <option value="">-- Pilih Syarikat --</option>
-                            <?php foreach ($outsources as $o): ?>
-                                <option value="<?= $o['id_outsource'] ?>"><?= $o['nama_syarikat'] ?></option>
-                            <?php endforeach; ?>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div id="manualOutsource" class="col-12" style="display:none;">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label>Nama Syarikat (Manual)</label>
-                                <input type="text" name="outsource_nama" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label>Alamat Syarikat</label>
-                                <input type="text" name="outsource_alamat" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- PIC -->
-            <div id="picBox" class="conditional-box" style="display:none;">
-                <div class="sub-section-header">Maklumat PIC</div>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label>PIC</label>
-                        <select name="pic" id="picSelect" class="form-select">
-                            <option value="">-- Pilih PIC --</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div id="manualPIC" class="col-12" style="display:none;">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label>Nama PIC</label>
-                                <input type="text" name="pic_nama" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label>Emel PIC</label>
-                                <input type="email" name="pic_emel" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label>No Telefon PIC</label>
-                                <input type="text" name="pic_notelefon" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label>Jawatan PIC</label>
-                                <input type="text" name="pic_jawatan" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label>Fax PIC</label>
-                                <input type="text" name="pic_fax" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- INHOUSE -->
-            <div id="inhouseBox" class="conditional-box" style="display:none;">
-                <div class="sub-section-header">IN-HOUSE: Bahagian Yang Bertanggungjawab</div>
-                <p>Pilih bahagian/unit yang bertanggungjawab dari dropdown di atas.</p>
+
+                
             </div>
 
 
@@ -459,7 +397,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="col-md-4">
                     <label>Nama Ketua Bahagian</label>
-                    <select name="entiti_userprofile" class="form-select" required>
+                    <select name="ketua_userprofile" class="form-select" required>
+                        <option value="">-- Pilih Pegawai --</option>
+                        <?php foreach ($userprofiles as $u): ?>
+                            <option value="<?= $u['id_userprofile'] ?>">
+                                <?= $u['nama_user'] ?> (<?= $u['jawatan_user'] ?>)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Nama CIO</label>
+                    <select name="cio_userprofile" class="form-select" required>
+                        <option value="">-- Pilih Pegawai --</option>
+                        <?php foreach ($userprofiles as $u): ?>
+                            <option value="<?= $u['id_userprofile'] ?>">
+                                <?= $u['nama_user'] ?> (<?= $u['jawatan_user'] ?>)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Nama ICTSO</label>
+                    <select name="ictso_userprofile" class="form-select" required>
                         <option value="">-- Pilih Pegawai --</option>
                         <?php foreach ($userprofiles as $u): ?>
                             <option value="<?= $u['id_userprofile'] ?>">
@@ -481,11 +441,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             
             <!-- PEGAWAI RUJUKAN -->
-            <div class="section-title">E. MAKLUMAT PEGAWAI RUJUKAN</div>
+            <div class="section-title">E. MAKLUMAT PEGAWAI RUJUKAN SISTEM</div>
             <div class="row g-3 mb-3">
-                
+                <div class="col-md-4">
+                    <label>Pegawai Rujukan Sistem</label>
+                    <select name="pegawai_rujukan_sistem" class="form-select" required>
+                        <option value="">-- Pilih Pegawai --</option>
+                        <?php foreach ($userprofiles as $u): ?>
+                            <option value="<?= $u['id_userprofile'] ?>">
+                                <?= $u['nama_user'] ?> (<?= $u['jawatan_user'] ?>)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
             </div>
-            
+
 
             <div class="text-center mt-4">
                 <button type="submit" class="btn btn-primary">Simpan Profil</button>
