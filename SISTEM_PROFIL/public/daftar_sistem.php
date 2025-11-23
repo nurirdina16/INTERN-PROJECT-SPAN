@@ -26,6 +26,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $pdo->beginTransaction();
 
+        $outsource_id = null;
+        // HANDLE OUTSOURCE / INHOUSE
+        if ($_POST['kaedahPembangunan'] == 2) { // OUTSOURCE
+
+            // 1. Jika syarikat sedia ada dipilih
+            if (!empty($_POST['outsource_id']) && $_POST['outsource_id'] != 'other') {
+                $outsource_id = $_POST['outsource_id'];
+            } 
+            else {
+                // 2. Insert syarikat baru
+                $stmt = $pdo->prepare("INSERT INTO LOOKUP_OUTSOURCE 
+                    (nama_syarikat, alamat_syarikat) VALUES (?, ?)");
+                $stmt->execute([
+                    $_POST['manual_nama_syarikat'],
+                    $_POST['manual_alamat_syarikat']
+                ]);
+                $outsource_id = $pdo->lastInsertId();
+            }
+        } 
+        else {
+            // INHOUSE
+            $outsource_id = null;
+        }
+
         // Insert PROFIL_SISTEM
         $stmt = $pdo->prepare("
             INSERT INTO PROFIL_SISTEM (id_user, id_jenisprofil, id_userprofile, id_status)
@@ -40,13 +64,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $last_profilsistem_id = $pdo->lastInsertId();
 
+
+        // Tentukan id_bahagianunit untuk table SISTEM
+        $id_bahagianunit_final = null;
+
+        if ($_POST['kaedahPembangunan'] == 1) { 
+            // INHOUSE
+            $id_bahagianunit_final = $_POST['inhouse_bahagianunit'];
+        } else { 
+            // OUTSOURCE — TIDAK ADA BAHAGIANUNIT
+            $id_bahagianunit_final = null;
+        }
+
+
         // Insert SISTEM
         $stmt2 = $pdo->prepare("
             INSERT INTO SISTEM 
             (id_profilsistem, nama_sistem, objektif, pemilik_sistem, tarikh_mula, tarikh_siap, tarikh_guna, 
-                bil_pengguna, bil_modul, id_kategori, bahasa_pengaturcaraan, pangkalan_data, rangkaian, integrasi,
-                id_penyelenggaraan, id_kaedahPembangunan, id_bahagianunit)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            bil_pengguna, bil_modul, id_kategori, bahasa_pengaturcaraan, pangkalan_data, rangkaian, integrasi,
+            id_penyelenggaraan, id_kaedahPembangunan, id_outsource, id_bahagianunit)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
         $stmt2->execute([
@@ -66,7 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST['integrasi'],
             $_POST['penyelenggaraan'],
             $_POST['kaedahPembangunan'],
-            $_POST['bahagianunit']
+            $outsource_id,
+            $id_bahagianunit_final   // FIX PENTING
         ]);
 
 
@@ -296,8 +334,88 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <option value="<?= $kp['id_kaedahPembangunan'] ?>"><?= $kp['kaedahPembangunan'] ?></option>
                     <?php endforeach; ?>
                 </select>
-
-                
+            </div>
+            <!-- OUTSOURCE / INHOUSE SECTION -->
+            <div id="outsourceBox" class="conditional-box" style="display:none;">
+                <div class="sub-section-header">Maklumat Syarikat (Outsource)</div>
+                <!-- Pilih syarikat outsource -->
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label>Syarikat</label>
+                        <select name="outsource_id" id="outsourceSelect" class="form-select">
+                            <option value="">-- Pilih Syarikat --</option>
+                            <?php foreach ($outsources as $o): ?>
+                                <option value="<?= $o['id_outsource'] ?>"><?= $o['nama_syarikat'] ?></option>
+                            <?php endforeach; ?>
+                            <option value="other">Tambah Baru...</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Jika syarikat tiada dalam DB -->
+                <div id="manualOutsource" style="display:none;">
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-6">
+                            <label>Nama Syarikat</label>
+                            <input type="text" name="manual_nama_syarikat" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Alamat Syarikat</label>
+                            <textarea name="manual_alamat_syarikat" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <!-- Maklumat PIC -->
+                <div id="picBox" style="display:none; margin-top:15px;">
+                    <div class="sub-section-header">Maklumat PIC</div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label>PIC</label>
+                            <select name="pic_id" id="picSelect" class="form-select">
+                                <option value="">-- Pilih PIC --</option>
+                                <option value="other">Tambah Baru...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="manualPIC" style="display:none;">
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-6">
+                                <label>Nama PIC</label>
+                                <input type="text" name="manual_pic_nama" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label>Emel PIC</label>
+                                <input type="text" name="manual_pic_emel" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label>No Telefon PIC</label>
+                                <input type="text" name="manual_pic_telefon" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label>Fax PIC</label>
+                                <input type="text" name="manual_pic_fax" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label>Jawatan PIC</label>
+                                <input type="text" name="manual_pic_jawatan" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- INHOUSE -->
+            <div id="inhouseBox" class="conditional-box" style="display:none;">
+                <div class="sub-section-header">Maklumat Inhouse</div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label>Bahagian Bertanggungjawab</label>
+                        <select name="inhouse_bahagianunit" class="form-select">
+                            <option value="">-- Pilih Bahagian --</option>
+                            <?php foreach ($bahagianunits as $b): ?>
+                                <option value="<?= $b['id_bahagianunit'] ?>"><?= $b['bahagianunit'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
             </div>
 
 
