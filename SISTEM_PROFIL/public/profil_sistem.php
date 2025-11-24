@@ -94,15 +94,15 @@ $senarai = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <td class="text-center"><?= htmlspecialchars($row['jenisprofil']) ?></td>
                                     <td><?= htmlspecialchars($row['pemilik']) ?></td>
                                     <td class="text-center">
-                                        <a href="sistem_utama/view_sistem.php?id=<?= $row['id_profilsistem'] ?>" 
+                                        <a href="view_sistem.php?id=<?= $row['id_profilsistem'] ?>" 
                                         class="btn action-btn view-btn">
                                             <i class="bi bi-eye"></i>
                                         </a>
-                                        <a href="sistem_utama/kemaskini_sistem.php?id=<?= $row['id_profilsistem'] ?>" 
+                                        <a href="kemaskini_sistem.php?id=<?= $row['id_profilsistem'] ?>" 
                                         class="btn action-btn edit-btn">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <a href="sistem_utama/delete_sistem.php?id=<?= $row['id_profilsistem'] ?>" 
+                                        <a href="delete_sistem.php?id=<?= $row['id_profilsistem'] ?>" 
                                         class="btn action-btn delete-btn"
                                         onclick="return confirm('Padam sistem ini?');">
                                             <i class="bi bi-trash"></i>

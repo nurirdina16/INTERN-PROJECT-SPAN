@@ -113,3 +113,42 @@
 .delete-btn:hover {
     background: #b02a37;
 }
+
+
+/* ===========================
+   VIEW SISTEM PAGE
+   =========================== */
+/* VIEW SISTEM IMPROVED STYLE */
+.container {
+    max-width: auto;
+}
+
+.view-main-header {
+    background: #004b73;
+    color: white;
+    font-size: 22px;
+    padding: 16px 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+.view-section-box {
+    background: #ffffff;
+    border: 1px solid #c8d6e5;
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 25px;
+}
+
+.view-section-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: #006EA0;
+    margin-bottom: 15px;
+}
+
+.view-label-title {
+    font-weight: 600;
+    color: #003d5c;
+}
