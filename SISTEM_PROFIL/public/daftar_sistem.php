@@ -26,6 +26,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $pdo->beginTransaction();
 
+        $pic_id = null;
+        // INSERT PIC jika new
+        if ($_POST['pic_id'] === 'other') {
+            $stmt = $pdo->prepare("
+                INSERT INTO LOOKUP_PIC (nama_PIC, emel_PIC, notelefon_PIC, fax_PIC, jawatan_PIC)
+                VALUES (?, ?, ?, ?, ?)
+            ");
+            $stmt->execute([
+                $_POST['manual_pic_nama'],
+                $_POST['manual_pic_emel'],
+                $_POST['manual_pic_telefon'],
+                $_POST['manual_pic_fax'],
+                $_POST['manual_pic_jawatan']
+            ]);
+            $pic_id = $pdo->lastInsertId();
+        } else {
+            $pic_id = $_POST['pic_id'] ?: null;
+        }
+
         $outsource_id = null;
         // HANDLE OUTSOURCE / INHOUSE
         if ($_POST['kaedahPembangunan'] == 2) { // OUTSOURCE
@@ -36,12 +55,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } 
             else {
                 // 2. Insert syarikat baru
-                $stmt = $pdo->prepare("INSERT INTO LOOKUP_OUTSOURCE 
-                    (nama_syarikat, alamat_syarikat) VALUES (?, ?)");
+                $stmt = $pdo->prepare("
+                    INSERT INTO LOOKUP_OUTSOURCE (nama_syarikat, alamat_syarikat, id_PIC)
+                    VALUES (?, ?, ?)
+                ");
                 $stmt->execute([
                     $_POST['manual_nama_syarikat'],
-                    $_POST['manual_alamat_syarikat']
+                    $_POST['manual_alamat_syarikat'],
+                    $pic_id
                 ]);
+
                 $outsource_id = $pdo->lastInsertId();
             }
         } 
@@ -52,13 +75,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Insert PROFIL_SISTEM
         $stmt = $pdo->prepare("
-            INSERT INTO PROFIL_SISTEM (id_user, id_jenisprofil, id_userprofile, id_status)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO PROFIL_SISTEM (id_user, id_jenisprofil, id_status)
+            VALUES (?, ?, ?)
         ");
         $stmt->execute([
             $_SESSION['userlog']['id'],   // user login
             $_POST['jenisprofil'],
-            $_POST['userprofile'],
             $_POST['status']
         ]);
 
@@ -237,15 +259,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <option value="">-- Pilih Jenis Profil --</option>
                         <?php foreach ($jenisprofils as $jp): ?>
                             <option value="<?= $jp['id_jenisprofil'] ?>"><?= $jp['jenisprofil'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label>Pegawai Profil</label>
-                    <select name="userprofile" class="form-select" required>
-                        <option value="">-- Pilih Pegawai --</option>
-                        <?php foreach ($userprofiles as $u): ?>
-                            <option value="<?= $u['id_userprofile'] ?>"><?= $u['nama_user'] ?> (<?= $u['jawatan_user'] ?>)</option>
                         <?php endforeach; ?>
                     </select>
                 </div>

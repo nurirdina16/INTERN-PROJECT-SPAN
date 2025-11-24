@@ -32,27 +32,34 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Select outsource company
-    outsourceSelect.addEventListener('change', function() {
-        if (this.value === 'other') {
+    outsourceSelect.addEventListener('change', function () {
+        const id = this.value;
+
+        if (id === 'other') {
             manualOutsource.style.display = 'block';
             manualPIC.style.display = 'block';
-
             picSelect.innerHTML = '<option value="other">Tambah Baru...</option>';
-        } else {
-            manualOutsource.style.display = 'none';
-
-            // Load PIC from DB
-            fetch('../app/ajax_get_pic.php?outsource_id=' + this.value)
-            .then(res => res.json())
-            .then(data => {
-                picSelect.innerHTML = '<option value="">-- Pilih PIC --</option><option value="other">Tambah Baru...</option>';
-
-                data.forEach(pic => {
-                    picSelect.innerHTML += `<option value="${pic.id_PIC}">${pic.nama_PIC}</option>`;
-                });
-            });
+            return;
         }
+
+        manualOutsource.style.display = 'none';
+
+        // Load PIC from DB
+        fetch('ajax_get_pic.php?outsource_id=' + id)
+        .then(response => response.json())
+        .then(data => {
+            picSelect.innerHTML = '<option value="">-- Pilih PIC --</option>';
+
+            if (data && data.id_PIC) {
+                picSelect.innerHTML += `
+                    <option value="${data.id_PIC}">${data.nama_PIC}</option>
+                `;
+            }
+
+            picSelect.innerHTML += '<option value="other">Tambah Baru...</option>';
+        });
     });
+
 
     // Select PIC
     picSelect.addEventListener('change', function() {
