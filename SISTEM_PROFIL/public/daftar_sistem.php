@@ -301,20 +301,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="col-md-12">
-                    <label>Objektif</label>
+                    <label>Objektif Sistem</label>
                     <textarea name="objektif" class="form-control" rows="3"></textarea>
                 </div>
 
                 <div class="col-md-4">
-                    <label>Tarikh Mula</label>
+                    <label>Tarikh Mula Pembangunan Sistem</label>
                     <input type="date" name="tarikh_mula" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label>Tarikh Siap</label>
+                    <label>Tarikh Siap Pembangunan Sistem</label>
                     <input type="date" name="tarikh_siap" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label>Tarikh Guna</label>
+                    <label>Tarikh Guna Pembangunan Sistem</label>
                     <input type="date" name="tarikh_guna" class="form-control">
                 </div>
 
@@ -324,7 +324,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="col-md-4">
-                    <label>Bilangan Modul</label>
+                    <label>Bilangan Modul Sistem</label>
                     <input type="text" name="bil_modul" class="form-control">
                 </div>
 
@@ -344,22 +344,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="col-md-6">
-                    <label>Pangkalan Data</label>
+                    <label>Jenis Pangkalan Data</label>
                     <input type="text" name="pangkalan_data" class="form-control">
                 </div>
 
                 <div class="col-md-6">
-                    <label>Rangkaian</label>
+                    <label>Rangkaian Yang Digunakan</label>
                     <textarea name="rangkaian" rows="2" class="form-control"></textarea>
                 </div>
 
                 <div class="col-md-6">
-                    <label>Integrasi</label>
+                    <label>Integrasi Sistem Lain</label>
                     <textarea name="integrasi" rows="2" class="form-control"></textarea>
                 </div>
 
                 <div class="col-md-4">
-                    <label>Penyelenggaraan</label>
+                    <label>Penyelenggaraan Sistem</label>
                     <select name="penyelenggaraan" class="form-select">
                         <option value="">-- Pilih Penyelenggaraan --</option>
                         <?php foreach ($penyelenggaraans as $p): ?>
@@ -381,7 +381,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
             <!-- OUTSOURCE / INHOUSE SECTION -->
             <div id="outsourceBox" class="conditional-box" style="display:none;">
-                <div class="sub-section-header">Maklumat Syarikat (Outsource)</div>
+                <div class="sub-section-header">Maklumat Pembekal</div>
                 <!-- Pilih syarikat outsource -->
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -453,7 +453,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <!-- INHOUSE -->
             <div id="inhouseBox" class="conditional-box" style="display:none;">
-                <div class="sub-section-header">Maklumat Inhouse</div>
+                <div class="sub-section-header">Maklumat Dalaman</div>
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label>Bahagian Bertanggungjawab</label>
@@ -560,7 +560,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="col-md-4">
-                    <label>Ketua Bahagian</label>
+                    <label>Nama Ketua Bahagian</label>
                     <select name="ketua_userprofile" class="form-select" required>
                         <option value="">-- Pilih Pegawai --</option>
                         <?php foreach ($userprofiles as $u): ?>
@@ -570,7 +570,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="col-md-4">
-                    <label>CIO</label>
+                    <label>Nama Chief Information Officer (CIO)</label>
                     <select name="cio_userprofile" class="form-select" required>
                         <option value="">-- Pilih Pegawai --</option>
                         <?php foreach ($userprofiles as $u): ?>
@@ -580,7 +580,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="col-md-4">
-                    <label>ICTSO</label>
+                    <label>Nama Chief Security Officer (ICTSO)</label>
                     <select name="ictso_userprofile" class="form-select" required>
                         <option value="">-- Pilih Pegawai --</option>
                         <?php foreach ($userprofiles as $u): ?>
@@ -590,7 +590,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="col-md-4">
-                    <label>Carta Organisasi</label>
+                    <label>Carta Organisasi Entiti</label>
                     <select name="entiti_carta" class="form-select" required>
                         <option value="">-- Pilih Carta --</option>
                         <?php foreach ($cartas as $c): ?>
@@ -605,7 +605,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="section-title">E. MAKLUMAT PEGAWAI RUJUKAN SISTEM</div>
             <div class="row g-4 mb-4">
                 <div class="col-md-6">
-                    <label><i class="bi bi-person-badge"></i> Pegawai Rujukan Sistem</label>
+                    <label><i class="bi bi-person-badge"></i> Nama Pegawai Rujukan</label>
                     <select name="pegawai_rujukan_sistem" class="form-select" required>
                         <option value="">-- Pilih Pegawai --</option>
                         <?php foreach ($userprofiles as $u): ?>
