@@ -247,52 +247,6 @@ $peg = $pdo->query("
       </div>
 
 
-      <!-- SECTION: ENTITI -->
-      <div class="view-section-box">
-          <div class="view-section-title">Maklumat Entiti</div>
-
-          <?php if ($entiti_list): ?>
-
-              <?php foreach ($entiti_list as $ent): ?>
-                  <div class="info-row">
-                      <div class="info-label">Nama Entiti</div>
-                      <div class="info-value"><?= $ent['nama_entiti'] ?></div>
-                  </div>
-
-                  <div class="info-row">
-                      <div class="info-label">Tarikh Kemaskini</div>
-                      <div class="info-value"><?= $ent['tarikh_kemaskini'] ?></div>
-                  </div>
-
-                  <div class="info-row">
-                      <div class="info-label">Bahagian Unit</div>
-                      <div class="info-value"><?= $ent['bahagianunit'] ?></div>
-                  </div>
-
-                  <div class="info-row">
-                      <div class="info-label">Maklumat Pegawai</div>
-                      <div class="info-value">
-                          <?= $ent['nama_user'] ?><br>
-                          <?= $ent['jawatan_user'] ?><br>
-                          <?= $ent['emel_user'] ?><br>
-                          <?= $ent['notelefon_user'] ?>
-                      </div>
-                  </div>
-
-                  <div class="info-row">
-                      <div class="info-label">Carta</div>
-                      <div class="info-value"><?= $ent['carta'] ?></div>
-                  </div>
-
-                  <hr style="margin: 18px 0;">
-              <?php endforeach; ?>
-
-          <?php else: ?>
-              <p class="text-muted">Tiada maklumat entiti.</p>
-          <?php endif; ?>
-      </div>
-
-
       <!-- SECTION: AKSES -->
       <div class="view-section-box">
           <div class="view-section-title">Maklumat Akses Sistem</div>
@@ -372,8 +326,6 @@ $peg = $pdo->query("
                       <div class="info-label">Carta</div>
                       <div class="info-value"><?= $ent['carta'] ?></div>
                   </div>
-
-                  <hr style="margin: 18px 0;">
 
               <?php endforeach; ?>
 
