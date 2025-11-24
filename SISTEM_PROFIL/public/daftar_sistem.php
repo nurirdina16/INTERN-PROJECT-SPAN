@@ -4,7 +4,9 @@ require_once '../app/auth.php';
 require_login();
 
 $current_page = basename($_SERVER['PHP_SELF']);
-$message = '';
+
+$alert_type = '';
+$alert_message = '';
 
 // Ambil data lookup dari DB
 $statuses = $pdo->query("SELECT * FROM LOOKUP_STATUS")->fetchAll(PDO::FETCH_ASSOC);
@@ -17,6 +19,7 @@ $outsources = $pdo->query("SELECT * FROM LOOKUP_OUTSOURCE")->fetchAll(PDO::FETCH
 $userprofiles = $pdo->query("SELECT * FROM LOOKUP_USERPROFILE")->fetchAll(PDO::FETCH_ASSOC);
 $kategoriusers = $pdo->query("SELECT * FROM LOOKUP_KATEGORIUSER")->fetchAll(PDO::FETCH_ASSOC);
 $cartas = $pdo->query("SELECT * FROM LOOKUP_CARTA ORDER BY carta ASC")->fetchAll(PDO::FETCH_ASSOC);
+$pics = $pdo->query("SELECT * FROM LOOKUP_PIC")->fetchAll(PDO::FETCH_ASSOC);
 $akses_dalaman = $_POST['akses_dalaman'] ?? null;
 $akses_umum = $_POST['akses_umum'] ?? null;
 
@@ -203,11 +206,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
         $pdo->commit();
-        $message = "<div class='alert alert-success'>Profil Sistem Berjaya Disimpan!</div>";
 
+        $alert_type = 'success';
+        $alert_message = 'Profil Sistem Berjaya Disimpan!';
     } catch (Exception $e) {
         $pdo->rollBack();
-        $message = "<div class='alert alert-danger'>Ralat: " . $e->getMessage() . "</div>";
+        $alert_type = 'danger';
+        $alert_message = 'Ralat: ' . $e->getMessage();
     }
 }
 ?>
@@ -236,14 +241,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- HEADER -->
         <?php include 'header.php'; ?>
 
-        <div class="main-header mt-4 mb-3"><i class="bi bi-pc-display"></i>Daftar Profil Sistem Utama</div>
+        <div class="main-header mt-4 mb-1"><i class="bi bi-pc-display"></i>Daftar Profil Sistem Utama</div>
 
-        <?= $message ?>
+        <!-- Toast Container -->
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1080;">
+        <div id="liveToast" class="toast align-items-center text-bg-<?= $alert_type ?> border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+            <div class="toast-body">
+                <?= htmlspecialchars($alert_message) ?>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+        </div>
 
         <form method="POST" class="section-card">
             <!-- PROFIL -->
-            <div class="section-title">MAKLUMAT PROFIL</div>
-            <div class="row g-3 mb-3">
+            <div class="section-title"><i class="bi bi-folder2-open"></i> MAKLUMAT PROFIL</div>
+            <div class="row g-3 mb-4">
                 <div class="col-md-6">
                     <label>Status</label>
                     <select name="status" class="form-select" required>
@@ -253,6 +268,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endforeach; ?>
                     </select>
                 </div>
+
                 <div class="col-md-6">
                     <label>Jenis Profil</label>
                     <select name="jenisprofil" class="form-select" required>
@@ -267,11 +283,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <!-- SISTEM -->
             <div class="section-title">A. MAKLUMAT SISTEM</div>
-            <div class="row g-4 mb-3">
+            <div class="row g-4 mb-4">
+
                 <div class="col-md-6">
                     <label>Nama Sistem</label>
                     <input type="text" name="nama_sistem" class="form-control" required>
                 </div>
+
                 <div class="col-md-6">
                     <label>Pemilik Sistem</label>
                     <select name="pemilik_sistem" class="form-select" required>
@@ -281,10 +299,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endforeach; ?>
                     </select>
                 </div>
+
                 <div class="col-md-12">
                     <label>Objektif</label>
-                    <textarea name="objektif" rows="3" class="form-control"></textarea>
+                    <textarea name="objektif" class="form-control" rows="3"></textarea>
                 </div>
+
                 <div class="col-md-4">
                     <label>Tarikh Mula</label>
                     <input type="date" name="tarikh_mula" class="form-control">
@@ -297,14 +317,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label>Tarikh Guna</label>
                     <input type="date" name="tarikh_guna" class="form-control">
                 </div>
+
                 <div class="col-md-4">
                     <label>Bilangan Pengguna</label>
                     <input type="text" name="bil_pengguna" class="form-control">
                 </div>
+
                 <div class="col-md-4">
                     <label>Bilangan Modul</label>
                     <input type="text" name="bil_modul" class="form-control">
                 </div>
+
                 <div class="col-md-4">
                     <label>Kategori Sistem</label>
                     <select name="kategori" class="form-select" required>
@@ -314,22 +337,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endforeach; ?>
                     </select>
                 </div>
+
                 <div class="col-md-6">
                     <label>Bahasa Pengaturcaraan</label>
                     <input type="text" name="bahasa_pengaturcaraan" class="form-control">
                 </div>
+
                 <div class="col-md-6">
                     <label>Pangkalan Data</label>
                     <input type="text" name="pangkalan_data" class="form-control">
                 </div>
+
                 <div class="col-md-6">
                     <label>Rangkaian</label>
                     <textarea name="rangkaian" rows="2" class="form-control"></textarea>
                 </div>
+
                 <div class="col-md-6">
                     <label>Integrasi</label>
                     <textarea name="integrasi" rows="2" class="form-control"></textarea>
                 </div>
+
                 <div class="col-md-4">
                     <label>Penyelenggaraan</label>
                     <select name="penyelenggaraan" class="form-select">
@@ -339,15 +367,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endforeach; ?>
                     </select>
                 </div>
+
                 <div class="col-md-4">
-                <label>Kaedah Pembangunan</label>
-                <select name="kaedahPembangunan" id="kaedahPembangunan" class="form-select" required>
-                    <option value="">-- Pilih Kaedah Pembangunan --</option>
-                    <?php foreach ($kaedahPembangunans as $kp): ?>
-                        <option value="<?= $kp['id_kaedahPembangunan'] ?>"><?= $kp['kaedahPembangunan'] ?></option>
-                    <?php endforeach; ?>
-                </select>
+                    <label>Kaedah Pembangunan</label>
+                    <select name="kaedahPembangunan" id="kaedahPembangunan" class="form-select" required>
+                        <option value="">-- Pilih Kaedah Pembangunan --</option>
+                        <?php foreach ($kaedahPembangunans as $kp): ?>
+                            <option value="<?= $kp['id_kaedahPembangunan'] ?>"><?= $kp['kaedahPembangunan'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
             </div>
+        
             <!-- OUTSOURCE / INHOUSE SECTION -->
             <div id="outsourceBox" class="conditional-box" style="display:none;">
                 <div class="sub-section-header">Maklumat Syarikat (Outsource)</div>
@@ -385,6 +416,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label>PIC</label>
                             <select name="pic_id" id="picSelect" class="form-select">
                                 <option value="">-- Pilih PIC --</option>
+                                <?php foreach ($pics as $p): ?>
+                                    <option value="<?= $p['id_PIC'] ?>">
+                                        <?= $p['nama_PIC'] ?> (<?= $p['jawatan_PIC'] ?>)
+                                    </option>
+                                <?php endforeach; ?>
                                 <option value="other">Tambah Baru...</option>
                             </select>
                         </div>
@@ -434,81 +470,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <!-- KOS -->
             <div class="section-title">B. MAKLUMAT KOS SISTEM</div>
-            <div class="row g-3 mb-3">
-                <div class="col-md-4">
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
                     <label>Jumlah Kos Keseluruhan (RM)</label>
-                    <input type="number" step="0.01" min="0" name="kos_keseluruhan" class="form-control">
+                    <input type="number" step="0.01" name="kos_keseluruhan" class="form-control">
                 </div>
+                <div class="col-md-6">
+                    <label>Kos Penyelenggaraan (RM)</label>
+                    <input type="number" step="0.01" name="kos_penyelenggaraan" class="form-control">
+                </div>
+
                 <div class="col-md-4">
                     <label>Kos Perkakasan (RM)</label>
-                    <input type="number" step="0.01" min="0" name="kos_perkakasan" class="form-control">
+                    <input type="number" step="0.01" name="kos_perkakasan" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label>Kos Perisian (RM)</label>
-                    <input type="number" step="0.01" min="0" name="kos_perisian" class="form-control">
+                    <input type="number" step="0.01" name="kos_perisian" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label>Kos Lesen Perisian (RM)</label>
-                    <input type="number" step="0.01" min="0" name="kos_lesen_perisian" class="form-control">
+                    <input type="number" step="0.01" name="kos_lesen_perisian" class="form-control">
                 </div>
-                <div class="col-md-4">
-                    <label>Kos Penyelenggaraan (RM)</label>
-                    <input type="number" step="0.01" min="0" name="kos_penyelenggaraan" class="form-control">
-                </div>
-                <div class="col-md-4">
+
+                <div class="col-md-12">
                     <label>Kos Lain-lain (RM)</label>
-                    <input type="number" step="0.01" min="0" name="kos_lain" class="form-control">
+                    <input type="number" step="0.01" name="kos_lain" class="form-control">
                 </div>
             </div>
 
 
             <!-- AKSES -->
             <div class="section-title">C. MAKLUMAT AKSES SISTEM</div>
-            <div class="akses-card p-3 mb-3">
-                <div class="row g-4">
-                    <!-- Pegawai Urus Akses -->
-                    <div class="col-md-6">
-                        <label class="form-label akses-subtitle">
-                            <i class="bi bi-shield-lock"></i> Pegawai Mengurus Akses Sistem
-                        </label>
-                        <select name="akses_bahagianunit" class="form-select akses-input" required>
-                            <option value="">-- Pilih Bahagian / Unit --</option>
-                            <?php foreach ($bahagianunits as $b): ?>
-                                <option value="<?= $b['id_bahagianunit'] ?>"><?= $b['bahagianunit'] ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <!-- Divider line -->
-                    <div class="akses-divider my-3"></div>
-                    <!-- Kategori Pengguna -->
-                    <div class="col-12">
-                        <label class="form-label akses-subtitle">
-                            <i class="bi bi-people"></i> Kategori Pengguna Sistem
-                        </label>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Dalaman (Jabatan / Bahagian)</label>
-                        <select name="akses_dalaman" class="form-select akses-input" required>
-                            <option value="">-- Pilih --</option>
-                            <option value="1">Ya</option>
-                            <option value="0">Tidak</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Umum (Orang Awam)</label>
-                        <select name="akses_umum" class="form-select akses-input" required>
-                            <option value="">-- Pilih --</option>
-                            <option value="1">Ya</option>
-                            <option value="0">Tidak</option>
-                        </select>
-                    </div>
+            <div class="row g-4 mb-4">
+
+                <div class="col-md-6">
+                    <label><i class="bi bi-shield-lock"></i> Pegawai Mengurus Akses</label>
+                    <select name="akses_bahagianunit" class="form-select" required>
+                        <option value="">-- Pilih Bahagian / Unit --</option>
+                        <?php foreach ($bahagianunits as $b): ?>
+                            <option value="<?= $b['id_bahagianunit'] ?>"><?= $b['bahagianunit'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="akses-divider"></div>
+
+                <div class="col-md-6">
+                    <label>Dalaman (Jabatan)</label>
+                    <select name="akses_dalaman" class="form-select" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="1">Ya</option>
+                        <option value="0">Tidak</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label>Umum (Orang Awam)</label>
+                    <select name="akses_umum" class="form-select" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="1">Ya</option>
+                        <option value="0">Tidak</option>
+                    </select>
                 </div>
             </div>
             
 
             <!-- ENTITI -->
             <div class="section-title">D. MAKLUMAT AM ENTITI</div>
-            <div class="row g-3 mb-3">
+            <div class="row g-4 mb-4">
+
                 <div class="col-md-6">
                     <label>Nama Entiti</label>
                     <input type="text" name="nama_entiti" class="form-control" required>
@@ -517,8 +548,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label>Tarikh Kemaskini</label>
                     <input type="date" name="tarikh_kemaskini" class="form-control" required>
                 </div>
+
                 <div class="col-md-4">
-                    <label>Bahagian (Entiti)</label>
+                    <label>Bahagian</label>
                     <select name="entiti_bahagianunit" class="form-select" required>
                         <option value="">-- Pilih Bahagian --</option>
                         <?php foreach ($bahagianunits as $b): ?>
@@ -526,39 +558,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endforeach; ?>
                     </select>
                 </div>
+
                 <div class="col-md-4">
-                    <label>Nama Ketua Bahagian</label>
+                    <label>Ketua Bahagian</label>
                     <select name="ketua_userprofile" class="form-select" required>
                         <option value="">-- Pilih Pegawai --</option>
                         <?php foreach ($userprofiles as $u): ?>
-                            <option value="<?= $u['id_userprofile'] ?>">
-                                <?= $u['nama_user'] ?> (<?= $u['jawatan_user'] ?>)
-                            </option>
+                            <option value="<?= $u['id_userprofile'] ?>"><?= $u['nama_user'] ?> (<?= $u['jawatan_user'] ?>)</option>
                         <?php endforeach; ?>
                     </select>
                 </div>
+
                 <div class="col-md-4">
-                    <label>Nama CIO</label>
+                    <label>CIO</label>
                     <select name="cio_userprofile" class="form-select" required>
                         <option value="">-- Pilih Pegawai --</option>
                         <?php foreach ($userprofiles as $u): ?>
-                            <option value="<?= $u['id_userprofile'] ?>">
-                                <?= $u['nama_user'] ?> (<?= $u['jawatan_user'] ?>)
-                            </option>
+                            <option value="<?= $u['id_userprofile'] ?>"><?= $u['nama_user'] ?> (<?= $u['jawatan_user'] ?>)</option>
                         <?php endforeach; ?>
                     </select>
                 </div>
+
                 <div class="col-md-4">
-                    <label>Nama ICTSO</label>
+                    <label>ICTSO</label>
                     <select name="ictso_userprofile" class="form-select" required>
                         <option value="">-- Pilih Pegawai --</option>
                         <?php foreach ($userprofiles as $u): ?>
-                            <option value="<?= $u['id_userprofile'] ?>">
-                                <?= $u['nama_user'] ?> (<?= $u['jawatan_user'] ?>)
-                            </option>
+                            <option value="<?= $u['id_userprofile'] ?>"><?= $u['nama_user'] ?> (<?= $u['jawatan_user'] ?>)</option>
                         <?php endforeach; ?>
                     </select>
                 </div>
+
                 <div class="col-md-4">
                     <label>Carta Organisasi</label>
                     <select name="entiti_carta" class="form-select" required>
@@ -573,15 +603,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <!-- PEGAWAI RUJUKAN -->
             <div class="section-title">E. MAKLUMAT PEGAWAI RUJUKAN SISTEM</div>
-            <div class="row g-3 mb-3">
-                <div class="col-md-4">
-                    <label>Pegawai Rujukan Sistem</label>
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <label><i class="bi bi-person-badge"></i> Pegawai Rujukan Sistem</label>
                     <select name="pegawai_rujukan_sistem" class="form-select" required>
                         <option value="">-- Pilih Pegawai --</option>
                         <?php foreach ($userprofiles as $u): ?>
-                            <option value="<?= $u['id_userprofile'] ?>">
-                                <?= $u['nama_user'] ?> (<?= $u['jawatan_user'] ?>)
-                            </option>
+                            <option value="<?= $u['id_userprofile'] ?>"><?= $u['nama_user'] ?> (<?= $u['jawatan_user'] ?>)</option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -597,6 +625,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <script src="../public/js/sistem.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toastEl = document.getElementById('liveToast');
+            if (toastEl && toastEl.querySelector('.toast-body').textContent.trim() !== '') {
+                const toast = new bootstrap.Toast(toastEl, {
+                    delay: 8000 // 8 seconds
+                });
+                toast.show();
+            }
+        });
+    </script>
 
 </body>
 </html>

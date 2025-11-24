@@ -42,21 +42,23 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        // If choose existing company: hide manual company input
         manualOutsource.style.display = 'none';
 
-        // Load PIC from DB
+        // AJAX load PIC for selected company
         fetch('ajax_get_pic.php?outsource_id=' + id)
         .then(response => response.json())
         .then(data => {
             picSelect.innerHTML = '<option value="">-- Pilih PIC --</option>';
 
-            if (data && data.id_PIC) {
-                picSelect.innerHTML += `
-                    <option value="${data.id_PIC}">${data.nama_PIC}</option>
-                `;
+            if (data.length > 0) {
+                data.forEach(pic => {
+                    picSelect.innerHTML += `
+                        <option value="${pic.id_PIC}">
+                            ${pic.nama_PIC} (${pic.jawatan_PIC})
+                        </option>`;
+                });
             }
-
-            picSelect.innerHTML += '<option value="other">Tambah Baru...</option>';
         });
     });
 

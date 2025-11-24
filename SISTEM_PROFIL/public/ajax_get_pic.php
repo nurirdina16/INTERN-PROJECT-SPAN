@@ -1,17 +1,10 @@
 <?php
-require_once '../app/config.php';
+require '../app/config.php';
 
-$outsource_id = $_GET['outsource_id'] ?? 0;
+$id = $_GET['id_outsource'] ?? 0;
 
-$stmt = $pdo->prepare("
-    SELECT PIC.id_PIC, PIC.nama_PIC
-    FROM LOOKUP_OUTSOURCE O
-    LEFT JOIN LOOKUP_PIC PIC ON O.id_PIC = PIC.id_PIC
-    WHERE O.id_outsource = ?
-");
-$stmt->execute([$outsource_id]);
+$stmt = $pdo->prepare("SELECT * FROM lookup_pic WHERE id_outsource = ?");
+$stmt->execute([$id]);
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$pic = $stmt->fetch(PDO::FETCH_ASSOC);
-
-header('Content-Type: application/json');
-echo json_encode($pic);
+echo json_encode($data);
