@@ -230,7 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/sidebar.css">
     <script src="js/sidebar.js" defer></script>
     
-    <link href="../public/css/sistem.css" rel="stylesheet">
+    <link href="css/sistem.css" rel="stylesheet">
 </head>
 
 <body>

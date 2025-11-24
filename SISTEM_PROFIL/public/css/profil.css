@@ -1,0 +1,115 @@
+/* STYLE FOR ALL OF THE PROFIL DISPLAY (sistem, peralatan, supplier, pengguna */
+
+/* ===========================
+   PROFIL SISTEM LISTING PAGE
+   =========================== */
+
+/* Main page header */
+.main-header {
+  color: #004b73;
+  font-weight: 700;
+  font-size: 24px;
+  padding: 18px 25px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 25px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+/* Card container */
+.profil-card {
+    background: linear-gradient(135deg, #EDF7FF, #ffffff);
+    border-radius: 14px;
+    border: 1px solid #c8d6e5;
+}
+
+/* Section title */
+.title-section {
+    font-size: 20px;
+    font-weight: 600;
+    color: #006EA0;
+}
+
+/* Add button */
+.add-btn {
+    background-color: #0077A8;
+    color: #fff;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+.add-btn:hover {
+    background-color: #004b73;
+    color: #fff;
+}
+
+/* TABLE STYLE */
+.custom-table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* Table header color */
+.custom-table thead {
+    background: #006EA0;
+    color: #fff;
+}
+.custom-table thead th {
+    padding: 14px;
+    font-weight: 600;
+}
+
+/* Table rows */
+.custom-table tbody tr {
+    background-color: #ffffff;
+    transition: 0.15s;
+}
+
+.custom-table tbody tr:hover {
+    background-color: #EDF7FF;
+}
+
+/* Table cells */
+.custom-table td {
+    padding: 12px;
+}
+
+/* STATUS BADGE */
+.status-badge {
+    background: #0096C7;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+/* ACTION BUTTONS */
+.action-btn {
+    padding: 6px 10px;
+    border-radius: 6px;
+    color: #fff;
+}
+
+.view-btn {
+    background: #0096C7;
+}
+.view-btn:hover {
+    background: #0077A8;
+}
+
+.edit-btn {
+    background: #006EA0;
+}
+.edit-btn:hover {
+    background: #004b73;
+}
+
+.delete-btn {
+    background: #dc3545;
+}
+.delete-btn:hover {
+    background: #b02a37;
+}
