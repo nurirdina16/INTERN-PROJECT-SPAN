@@ -3,6 +3,7 @@ require_once '../app/config.php';
 $message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $nama = trim($_POST['nama_penuh']);
     $emel = trim($_POST['emel']);
     $kata_laluan = $_POST['kata_laluan'];
@@ -11,15 +12,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hashed = password_hash($kata_laluan, PASSWORD_DEFAULT);
 
     // CHECK EMAIL
-    $check = $pdo->prepare("SELECT * FROM userlog WHERE emel = ?");
+    $check = $pdo->prepare("SELECT * FROM lookup_userprofile WHERE emel_user = ?");
     $check->execute([$emel]);
+
     if ($check->fetch()) {
         $message = '<div class="alert alert-warning text-center">⚠️ Emel sudah digunakan. Sila guna emel lain.</div>';
     } else {
 
-        // INSERT INTO NEW TABLE
-        $stmt = $pdo->prepare("INSERT INTO userlog (nama_penuh, emel, kata_laluan, peranan, created_at) 
-                               VALUES (?, ?, ?, ?, NOW())");
+        $stmt = $pdo->prepare("
+            INSERT INTO lookup_userprofile 
+            (nama_user, emel_user, kata_laluan, peranan) 
+            VALUES (?, ?, ?, ?)
+        ");
 
         if ($stmt->execute([$nama, $emel, $hashed, $peranan])) {
             $message = '<div class="alert alert-success text-center">✅ Akaun berjaya didaftarkan! Anda boleh log masuk sekarang.</div>';
