@@ -118,6 +118,10 @@
 /* ===========================
    VIEW SISTEM PAGE
    =========================== */
+.sticky-top {
+border-bottom: 1px solid #d5e3ef;
+}
+
 /* FULL WIDTH PAGE */
 .container-fluid {
     width: 100%;
@@ -211,3 +215,62 @@
     margin-top: 10px;
     margin-bottom: 12px;
 }
+
+.section-label {
+    font-size: 17px;
+    font-weight: 700;
+    color: #003d5c;
+    margin-bottom: 12px;
+    padding-left: 4px;
+}
+
+.info-group {
+    margin-bottom: 22px;
+}
+
+.sub-label {
+    font-weight: 780;
+    color: #006EA0;
+    margin-top: 10px;
+    margin-bottom: 6px;
+}
+
+.info-multi-box {
+    background: #f9fcff;
+    border: 1px solid #dbe7f3;
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin-bottom: 12px;
+}
+
+.color-tag {
+    display: inline-block;
+    background: #dff4ff;
+    color: #005f87;
+    padding: 4px 10px;
+    font-size: 13px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+/* Compact colored tags beside header */
+.status-tag, .jenis-tag {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.info-row .objective-box,
+.info-row .info-multi-box {
+    margin-top: 0 !important;
+}
+
+.info-row .sub-label {
+    padding-top: 3px;
+}
+
+
