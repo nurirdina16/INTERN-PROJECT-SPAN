@@ -15,17 +15,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <i class="bi bi-grid-1x2-fill"></i> Dashboard
     </a>
 
-    <!-- DAFTAR PROFIL (dropdown) -->
-    <?php $daftar_active = in_array($current_page, ['daftar_sistem.php','daftar_peralatan.php','daftar_pengguna.php']); ?>
-    <div class="dropdown-btn <?= $daftar_active ? 'active' : '' ?>" role="button">
-        <span><i class="bi bi-pencil-square"></i> Daftar Profil</span>
-        <i class="bi bi-caret-down-fill dropdown-arrow"></i>
-    </div>
-    <div class="dropdown-container" style="<?= $daftar_active ? 'display:block;' : '' ?>">
-        <a href="daftar_sistem.php" class="<?= $current_page == 'daftar_sistem.php' ? 'active' : '' ?>">Sistem</a>
-        <a href="daftar_peralatan.php" class="<?= $current_page == 'daftar_peralatan.php' ? 'active' : '' ?>">Peralatan</a>
-        <a href="daftar_pengguna.php" class="<?= $current_page == 'daftar_pengguna.php' ? 'active' : '' ?>">Pengguna</a>
-    </div>
+    <!-- DAFTAR PROFIL -->
+    <a href="daftar_profil.php" 
+       class="nav-link <?= $current_page == 'daftar_profil.php' ? 'active' : '' ?>">
+        <i class="bi bi-pencil-square"></i> Daftar Profil
+    </a>
 
 
     <!-- PROFIL (dropdown) -->
