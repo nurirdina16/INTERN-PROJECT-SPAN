@@ -93,6 +93,7 @@ $senarai = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </td>
                                     <td class="text-center"><?= htmlspecialchars($row['jenisprofil']) ?></td>
                                     <td><?= htmlspecialchars($row['pemilik']) ?></td>
+                                    
                                     <td class="text-center">
                                         <a href="view_sistem.php?id=<?= $row['id_profilsistem'] ?>" 
                                         class="btn action-btn view-btn">
