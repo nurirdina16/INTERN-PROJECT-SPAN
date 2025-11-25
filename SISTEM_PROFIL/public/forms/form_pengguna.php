@@ -17,6 +17,10 @@
         <input type="text" name="notelefon_user" class="form-control">
     </div>
     <div class="col-md-6">
+        <label>No Faks</label>
+        <input type="text" name="fax_user" class="form-control">
+    </div>
+    <div class="col-md-6">
         <label>Bahagian / Unit</label>
         <select name="id_bahagianunit" class="form-select">
             <option value="">-- Pilih Bahagian/Unit --</option>

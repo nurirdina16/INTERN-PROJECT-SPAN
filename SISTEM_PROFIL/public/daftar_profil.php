@@ -148,8 +148,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Pengguna
         if ($jenisprofil_post == 4) {
+            var_dump($_POST); // DEBUG: check all fields
             $stmtUser = $pdo->prepare("
-                INSERT INTO LOOKUP_USERPROFILE (nama_user, jawatan_user, emel_user, notelefon_user, id_bahagianunit, peranan)
+                INSERT INTO LOOKUP_USERPROFILE (nama_user, jawatan_user, emel_user, notelefon_user, fax_user, id_bahagianunit)
                 VALUES (?, ?, ?, ?, ?, ?)
             ");
             $stmtUser->execute([
@@ -157,8 +158,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_POST['jawatan_user'] ?? null,
                 $_POST['emel_user'] ?? null,
                 $_POST['notelefon_user'] ?? null,
-                $_POST['id_bahagianunit'] ?? null,
-                $_POST['peranan'] ?? null
+                $_POST['fax_user'] ?? null,
+                $_POST['id_bahagianunit'] ?? null
             ]);
         }
 
@@ -327,7 +328,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         document.addEventListener('DOMContentLoaded', function(){
             const toastEl = document.getElementById('liveToast');
             if(toastEl && toastEl.querySelector('.toast-body').textContent.trim() !== ''){
-                new bootstrap.Toast(toastEl, { delay: 8000 }).show();
+                new bootstrap.Toast(toastEl, { delay: 5000 }).show();
             }
 
             const jenisSelect = document.getElementById('jenisProfil');
