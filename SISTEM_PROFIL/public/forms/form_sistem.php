@@ -205,15 +205,20 @@
         <label>Kos Lain (RM)</label>
         <input type="number" step="0.01" name="kos_lain" class="form-control">
     </div>
+    
     <div class="col-md-6">
         <label>Kategori Jenis Pengguna</label>
+        <!-- Kategori Jenis Pengguna -->
         <select name="id_kategoriuser" class="form-select">
-            <option value="">-- Pilih Kategori Pengguna --</option>
-            <?php foreach($kategoris as $k): ?>
-                <option value="<?= $k['id_kategori'] ?>"><?= $k['kategori'] ?></option>
+            <option value="">-- Pilih Kategori Pengguna (jika ada) --</option>
+            <?php foreach($kategoriusers as $ku): ?>
+                <option value="<?= $ku['id_kategoriuser'] ?>">
+                    Dalaman: <?= $ku['jenis_dalaman']? 'Ya':'Tidak' ?> / Umum: <?= $ku['jenis_umum']? 'Ya':'Tidak' ?>
+                </option>
             <?php endforeach; ?>
         </select>
     </div>
+
     <div class="col-md-6">
         <label>Pengurus Akses Sistem</label>
         <select name="pengurus_akses" class="form-select">

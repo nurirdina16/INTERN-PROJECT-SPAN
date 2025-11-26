@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 require_once '../app/config.php';
 require_once '../app/auth.php';
@@ -24,17 +21,17 @@ $cartas = $pdo->query("SELECT * FROM LOOKUP_CARTA ORDER BY carta ASC")->fetchAll
 $pics = $pdo->query("SELECT * FROM LOOKUP_PIC")->fetchAll(PDO::FETCH_ASSOC);
 $jenisperalatans = $pdo->query("SELECT * FROM LOOKUP_JENISPERALATAN")->fetchAll(PDO::FETCH_ASSOC);
 $pembekals = $pdo->query("SELECT * FROM LOOKUP_PEMBEKAL")->fetchAll(PDO::FETCH_ASSOC);
-$profil_pengguna = $_POST['profil_pengguna'] ?? null; // assuming 1 exists in lookup_userprofile
-$id_userlog = $_SESSION['userlog']['id_userlog'] ?? null; // assuming 1 exists
+$kategoriusers = $pdo->query("SELECT * FROM LOOKUP_KATEGORIUSER")->fetchAll(PDO::FETCH_ASSOC);
 
+$id_userlog = $_SESSION['userlog']['id_userlog'] ?? null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $jenisprofil_post = $_POST['jenisprofil'];
+    $jenisprofil_post = $_POST['jenisprofil'] ?? null;
 
     try {
         $pdo->beginTransaction();
 
-        // Pengguna
+        // 1) PENGGUNA (only lookup_userprofile)
         if ($jenisprofil_post == 4) { // 4 = pengguna
             $nama_user       = trim($_POST['nama_user'] ?? '');
             $jawatan_user    = trim($_POST['jawatan_user'] ?? '');
@@ -66,117 +63,175 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $emel_user,
                 $notelefon_user ?: null,
                 $fax_user ?: null,
-                $id_bahagianunit
+                $id_bahagianunit ?: null
             ]);
+
+            $pdo->commit();
+            $alert_type = "success";
+            $alert_message = "Pengguna berjaya direkodkan!";
+            goto end_of_post;
         }
 
 
-        // Profil
-        
+        // 2) SISTEM: insert into PROFIL then SISTEM
+        if ($jenisprofil_post == 1) {   // 1 = Sistem
+            try {
+                $pdo->beginTransaction();
 
+                // 1) Insert PROFIL
+                $stmtProfil = $pdo->prepare("
+                    INSERT INTO PROFIL
+                    (id_jenisprofil, id_status, nama_entiti, alamat_pejabat, id_bahagianunit,
+                    tarikh_kemaskini, nama_ketua, nama_cio, nama_ictso,
+                    id_carta, created_by, created_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ");
 
-        // Sistem
-        if ($jenisprofil_post == 1) {
-            $stmtSistem = $pdo->prepare("
-                INSERT INTO SISTEM 
-                (id_profilsistem, nama_sistem, objektif_sistem, id_pemilik_sistem, 
-                tarikh_mula, tarikh_siap, tarikh_guna, 
-                bil_pengguna, bil_modul, id_kategori, 
-                bahasa_pengaturcaraan, pangkalan_data, rangkaian, integrasi, 
-                id_kaedahpembangunan, id_pembekal, inhouse, 
-                id_penyelenggaraan, tarikh_dibeli, tempoh_jaminan_sistem, expired_jaminan_sistem, 
-                kos_keseluruhan, kos_perkakasan, kos_perisian, kos_lesen_perisian, 
-                kos_penyelenggaraan, kos_lain, 
-                id_kategoriuser, pengurus_akses, pegawai_rujukan_sistem)
-                VALUES 
-                (?, ?, ?, ?, 
-                ?, ?, ?, 
-                ?, ?, ?, 
-                ?, ?, ?, ?, 
-                ?, ?, ?, 
-                ?, ?, ?, ?, 
-                ?, ?, ?, ?, 
-                ?, ?, 
-                ?, ?, ?)
-            ");
+                $tarikh_kemaskini = $_POST['tarikh_kemaskini'] ?? date('Y-m-d');
 
-            $stmtSistem->execute([
-                $last_profil_id,
-                $_POST['nama_sistem'] ?? null,
-                $_POST['objektif_sistem'] ?? null,
-                $_POST['id_pemilik_sistem'] ?? null,
+                $stmtProfil->execute([
+                    $_POST['jenisprofil'],
+                    $_POST['status'] ?? null,
+                    $_POST['nama_entiti'] ?? null,
+                    $_POST['alamat_pejabat'] ?? null,
+                    $_POST['id_bahagianunit_entiti'] ?? null,
+                    $tarikh_kemaskini,
+                    $_POST['nama_ketua'] ?? null,
+                    $_POST['nama_cio'] ?? null,
+                    $_POST['nama_ictso'] ?? null,
+                    $_POST['id_carta'] ?? null,
+                    $id_userlog ?? null,
+                    date('Y-m-d')
+                ]);
 
-                $_POST['tarikh_mula'] ?? null,
-                $_POST['tarikh_siap'] ?? null,
-                $_POST['tarikh_guna'] ?? null,
+                $id_profilsistem = $pdo->lastInsertId();
 
-                $_POST['bil_pengguna'] ?? null,
-                $_POST['bil_modul'] ?? null,
-                $_POST['id_kategori'] ?? null,
+                // 2) Handle Kaedah Pembekal 'Other' → insert LOOKUP_PEMBEKAL & LOOKUP_PIC
+                $id_pembekal = $_POST['id_pembekal'] ?? null;
+                if ($_POST['id_kaedahpembangunan'] == 2 && $id_pembekal == 'other') {
+                    // insert pembekal
+                    $stmtPB = $pdo->prepare("INSERT INTO LOOKUP_PEMBEKAL (nama_syarikat, alamat_syarikat, tempoh_kontrak, id_PIC) VALUES (?, ?, ?, ?)");
+                    // insert PIC
+                    $stmtPIC = $pdo->prepare("INSERT INTO LOOKUP_PIC (nama_PIC, emel_PIC, notelefon_PIC, fax_PIC, jawatan_PIC) VALUES (?, ?, ?, ?, ?)");
 
-                $_POST['bahasa_pengaturcaraan'] ?? null,
-                $_POST['pangkalan_data'] ?? null,
-                $_POST['rangkaian'] ?? null,
-                $_POST['integrasi'] ?? null,
+                    $stmtPIC->execute([
+                        $_POST['nama_PIC_manual'] ?? null,
+                        $_POST['emel_PIC_manual'] ?? null,
+                        $_POST['notelefon_PIC_manual'] ?? null,
+                        $_POST['fax_PIC_manual'] ?? null,
+                        $_POST['jawatan_PIC_manual'] ?? null
+                    ]);
+                    $id_pic = $pdo->lastInsertId();
 
-                $_POST['id_kaedahpembangunan'] ?? null,
-                $_POST['id_pembekal'] ?? null,
-                $_POST['inhouse'] ?? null,
+                    $stmtPB->execute([
+                        $_POST['nama_syarikat_manual'] ?? null,
+                        $_POST['alamat_syarikat_manual'] ?? null,
+                        $_POST['tempoh_kontrak_manual'] ?? null,
+                        $id_pic
+                    ]);
+                    $id_pembekal = $pdo->lastInsertId();
+                }
 
-                $_POST['id_penyelenggaraan'] ?? null,
-                $_POST['tarikh_dibeli'] ?? null,
-                $_POST['tempoh_jaminan_sistem'] ?? null,
-                $_POST['expired_jaminan_sistem'] ?? null,
+                // 3) Resolve id_kategoriuser
+                $id_kategoriuser = $_POST['id_kategoriuser'] ?? null;
+                $jenis_dalaman = $_POST['jenis_dalaman'] ?? null;
+                $jenis_umum    = $_POST['jenis_umum'] ?? null;
 
-                $_POST['kos_keseluruhan'] ?? 0,
-                $_POST['kos_perkakasan'] ?? 0,
-                $_POST['kos_perisian'] ?? 0,
-                $_POST['kos_lesen_perisian'] ?? 0,
-                $_POST['kos_penyelenggaraan'] ?? 0,
-                $_POST['kos_lain'] ?? 0,
+                if(!$id_kategoriuser && ($jenis_dalaman !== null || $jenis_umum !== null)){
+                    $jd = $jenis_dalaman ? 1 : 0;
+                    $ju = $jenis_umum ? 1 : 0;
 
-                $_POST['id_kategoriuser'] ?? null,
-                $_POST['pengurus_akses'] ?? null,
-                $_POST['pegawai_rujukan_sistem'] ?? null
-            ]);
+                    $chk = $pdo->prepare("SELECT id_kategoriuser FROM LOOKUP_KATEGORIUSER WHERE jenis_dalaman=? AND jenis_umum=? LIMIT 1");
+                    $chk->execute([$jd,$ju]);
+                    $row = $chk->fetch(PDO::FETCH_ASSOC);
+                    if($row) $id_kategoriuser = $row['id_kategoriuser'];
+                    else{
+                        $ins = $pdo->prepare("INSERT INTO LOOKUP_KATEGORIUSER (jenis_dalaman, jenis_umum) VALUES (?,?)");
+                        $ins->execute([$jd,$ju]);
+                        $id_kategoriuser = $pdo->lastInsertId();
+                    }
+                }
+
+                // 4) Insert SISTEM
+                $stmtSistem = $pdo->prepare("
+                    INSERT INTO SISTEM
+                    (id_profilsistem, nama_sistem, objektif_sistem, id_pemilik_sistem,
+                    tarikh_mula, tarikh_siap, tarikh_guna,
+                    bil_pengguna, bil_modul, id_kategori,
+                    bahasa_pengaturcaraan, pangkalan_data, rangkaian, integrasi,
+                    id_kaedahpembangunan, id_pembekal, inhouse,
+                    id_penyelenggaraan, tarikh_dibeli,
+                    tempoh_jaminan_sistem, expired_jaminan_sistem,
+                    kos_keseluruhan, kos_perkakasan, kos_perisian,
+                    kos_lesen_perisian, kos_penyelenggaraan, kos_lain,
+                    id_kategoriuser, pengurus_akses, pegawai_rujukan_sistem)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+
+                $stmtSistem->execute([
+                    $id_profilsistem,
+                    $_POST['nama_sistem'] ?? null,
+                    $_POST['objektif_sistem'] ?? null,
+                    $_POST['id_pemilik_sistem'] ?? null,
+                    $_POST['tarikh_mula'] ?? null,
+                    $_POST['tarikh_siap'] ?? null,
+                    $_POST['tarikh_guna'] ?? null,
+                    $_POST['bil_pengguna'] ?? null,
+                    $_POST['bil_modul'] ?? null,
+                    $_POST['id_kategori'] ?? null,
+                    $_POST['bahasa_pengaturcaraan'] ?? null,
+                    $_POST['pangkalan_data'] ?? null,
+                    $_POST['rangkaian'] ?? null,
+                    $_POST['integrasi'] ?? null,
+                    $_POST['id_kaedahpembangunan'] ?? null,
+                    $id_pembekal,
+                    $_POST['inhouse'] ?? null,
+                    $_POST['id_penyelenggaraan'] ?? null,
+                    $_POST['tarikh_dibeli'] ?? null,
+                    $_POST['tempoh_jaminan_sistem'] ?? null,
+                    $_POST['expired_jaminan_sistem'] ?? null,
+                    $_POST['kos_keseluruhan'] ?? null,
+                    $_POST['kos_perkakasan'] ?? null,
+                    $_POST['kos_perisian'] ?? null,
+                    $_POST['kos_lesen_perisian'] ?? null,
+                    $_POST['kos_penyelenggaraan'] ?? null,
+                    $_POST['kos_lain'] ?? null,
+                    $id_kategoriuser ?? null,
+                    $_POST['pengurus_akses'] ?? null,
+                    $_POST['pegawai_rujukan_sistem'] ?? null
+                ]);
+
+                $pdo->commit();
+                $alert_type = "success";
+                $alert_message = "Maklumat Sistem berjaya direkodkan!";
+            } catch(Exception $e){
+                if($pdo->inTransaction()) $pdo->rollBack();
+                $alert_type = "danger";
+                $alert_message = "Ralat: ".$e->getMessage();
+            }
         }
 
 
-        // Peralatan
+
+
+        // 3) PERALATAN
         if ($jenisprofil_post == 2) {
-            $stmtPeralatan = $pdo->prepare("
-                INSERT INTO PERALATAN
-                (id_profilsistem, nama_peralatan, id_jenisperalatan, siri_peralatan, lokasi_peralatan, jenama_model, tarikh_dibeli, tempoh_jaminan_peralatan, expired_jaminan, id_penyelenggaraan, id_pembekal, kos_penyelenggaraan_tahunan, tarikh_penyelenggaraan_terakhir, pegawai_rujukan_peralatan)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ");
-            $stmtPeralatan->execute([
-                $last_profil_id,
-                $_POST['nama_peralatan'] ?? null,
-                $_POST['id_jenisperalatan'] ?? null,
-                $_POST['siri_peralatan'] ?? null,
-                $_POST['lokasi_peralatan'] ?? null,
-                $_POST['jenama_model'] ?? null,
-                $_POST['tarikh_dibeli'] ?? null,
-                $_POST['tempoh_jaminan_peralatan'] ?? null,
-                $_POST['expired_jaminan'] ?? null,
-                $_POST['id_penyelenggaraan'] ?? null,
-                $_POST['id_pembekal'] ?? null,
-                $_POST['kos_penyelenggaraan_tahunan'] ?? 0,
-                $_POST['tarikh_penyelenggaraan_terakhir'] ?? null,
-                $_POST['pegawai_rujukan_peralatan'] ?? null
-            ]);
+          
         }
 
 
+        // If reached here no specific branch matched
         $pdo->commit();
-        $alert_type = 'success';
-        $alert_message = 'Profil berjaya disimpan!';
+
     } catch (Exception $e) {
-        $pdo->rollBack();
-        $alert_type = 'danger';
-        $alert_message = 'Ralat: ' . $e->getMessage();
+        // rollback and show error
+        if ($pdo->inTransaction()) $pdo->rollBack();
+        $alert_type = "danger";
+        $alert_message = "Ralat: " . $e->getMessage();
     }
 }
+
+end_of_post:
 ?>
 
 
@@ -289,19 +344,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endforeach; ?>
                     </select>
                 </div>
-
-                <?php if($jenisprofil_post != 4): ?>
-                    <div class="col-md-6">
-                        <label>Profil Pengguna</label>
-                        <select name="profil_pengguna" class="form-select">
-                            <option value="">-- Pilih Pengguna --</option>
-                            <?php foreach($userprofiles as $u): ?>
-                                <option value="<?= $u['id_userprofile'] ?>"><?= $u['nama_user'] ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                <?php endif; ?>
-
                 <div class="col-md-6">
                     <label>Carta Organisasi Entiti</label>
                     <select name="id_carta" class="form-select">
