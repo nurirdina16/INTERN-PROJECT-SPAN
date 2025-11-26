@@ -84,11 +84,12 @@
     </div>
     <div class="col-md-6" id="divPembekal" style="display:none;">
         <label>Pembekal</label>
-        <select name="id_pembekal" class="form-select">
+        <select name="id_pembekal" id="selectPembekal" class="form-select">
             <option value="">-- Pilih Pembekal --</option>
             <?php foreach($pembekals as $pb): ?>
                 <option value="<?= $pb['id_pembekal'] ?>"><?= $pb['nama_syarikat'] ?></option>
             <?php endforeach; ?>
+            <option value="other">Other…</option>
         </select>
     </div>
     <div class="col-md-6" id="divInhouse" style="display:none;">
@@ -100,28 +101,71 @@
             <?php endforeach; ?>
         </select>
     </div>
+
+    <div class="col-12" id="divPembekalManual" style="display:none;">
+        <label>Nama Syarikat</label>
+        <input type="text" name="nama_syarikat_manual" class="form-control">
+
+        <label>Alamat Syarikat</label>
+        <input type="text" name="alamat_syarikat_manual" class="form-control">
+
+        <label>Tempoh Kontrak</label>
+        <input type="text" name="tempoh_kontrak_manual" class="form-control">
+
+        <label class="mt-2">Nama PIC</label>
+        <input type="text" name="nama_PIC_manual" class="form-control">
+
+        <label class="mt-2">Emel PIC</label>
+        <input type="email" name="emel_PIC_manual" class="form-control">
+
+        <label class="mt-2">No Telefon PIC</label>
+        <input type="text" name="notelefon_PIC_manual" class="form-control">
+
+        <label class="mt-2">No Faks PIC</label>
+        <input type="text" name="fax_PIC_manual" class="form-control">
+
+        <label class="mt-2">Jawatan PIC</label>
+        <input type="text" name="jawatan_PIC_manual" class="form-control">
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const kaedahSelect = document.getElementById('kaedahPembangunan');
             const divPembekal = document.getElementById('divPembekal');
             const divInhouse = document.getElementById('divInhouse');
+            const divPembekalManual = document.getElementById('divPembekalManual');
+            const selectPembekal = document.getElementById('selectPembekal');
 
-            kaedahSelect.addEventListener('change', function() {
-                // Replace these values with your actual IDs for "Pembekal" and "Dalaman"
-                const pembekalID = '2'; // Example: ID for Pembekal
-                const dalamanID = '1';  // Example: ID for Dalaman/In-house
+            const pembekalID = '2'; // FK id_kaedahPembangunan untuk Pembekal
+            const dalamanID = '1';  // FK id_kaedahPembangunan untuk Dalaman/In-house
 
-                if (this.value === pembekalID) {
+            function toggleKaedah() {
+                if (kaedahSelect.value === pembekalID) {
                     divPembekal.style.display = 'block';
                     divInhouse.style.display = 'none';
-                } else if (this.value === dalamanID) {
+                } else if (kaedahSelect.value === dalamanID) {
                     divPembekal.style.display = 'none';
                     divInhouse.style.display = 'block';
+                    divPembekalManual.style.display = 'none';
                 } else {
                     divPembekal.style.display = 'none';
                     divInhouse.style.display = 'none';
+                    divPembekalManual.style.display = 'none';
+                }
+            }
+
+            kaedahSelect.addEventListener('change', toggleKaedah);
+
+            selectPembekal.addEventListener('change', function(){
+                if(this.value === 'other'){
+                    divPembekalManual.style.display = 'block';
+                } else {
+                    divPembekalManual.style.display = 'none';
                 }
             });
+
+            // Run once on page load
+            toggleKaedah();
         });
     </script>
 

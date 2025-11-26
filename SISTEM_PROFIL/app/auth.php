@@ -19,7 +19,8 @@ function login($emel, $kata_laluan) {
 
     if ($user && password_verify($kata_laluan, $user['kata_laluan'])) {
         $_SESSION['userlog'] = [
-            'id' => $user['id_userlog'],
+            'id_userlog' => $user['id_userlog'], // ubah dari 'id'
+            'id_userprofile' => $user['id_userprofile'], // optional, tapi bagus ada
             'nama' => $user['nama_user'],
             'emel' => $user['emel_user'],
             'peranan' => $user['peranan']

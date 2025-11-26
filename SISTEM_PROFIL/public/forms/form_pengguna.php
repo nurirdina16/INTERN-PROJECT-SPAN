@@ -1,8 +1,8 @@
 <div class="section-title"><i class="bi bi-person-badge"></i> MAKLUMAT PENGGUNA</div>
 <div class="row g-3">
     <div class="col-md-6">
-        <label>Nama Pengguna</label>
-        <input type="text" name="nama_user" class="form-control">
+        <label>Nama Penuh</label>
+        <input type="text" name="nama_user" class="form-control" required>
     </div>
     <div class="col-md-6">
         <label>Jawatan</label>
@@ -10,7 +10,7 @@
     </div>
     <div class="col-md-6">
         <label>Emel</label>
-        <input type="email" name="emel_user" class="form-control">
+        <input type="email" name="emel_user" class="form-control" required>
     </div>
     <div class="col-md-6">
         <label>No Telefon</label>
@@ -22,7 +22,7 @@
     </div>
     <div class="col-md-6">
         <label>Bahagian / Unit</label>
-        <select name="id_bahagianunit" class="form-select">
+        <select name="id_bahagianunit" class="form-control" required>
             <option value="">-- Pilih Bahagian/Unit --</option>
             <?php foreach($bahagianunits as $b): ?>
                 <option value="<?= $b['id_bahagianunit'] ?>"><?= $b['bahagianunit'] ?></option>
