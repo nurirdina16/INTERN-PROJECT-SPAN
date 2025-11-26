@@ -18,17 +18,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($check->fetch()) {
         $message = '<div class="alert alert-warning text-center">⚠️ Emel sudah digunakan. Sila guna emel lain.</div>';
     } else {
-
+        // 1. Insert ke lookup_userprofile dulu
         $stmt = $pdo->prepare("
             INSERT INTO lookup_userprofile 
-            (nama_user, emel_user, kata_laluan, peranan) 
-            VALUES (?, ?, ?, ?)
+            (nama_user, emel_user, id_bahagianunit) 
+            VALUES (?, ?, ?)
         ");
+        if ($stmt->execute([$nama, $emel, $id_bahagianunit])) {
+            // 2. Ambil ID userprofile baru
+            $id_userprofile = $pdo->lastInsertId();
 
-        if ($stmt->execute([$nama, $emel, $hashed, $peranan])) {
+            // 3. Insert ke userlog
+            $hashed = password_hash($kata_laluan, PASSWORD_DEFAULT);
+            $stmt2 = $pdo->prepare("
+                INSERT INTO userlog (id_userprofile, peranan, kata_laluan)
+                VALUES (?, ?, ?)
+            ");
+            $stmt2->execute([$id_userprofile, $peranan, $hashed]);
+            
             $message = '<div class="alert alert-success text-center">✅ Akaun berjaya didaftarkan! Anda boleh log masuk sekarang.</div>';
-        } else {
-            $message = '<div class="alert alert-danger text-center">❌ Ralat semasa pendaftaran.</div>';
         }
     }
 }
