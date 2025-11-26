@@ -53,8 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($jenisprofil_post == 1) {
             $stmtSistem = $pdo->prepare("
                 INSERT INTO SISTEM 
-                (id_profilsistem, nama_sistem, objektif_sistem, id_pemilik_sistem, tarikh_mula, tarikh_siap, tarikh_guna, bil_pengguna, bil_modul, id_kategori, bahasa_pengaturcaraan, pangkalan_data, rangkaian, integrasi, id_kaedahpembangunan, id_penyelenggaraan, id_pembekal, inhouse, id_penyelenggaraan, tarikh_dibeli, tempoh_jaminan_sistem, expired_jaminan_sistem, kos_keseluruhan, kos_perkakasan, kos_perisian, kos_lesen_perisian, kos_penyelenggaraan, kos_lain, id_kategoriuser, pengurus_akses, pegawai_rujukan_sistem)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (id_profilsistem, nama_sistem, objektif_sistem, id_pemilik_sistem, tarikh_mula, tarikh_siap, tarikh_guna, bil_pengguna, bil_modul, id_kategori, bahasa_pengaturcaraan, pangkalan_data, rangkaian, integrasi, id_kaedahpembangunan, id_pembekal, inhouse, id_penyelenggaraan, tarikh_dibeli, tempoh_jaminan_sistem, expired_jaminan_sistem, kos_keseluruhan, kos_perkakasan, kos_perisian, kos_lesen_perisian, kos_penyelenggaraan, kos_lain, id_kategoriuser, pengurus_akses, pegawai_rujukan_sistem)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
 
             $stmtSistem->execute([
@@ -73,7 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_POST['rangkaian'] ?? null,
                 $_POST['integrasi'] ?? null,
                 $_POST['id_kaedahpembangunan'] ?? null,
-                $_POST['id_penyelenggaraan'] ?? null,
                 $_POST['id_pembekal'] ?? null,
                 $_POST['inhouse'] ?? null,
                 $_POST['id_penyelenggaraan'] ?? null,
@@ -117,41 +116,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
         }
 
-        // Pembekal
-        if ($jenisprofil_post == 3) {
-            $pic_id = null;
-            if ($_POST['pic_id'] === 'other') {
-                $stmtPIC = $pdo->prepare("INSERT INTO LOOKUP_PIC (nama_PIC, emel_PIC, notelefon_PIC, fax_PIC, jawatan_PIC) VALUES (?, ?, ?, ?, ?)");
-                $stmtPIC->execute([
-                    $_POST['manual_pic_nama'] ?? null,
-                    $_POST['manual_pic_emel'] ?? null,
-                    $_POST['manual_pic_telefon'] ?? null,
-                    $_POST['manual_pic_fax'] ?? null,
-                    $_POST['manual_pic_jawatan'] ?? null
-                ]);
-                $pic_id = $pdo->lastInsertId();
-            } else {
-                $pic_id = $_POST['pic_id'] ?? null;
-            }
-
-            $stmtPembekal = $pdo->prepare("
-                INSERT INTO LOOKUP_PEMBEKAL (nama_syarikat, alamat_syarikat, tempoh_kontrak, id_PIC)
-                VALUES (?, ?, ?, ?)
-            ");
-            $stmtPembekal->execute([
-                $_POST['nama_syarikat'] ?? null,
-                $_POST['alamat_syarikat'] ?? null,
-                $_POST['tempoh_kontrak'] ?? null,
-                $pic_id
-            ]);
-        }
 
         // Pengguna
         if ($jenisprofil_post == 4) {
-            var_dump($_POST); // DEBUG: check all fields
             $stmtUser = $pdo->prepare("
-                INSERT INTO LOOKUP_USERPROFILE (nama_user, jawatan_user, emel_user, notelefon_user, fax_user, id_bahagianunit)
-                VALUES (?, ?, ?, ?, ?, ?)
+                INSERT INTO LOOKUP_USERPROFILE 
+                (nama_user, jawatan_user, emel_user, notelefon_user, fax_user, id_bahagianunit, peranan, kata_laluan)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             ");
             $stmtUser->execute([
                 $_POST['nama_user'] ?? null,
@@ -159,9 +130,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_POST['emel_user'] ?? null,
                 $_POST['notelefon_user'] ?? null,
                 $_POST['fax_user'] ?? null,
-                $_POST['id_bahagianunit'] ?? null
+                $_POST['id_bahagianunit'] ?? null,
+                'pengguna',
+                password_hash('123456', PASSWORD_DEFAULT)
             ]);
+
+            $last_user_id = $pdo->lastInsertId();
+
+            $stmtUpdateProfil = $pdo->prepare("
+                UPDATE PROFIL SET profil_pengguna = ? WHERE id_profilsistem = ?
+            ");
+            $stmtUpdateProfil->execute([$last_user_id, $last_profil_id]);
         }
+
+
 
         $pdo->commit();
         $alert_type = 'success';
@@ -226,6 +208,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <select name="jenisprofil" id="jenisProfil" class="form-select" required>
                         <option value="">-- Pilih Jenis Profil --</option>
                         <?php foreach ($jenisprofils as $jp): ?>
+                            <?php if ($jp['id_jenisprofil'] == 3) continue; // skip Pembekal ?>
                             <option value="<?= $jp['id_jenisprofil'] ?>"><?= $jp['jenisprofil'] ?></option>
                         <?php endforeach; ?>
                     </select>
@@ -303,12 +286,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- DB PERALATAN -->
             <div id="formPeralatan" style="display:none;">
                 <?php include 'forms/form_peralatan.php'; ?>
-            </div>
-
-            <!-- DB LOOKUP_PEMBEKAL -->
-            <div id="formPembekal" style="display:none;">
-                <?php include 'forms/form_pembekal.php'; ?>
-            </div>
+            </div>        
 
             <!-- DB_USERPROFILE -->
             <div id="formPengguna" style="display:none;">
@@ -355,6 +333,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 3: document.getElementById('formPembekal'),   // Pembekal
                 4: document.getElementById('formPengguna')    // Pengguna
             };
+
             const profilSection = document.querySelector('.section-title'); // MAKLUMAT PROFIL title
             const profilFields = profilSection.nextElementSibling;           // MAKLUMAT PROFIL fields
 
@@ -362,15 +341,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 const value = jenisSelect.value;
 
                 // Hide all specific forms
-                Object.values(forms).forEach(f => f.style.display = 'none');
+                Object.values(forms).forEach(f => {
+                    if (f) f.style.display = 'none';
+                });
 
                 // Show the selected form
                 if(forms[value]) forms[value].style.display = 'block';
 
-                // Show MAKLUMAT PROFIL only for Sistem or Peralatan
-                if(value === '1' || value === '2') {
+                // Show MAKLUMAT PROFIL only for Sistem (1) or Peralatan (2)
+                if(value === '1' || value === '2'){
                     profilSection.style.display = 'block';
-                    profilFields.style.display = 'flex';
+                    profilFields.style.display = 'block';
                 } else {
                     profilSection.style.display = 'none';
                     profilFields.style.display = 'none';
@@ -379,11 +360,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             jenisSelect.addEventListener('change', toggleForms);
 
-            // Run once on page load in case of preselected value
+            // Run once on page load
             toggleForms();
         });
     </script>
-
 
 </body>
 </html>
