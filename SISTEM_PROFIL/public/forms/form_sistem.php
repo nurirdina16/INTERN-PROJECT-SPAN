@@ -1,4 +1,4 @@
-<div class="section-title"><i class="bi bi-building"></i> MAKLUMAT PROFIL (Entiti)</div>
+<div class="section-title"><i class="bi bi-building"></i> MAKLUMAT ENTITI</div>
 <div class="row g-3 mb-4">
     <div class="col-md-4">
         <label for="id_status" class="form-label">Status <span class="text-danger">*</span></label>
@@ -17,7 +17,7 @@
         <label for="alamat_pejabat" class="form-label">Alamat Pejabat</label>
         <textarea name="alamat_pejabat" id="alamat_pejabat" class="form-control" rows="2" maxlength="255"></textarea>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
         <label for="id_bahagianunit" class="form-label">Bahagian/Unit <span class="text-danger">*</span></label>
         <select name="id_bahagianunit" id="id_bahagianunit" class="form-select" required>
             <option value="">-- Pilih Bahagian/Unit --</option>
@@ -26,7 +26,7 @@
             <?php endforeach; ?>
         </select>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
         <label for="id_carta" class="form-label">Carta Organisasi</label>
         <select name="id_carta" id="id_carta" class="form-select">
             <option value="">-- Pilih Carta --</option>
@@ -35,10 +35,6 @@
             <?php endforeach; ?>
         </select>
     </div>
-</div>
-
-<div class="section-title mt-4"><i class="bi bi-person-workspace"></i> PEGAWAI RUJUKAN PROFIL</div>
-<div class="row g-3 mb-4">
     <div class="col-md-4">
         <label for="nama_ketua" class="form-label">Nama Ketua <span class="text-danger">*</span></label>
         <select name="nama_ketua" id="nama_ketua" class="form-select" required>
@@ -66,9 +62,9 @@
             <?php endforeach; ?>
         </select>
     </div>
+    
 </div>
 
----
 
 <div class="section-title"><i class="bi bi-gear"></i> MAKLUMAT SISTEM</div>
 <div class="row g-3 mb-4">
@@ -102,14 +98,6 @@
         <input type="date" name="tarikh_guna" id="tarikh_guna" class="form-control">
     </div>
     <div class="col-md-4">
-        <label for="bil_pengguna" class="form-label">Anggaran Bilangan Pengguna</label>
-        <input type="text" name="bil_pengguna" id="bil_pengguna" class="form-control" maxlength="50">
-    </div>
-    <div class="col-md-4">
-        <label for="bil_modul" class="form-label">Anggaran Bilangan Modul</label>
-        <input type="text" name="bil_modul" id="bil_modul" class="form-control" maxlength="50">
-    </div>
-    <div class="col-md-4">
         <label for="id_kategori" class="form-label">Kategori Sistem <span class="text-danger">*</span></label>
         <select name="id_kategori" id="id_kategori" class="form-select" required>
             <option value="">-- Pilih Kategori --</option>
@@ -117,6 +105,14 @@
                 <option value="<?= $k['id_kategori'] ?>"><?= $k['kategori'] ?></option>
             <?php endforeach; ?>
         </select>
+    </div>
+    <div class="col-md-4">
+        <label for="bil_pengguna" class="form-label">Anggaran Bilangan Pengguna</label>
+        <input type="text" name="bil_pengguna" id="bil_pengguna" class="form-control" maxlength="50">
+    </div>
+    <div class="col-md-4">
+        <label for="bil_modul" class="form-label">Anggaran Bilangan Modul</label>
+        <input type="text" name="bil_modul" id="bil_modul" class="form-control" maxlength="50">
     </div>
     <div class="col-md-4">
         <label for="bahasa_pengaturcaraan" class="form-label">Bahasa Pengaturcaraan</label>
@@ -145,26 +141,78 @@
     </div>
 </div>
 
-<div class="section-title mt-4"><i class="bi bi-wallet2"></i> MAKLUMAT PEROLEHAN & PENYELENGGARAAN</div>
-<div class="row g-3 mb-4">
-    <div class="col-md-6">
-        <label for="id_pembekal" class="form-label">Pembekal Utama</label>
-        <select name="id_pembekal" id="id_pembekal" class="form-select">
-            <option value="">-- Pilih Pembekal --</option>
-            <?php foreach ($pembekals as $p): ?>
-                <option value="<?= $p['id_pembekal'] ?>"><?= $p['nama_syarikat'] ?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-    <div class="col-md-6">
-        <label for="inhouse" class="form-label">Pembangunan Inhouse (Jika Ya, Bahagian/Unit)</label>
-        <select name="inhouse" id="inhouse" class="form-select">
+<div id="kaedahPembangunanSpecificContainer" class="row g-3 mb-4">
+
+    <div id="pembangunanInhouseContainer" style="display: none;" class="col-md-6">
+        <label for="inhouse_dalaman" class="form-label">Pembangunan Inhouse (Jika Ya, Bahagian/Unit)</label>
+        <select name="inhouse" id="inhouse_dalaman" class="form-select">
             <option value="">-- Pilih Bahagian/Unit --</option>
             <?php foreach ($bahagianunits as $bu): ?>
                 <option value="<?= $bu['id_bahagianunit'] ?>"><?= $bu['bahagianunit'] ?></option>
             <?php endforeach; ?>
         </select>
     </div>
+
+    <div id="pembangunanLuarContainer" style="display: none;" class="col-md-6">
+        <label for="id_pembekal" class="form-label">Pembekal Utama <span id="pembekal_required" class="text-danger" style="display: none;">*</span></label>
+        <select name="id_pembekal" id="id_pembekal" class="form-select">
+            <option value="">-- Pilih Pembekal --</option>
+            <?php foreach ($pembekals as $p): ?>
+                <option value="<?= $p['id_pembekal'] ?>"><?= $p['nama_syarikat'] ?></option>
+            <?php endforeach; ?>
+            <option value="NEW_SUPPLIER">Tambah Pembekal Baru..</option>
+        </select>
+    </div>
+
+</div>
+
+<div id="newPembekalForm" class="row g-3 mt-0 mb-4" style="display: none;">
+    <div class="col-md-12">
+        <hr>
+        <div class="section-subtitle">Daftar Pembekal Baharu</div>
+    </div>
+    <div class="col-md-6">
+        <label for="nama_syarikat_baru" class="form-label">Nama Syarikat <span class="text-danger">*</span></label>
+        <input type="text" name="nama_syarikat_baru" id="nama_syarikat_baru" class="form-control" maxlength="100" disabled>
+    </div>
+    <div class="col-md-6">
+        <label for="tempoh_kontrak_baru" class="form-label">Tempoh Kontrak (Tahun)</label>
+        <input type="text" name="tempoh_kontrak_baru" id="tempoh_kontrak_baru" class="form-control" maxlength="50" disabled>
+    </div>
+    <div class="col-md-12">
+        <label for="alamat_syarikat_baru" class="form-label">Alamat Syarikat</label>
+        <input type="text" name="alamat_syarikat_baru" id="alamat_syarikat_baru" class="form-control" maxlength="100" disabled>
+    </div>
+
+    <div class="col-md-12">
+        <div class="section-subtitle mt-3">Maklumat PIC (Person In Charge)</div>
+    </div>
+    <div class="col-md-6">
+        <label for="nama_PIC_baru" class="form-label">Nama PIC <span class="text-danger">*</span></label>
+        <input type="text" name="nama_PIC_baru" id="nama_PIC_baru" class="form-control" maxlength="100" disabled>
+    </div>
+    <div class="col-md-6">
+        <label for="jawatan_PIC_baru" class="form-label">Jawatan PIC</label>
+        <input type="text" name="jawatan_PIC_baru" id="jawatan_PIC_baru" class="form-control" maxlength="100" disabled>
+    </div>
+    <div class="col-md-4">
+        <label for="emel_PIC_baru" class="form-label">Emel PIC <span class="text-danger">*</span></label>
+        <input type="email" name="emel_PIC_baru" id="emel_PIC_baru" class="form-control" maxlength="100" disabled>
+    </div>
+    <div class="col-md-4">
+        <label for="notelefon_PIC_baru" class="form-label">No. Telefon PIC</label>
+        <input type="text" name="notelefon_PIC_baru" id="notelefon_PIC_baru" class="form-control" maxlength="100" disabled>
+    </div>
+    <div class="col-md-4">
+        <label for="fax_PIC_baru" class="form-label">Fax PIC</label>
+        <input type="text" name="fax_PIC_baru" id="fax_PIC_baru" class="form-control" maxlength="100" disabled>
+    </div>
+    <input type="hidden" name="is_new_supplier" id="is_new_supplier" value="0">
+</div>
+
+
+<div class="section-title mt-4"><i class="bi bi-wallet2"></i> MAKLUMAT PEMBANGUNAN & PENYELENGGARAAN</div>
+<div class="row g-3 mb-4">
     <div class="col-md-4">
         <label for="tarikh_dibeli" class="form-label">Tarikh Dibeli/Perjanjian</label>
         <input type="date" name="tarikh_dibeli" id="tarikh_dibeli" class="form-control">
@@ -186,7 +234,11 @@
             <?php endforeach; ?>
         </select>
     </div>
-    <div class="col-md-6">
+</div>
+
+<div class="section-title mt-4"><i class="bi bi-wallet2"></i> MAKLUMAT KOS SISTEM</div>
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
         <label for="kos_keseluruhan" class="form-label">Kos Keseluruhan (RM)</label>
         <input type="number" step="0.01" name="kos_keseluruhan" id="kos_keseluruhan" class="form-control" placeholder="0.00">
     </div>
