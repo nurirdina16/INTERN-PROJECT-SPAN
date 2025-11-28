@@ -23,10 +23,33 @@ try {
             LK.kategori,
             LKP.kaedahPembangunan,
             LP.nama_syarikat,
+            LP.alamat_syarikat,
+            LP.tempoh_kontrak,
             LPN.penyelenggaraan,
             LKU.jenis_dalaman,
             LKU.jenis_umum,
             LC.carta,
+            LB3.bahagianunit AS pengurus_akses_sistem,
+            LPP.nama_PIC AS nama_pic,
+            LPP.jawatan_PIC AS jawatan_pic,
+            LPP.emel_PIC AS emel_pic,
+            LPP.notelefon_PIC AS notelefon_pic,
+
+            UP4.jawatan_user AS pegawai_rujukan_jawatan,
+            UP4.emel_user AS pegawai_rujukan_emel,
+            UP4.notelefon_user AS pegawai_rujukan_notel,
+
+            UP1.jawatan_user AS nama_ketua_jawatan,
+            UP1.emel_user AS nama_ketua_emel,
+            UP1.notelefon_user AS nama_ketua_notel,
+
+            UP2.jawatan_user AS nama_cio_jawatan,
+            UP2.emel_user AS nama_cio_emel,
+            UP2.notelefon_user AS nama_cio_notel,
+
+            UP3.jawatan_user AS nama_ictso_jawatan,
+            UP3.emel_user AS nama_ictso_emel,
+            UP3.notelefon_user AS nama_ictso_notel,
 
             -- USERPROFILE LINKED FIELDS
             UP1.nama_user AS nama_ketua_nama,
@@ -42,9 +65,11 @@ try {
         LEFT JOIN LOOKUP_JENISPROFIL LJ ON P.id_jenisprofil = LJ.id_jenisprofil
         LEFT JOIN LOOKUP_BAHAGIANUNIT LB ON P.id_bahagianunit = LB.id_bahagianunit
         LEFT JOIN LOOKUP_BAHAGIANUNIT LB2 ON S.id_pemilik_sistem = LB2.id_bahagianunit
+        LEFT JOIN LOOKUP_BAHAGIANUNIT LB3 ON S.pengurus_akses = LB3.id_bahagianunit
         LEFT JOIN LOOKUP_KATEGORI LK ON S.id_kategori = LK.id_kategori
         LEFT JOIN LOOKUP_KAEDAHPEMBANGUNAN LKP ON S.id_kaedahpembangunan = LKP.id_kaedahpembangunan
         LEFT JOIN LOOKUP_PEMBEKAL LP ON S.id_pembekal = LP.id_pembekal
+        LEFT JOIN LOOKUP_PIC LPP ON LP.id_PIC = LPP.id_PIC
         LEFT JOIN LOOKUP_PENYELENGGARAAN LPN ON S.id_penyelenggaraan = LPN.id_penyelenggaraan
         LEFT JOIN LOOKUP_KATEGORIUSER LKU ON S.id_kategoriuser = LKU.id_kategoriuser
         LEFT JOIN LOOKUP_CARTA LC ON P.id_carta = LC.id_carta
@@ -102,57 +127,16 @@ try {
                     <i class="bi bi-pc-display"></i>
                     <span><?= htmlspecialchars($data['nama_sistem']); ?></span>
 
-                    <span class="status-tag ms-3"
+                    <span class="status-tag ms-auto"
                         style="background:#0077A8;">
                         <?= htmlspecialchars($data['status']); ?>
                     </span>
                 </div>
             </div>
 
-            <!-- A. MAKLUMAT PROFIL -->
+            <!-- MAKLUMAT SISTEM -->
             <div class="view-section-box">
-                <div class="view-section-title">A. Maklumat Profil</div>
-
-                <div class="info-row">
-                    <div class="info-label">Nama Entiti</div>
-                    <div class="info-value"><?= $data['nama_entiti']; ?></div>
-                </div>
-
-                <div class="info-row">
-                    <div class="info-label">Alamat Pejabat</div>
-                    <div class="info-value"><?= $data['alamat_pejabat']; ?></div>
-                </div>
-
-                <div class="info-row">
-                    <div class="info-label">Bahagian / Unit</div>
-                    <div class="info-value"><?= $data['bahagianunit']; ?></div>
-                </div>
-
-                <div class="info-row">
-                    <div class="info-label">Carta Organisasi</div>
-                    <div class="info-value"><?= $data['carta']; ?></div>
-                </div>
-
-                <div class="info-row">
-                    <div class="info-label">Ketua Jabatan</div>
-                    <div class="info-value"><?= $data['nama_ketua_nama']; ?></div>
-                </div>
-
-                <div class="info-row">
-                    <div class="info-label">CIO</div>
-                    <div class="info-value"><?= $data['nama_cio_nama']; ?></div>
-                </div>
-
-                <div class="info-row">
-                    <div class="info-label">ICTSO</div>
-                    <div class="info-value"><?= $data['nama_ictso_nama']; ?></div>
-                </div>
-            </div>
-
-
-            <!-- B. MAKLUMAT SISTEM -->
-            <div class="view-section-box">
-                <div class="view-section-title">B. Maklumat Sistem</div>
+                <div class="view-section-title">MAKLUMAT SISTEM</div>
 
                 <div class="info-row">
                     <div class="info-label">Nama Sistem</div>
@@ -170,29 +154,33 @@ try {
                 </div>
 
                 <div class="info-row">
-                    <div class="info-label">Tarikh Mula</div>
+                    <div class="info-label">Kategori Sistem</div>
+                    <div class="info-value"><?= $data['kategori']; ?></div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-label">Tarikh Mula Pembangunan Sistem</div>
                     <div class="info-value"><?= $data['tarikh_mula']; ?></div>
                 </div>
 
                 <div class="info-row">
-                    <div class="info-label">Tarikh Siap</div>
+                    <div class="info-label">Tarikh Siap Pembangunan Sistem</div>
                     <div class="info-value"><?= $data['tarikh_siap']; ?></div>
                 </div>
 
                 <div class="info-row">
-                    <div class="info-label">Tarikh Guna</div>
+                    <div class="info-label">Tarikh Guna Pembangunan Sistem</div>
                     <div class="info-value"><?= $data['tarikh_guna']; ?></div>
                 </div>
             </div>
 
-
-            <!-- C. PEMBANGUNAN -->
+            <!-- INFRASTRUKTUR -->
             <div class="view-section-box">
-                <div class="view-section-title">C. Kaedah Pembangunan</div>
+                <div class="view-section-title">INFRASTRUKTUR SISTEM</div>
 
                 <div class="info-row">
-                    <div class="info-label">Kaedah</div>
-                    <div class="info-value"><?= $data['kaedahPembangunan']; ?></div>
+                    <div class="info-label">Bilangan Modul Sistem</div>
+                    <div class="info-value"><?= $data['bil_modul']; ?></div>
                 </div>
 
                 <div class="info-row">
@@ -201,52 +189,72 @@ try {
                 </div>
 
                 <div class="info-row">
-                    <div class="info-label">Pangkalan Data</div>
+                    <div class="info-label">Jenis Pangkalan Data</div>
                     <div class="info-value"><?= $data['pangkalan_data']; ?></div>
                 </div>
 
                 <div class="info-row">
-                    <div class="info-label">Integrasi</div>
-                    <div class="info-value"><?= $data['integrasi']; ?></div>
-                </div>
-            </div>
-
-
-            <!-- D. INFRASTRUKTUR -->
-            <div class="view-section-box">
-                <div class="view-section-title">D. Infrastruktur</div>
-
-                <div class="info-row">
-                    <div class="info-label">Rangkaian</div>
+                    <div class="info-label">Rangkaian Digunakan</div>
                     <div class="info-value"><?= $data['rangkaian']; ?></div>
                 </div>
 
                 <div class="info-row">
-                    <div class="info-label">In-House</div>
-                    <div class="info-value"><?= $data['inhouse']; ?></div>
+                    <div class="info-label">Integrasi Sistem Lain</div>
+                    <div class="info-value"><?= $data['integrasi']; ?></div>
                 </div>
             </div>
 
-
-            <!-- E. PEMBEKAL -->
+            <!-- PEMBANGUNAN -->
             <div class="view-section-box">
-                <div class="view-section-title">E. Maklumat Pembekal</div>
+                <div class="view-section-title">PEMBANGUNAN SISTEM</div>
 
+                <div class="info-row">
+                    <div class="info-label">Kaedah Pembangunan</div>
+                    <div class="info-value"><?= $data['kaedahPembangunan']; ?></div>
+                </div>
+
+                <hr>
+
+                <div class="view-section-title mb-2" style="font-size:110%; border-bottom:white">Maklumat Dalaman:</div>
+                <div class="info-row">
+                    <div class="info-label">Bahagian Bertanggungjawab</div>
+                    <div class="info-value"><?= $data['inhouse']; ?></div>
+                </div>
+
+                <div class="view-section-title mb-2 mt-4" style="font-size:110%; border-bottom:white">Maklumat Pembekal:</div>
                 <div class="info-row">
                     <div class="info-label">Nama Syarikat</div>
                     <div class="info-value"><?= $data['nama_syarikat']; ?></div>
                 </div>
+                <div class="info-row">
+                    <div class="info-label">Alamat Syarikat</div>
+                    <div class="info-value"><?= $data['alamat_syarikat']; ?></div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Tempoh Kontrak (Tahun)</div>
+                    <div class="info-value"><?= $data['tempoh_kontrak']; ?></div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Maklumat PIC</div>                
+                    <div class="info-value d-flex flex-column">
+                        <span><?= $data['nama_pic']; ?></span>
+                        <span class="text-muted"><?= $data['jawatan_pic']; ?></span>
+                        <span class="text-muted"><?= $data['emel_pic']; ?></span>
+                        <span class="text-muted"><?= $data['notelefon_pic']; ?></span>
+                    </div>
+                </div>
+
+                <hr>
 
                 <div class="info-row">
-                    <div class="info-label">Jenis Penyelenggaraan</div>
+                    <div class="info-label">Penyelenggaraan Sistem</div>
                     <div class="info-value"><?= $data['penyelenggaraan']; ?></div>
                 </div>
             </div>
 
-
-            <!-- F. KEWANGAN -->
+            <!-- KEWANGAN -->
             <div class="view-section-box">
-                <div class="view-section-title">F. Kewangan Sistem</div>
+                <div class="view-section-title">KOS PEMBANGUNAN SISTEM</div>
 
                 <div class="info-row">
                     <div class="info-label">Kos Keseluruhan</div>
@@ -274,18 +282,17 @@ try {
                 </div>
 
                 <div class="info-row">
-                    <div class="info-label">Kos Lain</div>
+                    <div class="info-label">Lain-lain Kos</div>
                     <div class="info-value">RM <?= number_format($data['kos_lain'],2); ?></div>
                 </div>
             </div>
 
-
-            <!-- G. USER & ACCESS -->
+            <!-- RUJUKAN USER & ACCESS -->
             <div class="view-section-box">
-                <div class="view-section-title">G. Pengguna & Akses</div>
+                <div class="view-section-title">RUJUKAN PENGGUNA & AKSES SISTEM</div>
 
                 <div class="info-row">
-                    <div class="info-label">Kategori User</div>
+                    <div class="info-label">Kategori Jenis Pengguna</div>
                     <div class="info-value">
                         <?php if ($data['jenis_dalaman']) echo "<span class='color-tag'>Dalaman</span>"; ?>
                         <?php if ($data['jenis_umum']) echo "<span class='color-tag'>Umum</span>"; ?>
@@ -298,13 +305,74 @@ try {
                 </div>
 
                 <div class="info-row">
-                    <div class="info-label">Bilangan Modul</div>
-                    <div class="info-value"><?= $data['bil_modul']; ?></div>
+                    <div class="info-label">Pengurus Akses Pengguna</div>
+                    <div class="info-value"><?= $data['pengurus_akses_sistem']; ?></div>
                 </div>
 
                 <div class="info-row">
                     <div class="info-label">Pegawai Rujukan Sistem</div>
-                    <div class="info-value"><?= $data['pegawai_rujukan_nama']; ?></div>
+                    <div class="info-value d-flex flex-column">
+                        <span><?= $data['pegawai_rujukan_nama']; ?></span>
+                        <span class="text-muted"><?= $data['pegawai_rujukan_jawatan']; ?></span>
+                        <span class="text-muted"><?= $data['pegawai_rujukan_emel']; ?></span>
+                        <span class="text-muted"><?= $data['pegawai_rujukan_notel']; ?></span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- MAKLUMAT PROFIL -->
+            <div class="view-section-box">
+                <div class="view-section-title">MAKLUMAT ENTITI</div>
+
+                <div class="info-row">
+                    <div class="info-label">Nama Entiti</div>
+                    <div class="info-value"><?= $data['nama_entiti']; ?></div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-label">Alamat Pejabat</div>
+                    <div class="info-value"><?= $data['alamat_pejabat']; ?></div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-label">Bahagian / Unit</div>
+                    <div class="info-value"><?= $data['bahagianunit']; ?></div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-label">Ketua Bahagian</div>
+                    <div class="info-value d-flex flex-column">
+                        <span><?= $data['nama_ketua_nama']; ?></span>
+                        <span class="text-muted"><?= $data['nama_ketua_jawatan']; ?></span>
+                        <span class="text-muted"><?= $data['nama_ketua_emel']; ?></span>
+                        <span class="text-muted"><?= $data['nama_ketua_notel']; ?></span>
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-label">Chief Information Officer (CIO)</div>
+                    <div class="info-value d-flex flex-column">
+                        <span><?= $data['nama_cio_nama']; ?></span>
+                        <span class="text-muted"><?= $data['nama_cio_jawatan']; ?></span>
+                        <span class="text-muted"><?= $data['nama_cio_emel']; ?></span>
+                        <span class="text-muted"><?= $data['nama_cio_notel']; ?></span>
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-label">Chief Security Officer (ICTSO)</div>
+                    <div class="info-value d-flex flex-column">
+                        <span><?= $data['nama_ictso_nama']; ?></span>
+                        <span class="text-muted"><?= $data['nama_ictso_jawatan']; ?></span>
+                        <span class="text-muted"><?= $data['nama_ictso_emel']; ?></span>
+                        <span class="text-muted"><?= $data['nama_ictso_notel']; ?></span>
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-label">Carta Organisasi</div>
+                    <div class="info-value"><?= $data['carta']; ?></div>
                 </div>
             </div>
 
