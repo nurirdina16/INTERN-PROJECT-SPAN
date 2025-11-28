@@ -327,9 +327,120 @@ border-bottom: 1px solid #d5e3ef;
     padding-top: 3px;
 }
 
+.btn-warning {
+    padding: 6px 14px;
+    font-weight: 600;
+    border-radius: 6px;
+}
+
 
 /* ===========================
    EDIT SISTEM PAGE
    =========================== */
 
-   
+.edit-sistem-page {
+    padding: 20px;
+    background: #f5f7fa;
+}
+
+.page-header-box {
+    background: #004b73;
+    color: white;
+    font-size: 22px;
+    padding: 16px 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+.page-header-icon {
+    font-size: 1.4rem;
+    color: white;
+}
+
+.page-title {
+    margin: 0;
+    font-weight: 600;
+}
+
+.edit-sistem-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 35px;
+    border: 1px solid #e5e5e5;
+}
+
+/* FORM SECTIONS */
+.form-section {
+    margin-bottom: 35px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.form-section:last-child {
+    border-bottom: none;
+}
+
+.section-heading {
+    font-size: 21px;
+    font-weight: 700;
+    color: #004b73;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.section-heading i {
+    font-size: 1.2rem;
+    color: #004b73;
+}
+
+.section-subheading {
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 15px;
+}
+
+/* FORM INPUTS */
+.edit-sistem-form .form-label {
+    font-weight: 500;
+    color: #444;
+}
+
+.edit-sistem-form .form-control,
+.edit-sistem-form .form-select {
+    border-radius: 10px;
+    padding: 10px 12px;
+    border: 1px solid #d0d0d0;
+    transition: all .2s ease;
+}
+
+.edit-sistem-form .form-control:focus,
+.edit-sistem-form .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 4px rgba(13,110,253,0.15);
+}
+
+/* NEW SUPPLIER BOX */
+.new-supplier-box {
+    background: #f0f6ff;
+    border-left: 4px solid #0d6efd;
+}
+
+.new-supplier-title {
+    font-weight: 600;
+    color: #0d6efd;
+    margin-bottom: 10px;
+}
+
+.form-footer .btn-save {
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.btn-outline-secondary {
+    border-radius: 10px !important;
+    padding: 10px 18px;
+}

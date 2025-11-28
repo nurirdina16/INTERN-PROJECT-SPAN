@@ -127,10 +127,14 @@ try {
                     <i class="bi bi-pc-display"></i>
                     <span><?= htmlspecialchars($data['nama_sistem']); ?></span>
 
-                    <span class="status-tag ms-auto"
-                        style="background:#0077A8;">
+                    <span class="status-tag ms-auto" style="background:#0077A8;">
                         <?= htmlspecialchars($data['status']); ?>
                     </span>
+
+                    <a href="kemaskini_sistem.php?id=<?= $data['id_profilsistem']; ?>" 
+                    class="btn btn-warning btn-sm ms-3">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </a>
                 </div>
             </div>
 
