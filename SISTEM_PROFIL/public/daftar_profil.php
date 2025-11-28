@@ -1,5 +1,4 @@
 <?php
-
 require_once '../app/config.php';
 require_once '../app/auth.php';
 require_login();
@@ -42,19 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $pdo->beginTransaction();
 
-        // ------------------------------------
         // LOGIK UNTUK SISTEM (ID 1)
-        // ------------------------------------
         if ($jenisprofil_post == $id_jenisprofil_sistem) {   
-
             $id_pembekal = $_POST['id_pembekal'] ?? null;
             $id_kaedahpembangunan = $_POST['id_kaedahpembangunan'] ?? null;
             $inhouse = $_POST['inhouse'] ?? null; // Dari borang kaedah Dalaman
             $inhouse_luaran = $_POST['inhouse_luaran'] ?? null; // Dari borang kaedah Luaran
 
-            // **********************************************
             // 0. LOGIK UNTUK PEMBEKAL BARU (Jika dipilih)
-            // **********************************************
             if ($id_pembekal === 'NEW_SUPPLIER') {
                 $nama_syarikat_baru = trim($_POST['nama_syarikat_baru'] ?? '');
                 $emel_PIC_baru = trim($_POST['emel_PIC_baru'] ?? '');
@@ -101,15 +95,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $id_pembekal = $pdo->lastInsertId();
             }
             
-
-            // **********************************************
-            // 1. DATA PROFIL & SISTEM SELEPAS PRE-PROCESSING
-            // **********************************************
-            
+            // 1. DATA PROFIL & SISTEM SELEPAS PRE-PROCESSING          
             // Tentukan nilai inhouse yang betul berdasarkan Kaedah Pembangunan
             // Jika Dalaman (id_kaedahpembangunan=1), guna $inhouse. Jika Luaran (id_kaedahpembangunan!=1), nilai $inhouse=null
             $inhouse_value = ($id_kaedahpembangunan == 1) ? $inhouse : null;
-            
             // Jika Luaran (id_kaedahpembangunan!=1), set $id_pembekal. Jika Dalaman, $id_pembekal=null
             $pembekal_value = ($id_kaedahpembangunan != 1) ? $id_pembekal : null;
 
@@ -123,7 +112,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nama_cio = $_POST['nama_cio'] ?? null;
             $nama_ictso = $_POST['nama_ictso'] ?? null;
             $id_carta = $_POST['id_carta'] ?? null;
-            
             // Validation PROFIL
             if (!$id_status || !$nama_entiti || !$id_bahagianunit || !$nama_ketua || !$nama_cio || !$nama_ictso) {
                 throw new Exception("Sila pastikan semua medan 'Maklumat Profil' yang wajib diisi (Status, Nama Entiti, Bahagian/Unit, Ketua, CIO, ICTSO) untuk Profil Sistem.");
@@ -178,7 +166,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_kategoriuser = $_POST['id_kategoriuser'] ?? null;
             $pengurus_akses = $_POST['pengurus_akses'] ?? null;
             $pegawai_rujukan_sistem = $_POST['pegawai_rujukan_sistem'] ?? null;
-            
             // Validation SISTEM
             // Validation id_penyelenggaraan hanya jika bukan dalaman (ID 1)
             if (!$nama_sistem || !$id_pemilik_sistem || !$id_kategori || !$id_kaedahpembangunan || !$id_kategoriuser || !$pengurus_akses || !$pegawai_rujukan_sistem) {
@@ -229,20 +216,102 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $pengurus_akses,
                 $pegawai_rujukan_sistem
             ]);
-
             $pdo->commit();
             $alert_type = "success";
             $alert_message = "Profil Sistem **$nama_sistem** berjaya direkodkan! (ID Profil: $id_profilsistem)";
             goto end_of_post;
         }
 
+        // LOGIK BARU UNTUK PERALATAN (ID 2)
+        if ($jenisprofil_post == $id_jenisprofil_peralatan) { // 2 = Peralatan
+            // 1. DATA PROFIL (Maklumat Entiti)
+            $id_status = $_POST['id_status'] ?? null;
+            $nama_entiti = trim($_POST['nama_entiti'] ?? '');
+            $alamat_pejabat = trim($_POST['alamat_pejabat'] ?? '');
+            $id_bahagianunit = $_POST['id_bahagianunit'] ?? null;
+            $tarikh_kemaskini = date('Y-m-d'); 
+            $nama_ketua = $_POST['nama_ketua'] ?? null;
+            $nama_cio = $_POST['nama_cio'] ?? null;
+            $nama_ictso = $_POST['nama_ictso'] ?? null;
+            $id_carta = $_POST['id_carta'] ?? null;
+            // Validation PROFIL (Medan Wajib)
+            if (!$id_status || !$nama_entiti || !$id_bahagianunit || !$nama_ketua || !$nama_cio || !$nama_ictso) {
+                throw new Exception("Sila pastikan semua medan 'Maklumat Entiti' yang wajib diisi untuk Profil Peralatan.");
+            }
 
-        // ------------------------------------
+            // 1a. Insert ke PROFIL
+            $stmt_profil = $pdo->prepare("
+                INSERT INTO PROFIL
+                (id_userlog, id_jenisprofil, id_status, nama_entiti, alamat_pejabat, id_bahagianunit, tarikh_kemaskini, nama_ketua, nama_cio, nama_ictso, id_carta, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+            ");
+            $stmt_profil->execute([
+                $id_userlog,
+                $id_jenisprofil_peralatan, // Menggunakan ID 2
+                $id_status,
+                $nama_entiti,
+                $alamat_pejabat ?: null,
+                $id_bahagianunit,
+                $tarikh_kemaskini,
+                $nama_ketua,
+                $nama_cio,
+                $nama_ictso,
+                $id_carta ?: null
+            ]);
+            $id_profilsistem = $pdo->lastInsertId(); // Dapatkan FK untuk jadual PERALATAN
+
+            // 2. DATA PERALATAN
+            $nama_peralatan = trim($_POST['nama_peralatan'] ?? '');
+            $id_jenisperalatan = $_POST['id_jenisperalatan'] ?? null;
+            $siri_peralatan = trim($_POST['siri_peralatan'] ?? '');
+            $lokasi_peralatan = trim($_POST['lokasi_peralatan'] ?? '');
+            $jenama_model = trim($_POST['jenama_model'] ?? '');
+            $tarikh_dibeli = $_POST['tarikh_dibeli'] ?: null;
+            $tempoh_jaminan_peralatan = trim($_POST['tempoh_jaminan_peralatan'] ?? '');
+            $expired_jaminan = $_POST['expired_jaminan'] ?: null;
+            $id_penyelenggaraan = $_POST['id_penyelenggaraan'] ?? null;
+            $id_pembekal = $_POST['id_pembekal'] ?? null;
+            // Pastikan nilai float/decimal di-sanitize
+            $kos_penyelenggaraan_tahunan = filter_var($_POST['kos_penyelenggaraan_tahunan'] ?? 0.00, FILTER_VALIDATE_FLOAT); 
+            $tarikh_penyelenggaraan_terakhir = $_POST['tarikh_penyelenggaraan_terakhir'] ?: null;
+            $pegawai_rujukan_peralatan = $_POST['pegawai_rujukan_peralatan'] ?? null;
+            // Validation PERALATAN (Medan Wajib - berdasarkan form yang dicadangkan)
+            if (!$nama_peralatan || !$id_jenisperalatan || !$siri_peralatan || !$lokasi_peralatan || !$jenama_model || !$tarikh_dibeli || !$id_penyelenggaraan || !$id_pembekal || !$pegawai_rujukan_peralatan) {
+                throw new Exception("Sila pastikan semua medan 'Maklumat Peralatan' yang wajib diisi dilengkapkan.");
+            }
+
+            // 2a. Insert ke PERALATAN
+            $stmt_peralatan = $pdo->prepare("
+                INSERT INTO PERALATAN
+                (id_profilsistem, nama_peralatan, id_jenisperalatan, siri_peralatan, lokasi_peralatan, 
+                jenama_model, tarikh_dibeli, tempoh_jaminan_peralatan, expired_jaminan, id_penyelenggaraan, 
+                id_pembekal, kos_penyelenggaraan_tahunan, tarikh_penyelenggaraan_terakhir, pegawai_rujukan_peralatan)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ");
+            $stmt_peralatan->execute([
+                $id_profilsistem,
+                $nama_peralatan,
+                $id_jenisperalatan,
+                $siri_peralatan,
+                $lokasi_peralatan,
+                $jenama_model,
+                $tarikh_dibeli,
+                $tempoh_jaminan_peralatan ?: null,
+                $expired_jaminan,
+                $id_penyelenggaraan,
+                $id_pembekal,
+                $kos_penyelenggaraan_tahunan,
+                $tarikh_penyelenggaraan_terakhir,
+                $pegawai_rujukan_peralatan
+            ]);
+            $pdo->commit();
+            $alert_type = "success";
+            $alert_message = "Profil Peralatan **$nama_peralatan** berjaya direkodkan! (ID Profil: $id_profilsistem)";
+            goto end_of_post;
+        }
+
         // LOGIK UNTUK PENGGUNA (ID 4)
-        // ------------------------------------
         if ($jenisprofil_post == $id_jenisprofil_pengguna) { // 4 = pengguna
-            // ... (Logik penuh PENGGUNA kekal SAMA) ...
-
             $nama_user       = trim($_POST['nama_user'] ?? '');
             $jawatan_user    = trim($_POST['jawatan_user'] ?? '');
             $emel_user       = trim($_POST['emel_user'] ?? '');
@@ -275,20 +344,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $fax_user ?: null,
                 $id_bahagianunit ?: null
             ]);
-
             $pdo->commit();
             $alert_type = "success";
             $alert_message = "Pengguna berjaya direkodkan!";
             goto end_of_post;
         }
 
-
         // Jika Jenis Profil tidak dipilih
         if (!$jenisprofil_post) {
             $alert_type = "warning";
             $alert_message = "Sila pilih Jenis Profil yang ingin didaftarkan.";
         }
-
 
     } catch(PDOException $e) {
         $pdo->rollBack();
@@ -300,7 +366,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $alert_message = "Ralat: " . $e->getMessage();
     }
 }
-
 end_of_post:
 ?>
 
@@ -372,9 +437,7 @@ end_of_post:
             </div>  
 
             <div id="formPeralatan" style="display:none;">
-                <?php // Anda perlu cipta fail 'forms/form_peralatan.php' ?>
-                <?php // include 'forms/form_peralatan.php'; ?>
-                <div class="alert alert-warning">Borang Peralatan belum tersedia.</div>
+                <?php include 'forms/form_peralatan.php'; ?>
             </div>        
 
             <div id="formPengguna" style="display:none;">
