@@ -115,6 +115,15 @@ function get_status_badge_class($status) {
         </div>
 
         <div class="profil-card shadow-sm p-4">
+
+            <?php if (isset($_GET['success']) && $_GET['success'] == 'deleted'): ?>
+                <div class="alert alert-success">Profil sistem berjaya dipadam.</div>
+            <?php endif; ?>
+
+            <?php if (isset($_GET['error'])): ?>
+                <div class="alert alert-danger">Ralat: Gagal memadam profil sistem.</div>
+            <?php endif; ?>
+
             <?php if (empty($profil_sistem_list)): ?>
                 <div class="alert alert-info" role="alert">
                     Tiada profil sistem yang ditemui dalam pangkalan data.
@@ -152,8 +161,11 @@ function get_status_badge_class($status) {
                                             <i class="bi bi-eye-fill"></i>
                                         </a>
 
-                                        <button onclick="confirmDelete(<?= $profil['id_profilsistem']; ?>, '<?= addslashes($profil['nama_sistem']); ?>')" 
-                                                class="btn btn-outline-danger btn-sm">
+                                        <button class="btn btn-outline-danger btn-sm" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#deleteModal"
+                                                data-id="<?= $profil['id_profilsistem']; ?>"
+                                                data-nama="<?= htmlspecialchars($profil['nama_sistem']); ?>">
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
                                     </td>
@@ -165,6 +177,43 @@ function get_status_badge_class($status) {
             <?php endif; ?>
         </div>
     </div>
+
+    <!-- DELETE FUNCTION -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        
+        <div class="modal-header">
+            <h5 class="modal-title">Padam Profil Sistem</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+            <p>Adakah anda pasti mahu memadam sistem berikut:</p>
+            <p><strong id="namaSistem"></strong></p>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Padam</a>
+        </div>
+
+        </div>
+    </div>
+    </div>
+    <script>
+        const deleteModal = document.getElementById('deleteModal');
+
+        deleteModal.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget;
+            const id = button.getAttribute('data-id');
+            const nama = button.getAttribute('data-nama');
+
+            document.getElementById('namaSistem').textContent = nama;
+            document.getElementById('confirmDeleteBtn').href = "delete_sistem.php?id=" + id;
+        });
+    </script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
