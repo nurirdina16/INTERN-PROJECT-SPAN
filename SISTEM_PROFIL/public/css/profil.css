@@ -20,9 +20,10 @@
 
 /* Card container */
 .profil-card {
-    background: linear-gradient(135deg, #EDF7FF, #ffffff);
+    background: #ffffff;
     border-radius: 14px;
-    border: 1px solid #c8d6e5;
+    border: 1px solid #d9e2ec;
+    padding: 25px;
 }
 
 /* Section title */
@@ -30,6 +31,35 @@
     font-size: 20px;
     font-weight: 600;
     color: #006EA0;
+}
+
+.profil-table {
+    font-size: 0.9rem;
+}
+
+.profil-table th {
+    background-color: #f8f9fa;
+}
+
+/* TABLE */
+.sistem-table thead {
+    background: #f2f6fb;
+    font-weight: 600;
+}
+
+.sistem-table th {
+    padding: 14px;
+    color: #004b73;
+    font-size: 0.95rem;
+}
+
+.sistem-table td {
+    padding: 12px;
+    vertical-align: middle;
+}
+
+.sistem-table tbody tr:hover {
+    background: #f7fbff;
 }
 
 /* Add button */
@@ -81,9 +111,33 @@
 .status-badge {
     background: #0096C7;
     color: #fff;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* ACTION BUTTONS */
+.btn-outline-primary,
+.btn-outline-secondary,
+.btn-outline-danger {
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+.btn-outline-primary:hover {
+    background: #0d6efd;
+    color: white;
+}
+
+.btn-outline-secondary:hover {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-outline-danger:hover {
+    background: #dc3545;
+    color: white;
 }
 
 /* ACTION BUTTONS */
