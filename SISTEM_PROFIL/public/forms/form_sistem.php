@@ -154,7 +154,7 @@
     </div>
 
     <div id="pembangunanLuarContainer" style="display: none;" class="col-md-6">
-        <label for="id_pembekal" class="form-label">Pembangunan: Pembekal<span id="pembekal_required" class="text-danger" style="display: none;">*</span></label>
+        <label for="id_pembekal" class="form-label">Pembangunan: Pembekal<span id="pembekal_required_sistem" class="text-danger" style="display: none;">*</span></label>
         <select name="id_pembekal" id="id_pembekal" class="form-select">
             <option value="">-- Pilih Pembekal --</option>
             <?php foreach ($pembekals as $p): ?>

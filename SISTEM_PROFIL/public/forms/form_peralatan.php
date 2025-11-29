@@ -37,7 +37,7 @@
         </select>
     </div>
     <div class="col-md-4">
-        <label for="nama_ketua" class="form-label">Nama Ketua <span class="text-danger">*</span></label>
+        <label for="nama_ketua" class="form-label">Nama Ketua Bahagian<span class="text-danger">*</span></label>
         <select name="nama_ketua" id="nama_ketua" class="form-select" required>
             <option value="">-- Pilih Pegawai --</option>
             <?php foreach ($userprofiles as $up): ?>
@@ -46,7 +46,7 @@
         </select>
     </div>
     <div class="col-md-4">
-        <label for="nama_cio" class="form-label">Nama CIO <span class="text-danger">*</span></label>
+        <label for="nama_cio" class="form-label">Nama Chief Information Officer (CIO)<span class="text-danger">*</span></label>
         <select name="nama_cio" id="nama_cio" class="form-select" required>
             <option value="">-- Pilih Pegawai --</option>
             <?php foreach ($userprofiles as $up): ?>
@@ -55,7 +55,7 @@
         </select>
     </div>
     <div class="col-md-4">
-        <label for="nama_ictso" class="form-label">Nama ICTSO <span class="text-danger">*</span></label>
+        <label for="nama_ictso" class="form-label">Nama Chief Security Officer (ICTSO)<span class="text-danger">*</span></label>
         <select name="nama_ictso" id="nama_ictso" class="form-select" required>
             <option value="">-- Pilih Pegawai --</option>
             <?php foreach ($userprofiles as $up): ?>
@@ -67,7 +67,7 @@
 
 <hr>
 
-<div class="section-title"><i class="bi bi-hdd"></i> MAKLUMAT PERALATAN (Jadual PERALATAN)</div>
+<div class="section-title"><i class="bi bi-hdd"></i> MAKLUMAT PERALATAN</div>
 <div class="row g-3">
     <div class="col-md-6">
         <label for="nama_peralatan" class="form-label">Nama Peralatan <span class="text-danger">*</span></label>
@@ -115,15 +115,68 @@
             <?php endforeach; ?>
         </select>
     </div>
-    <div class="col-md-6">
-        <label for="id_pembekal" class="form-label"> Nama Pembekal / Kontraktor <span class="text-danger">*</span></label>
-        <select name="id_pembekal" id="id_pembekal" class="form-select" required>
+    <div id="pembekalPeralatanContainer" class="col-md-6">
+        <label for="id_pembekal_peralatan" class="form-label"> Nama Pembekal / Kontraktor <span class="text-danger">*</span></label>
+        <select name="id_pembekal_peralatan" id="id_pembekal_peralatan" class="form-select" required>
             <option value="">-- Pilih Pembekal / Kontraktor --</option>
             <?php foreach($pembekals as $pb): ?>
                 <option value="<?= $pb['id_pembekal'] ?>"><?= $pb['nama_syarikat'] ?></option>
             <?php endforeach; ?>
+            <option value="NEW_SUPPLIER_PERALATAN">+ Tambah Pembekal Baru..</option>
         </select>
     </div>
+</div>
+<!-- FORM PEMBEKAL + PIC BARU -->
+<div id="newPembekalFormPeralatan" class="row g-3 mt-0 mb-4" style="display:none;">
+    <div class="col-md-12"><hr>
+        <div class="section-subtitle fw-bold">Daftar Pembekal Baru</div>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Nama Syarikat <span class="text-danger">*</span></label>
+        <input type="text" name="nama_syarikat_baru_peralatan" id="nama_syarikat_baru_peralatan" class="form-control" maxlength="100" disabled>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Tempoh Kontrak (Tahun)</label>
+        <input type="text" name="tempoh_kontrak_baru_peralatan" id="tempoh_kontrak_baru_peralatan" class="form-control" maxlength="50" disabled>
+    </div>
+
+    <div class="col-md-12">
+        <label class="form-label">Alamat Syarikat</label>
+        <input type="text" name="alamat_syarikat_baru_peralatan" id="alamat_syarikat_baru_peralatan" class="form-control" maxlength="100" disabled>
+    </div>
+
+    <div class="col-md-12 mt-3 fw-bold">Maklumat PIC</div>
+
+    <div class="col-md-6">
+        <label class="form-label">Nama PIC <span class="text-danger">*</span></label>
+        <input type="text" name="nama_PIC_baru_peralatan" id="nama_PIC_baru_peralatan" class="form-control" maxlength="100" disabled>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Jawatan PIC</label>
+        <input type="text" name="jawatan_PIC_baru_peralatan" id="jawatan_PIC_baru_peralatan" class="form-control" maxlength="100" disabled>
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label">Emel PIC <span class="text-danger">*</span></label>
+        <input type="email" name="emel_PIC_baru_peralatan" id="emel_PIC_baru_peralatan" class="form-control" maxlength="100" disabled>
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label">No. Telefon PIC</label>
+        <input type="text" name="notelefon_PIC_baru_peralatan" id="notelefon_PIC_baru_peralatan" class="form-control" maxlength="100" disabled>
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label">No. Faks PIC</label>
+        <input type="text" name="fax_PIC_baru_peralatan" id="fax_PIC_baru_peralatan" class="form-control" maxlength="100" disabled>
+    </div>
+
+    <input type="hidden" name="is_new_supplier_peralatan" id="is_new_supplier_peralatan" value="0">
+</div>
+
     <div class="col-md-6">
         <label for="kos_penyelenggaraan_tahunan" class="form-label">Kos Penyelenggaraan Tahunan (RM)</label>
         <input type="number" step="0.01" name="kos_penyelenggaraan_tahunan" id="kos_penyelenggaraan_tahunan" class="form-control" value="0.00">
@@ -142,3 +195,52 @@
         </select>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        const dropdown = document.getElementById("id_pembekal_peralatan");
+        const newForm = document.getElementById("newPembekalFormPeralatan");
+
+        dropdown.addEventListener("change", function() {
+            console.log("Selected value:", this.value);
+
+            if (this.value === "NEW_SUPPLIER_PERALATAN") {
+                newForm.style.display = "flex";  // OR block
+                enableNewPembekalInputs(true);
+                document.getElementById("is_new_supplier_peralatan").value = "1";
+            } else {
+                newForm.style.display = "none";
+                enableNewPembekalInputs(false);
+                document.getElementById("is_new_supplier_peralatan").value = "0";
+            }
+        });
+
+        function enableNewPembekalInputs(enable) {
+            // Kita perlu menyahaktifkan/mengaktifkan input yang mempunyai akhiran _peralatan
+            const inputsToToggle = [
+                'nama_syarikat_baru_peralatan', 'tempoh_kontrak_baru_peralatan', 'alamat_syarikat_baru_peralatan',
+                'nama_PIC_baru_peralatan', 'jawatan_PIC_baru_peralatan', 'emel_PIC_baru_peralatan', 
+                'notelefon_PIC_baru_peralatan', 'fax_PIC_baru_peralatan'
+            ];
+
+            inputsToToggle.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.disabled = !enable;
+                    
+                    // Set 'required' attributes untuk medan wajib (Nama Syarikat, Nama PIC, Emel PIC)
+                    if (id === 'nama_syarikat_baru_peralatan' || id === 'nama_PIC_baru_peralatan' || id === 'emel_PIC_baru_peralatan') {
+                        if (enable) {
+                            el.setAttribute('required', 'required');
+                        } else {
+                            el.removeAttribute('required');
+                            el.value = ''; // Kosongkan nilai apabila dinyahaktifkan
+                        }
+                    }
+                }
+            });
+        }
+
+    });
+</script>

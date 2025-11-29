@@ -224,6 +224,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // LOGIK BARU UNTUK PERALATAN (ID 2)
         if ($jenisprofil_post == $id_jenisprofil_peralatan) { // 2 = Peralatan
+            // Ambil POST id_pembekal
+            $id_pembekal = $_POST['id_pembekal_peralatan'] ?? null;
+
+            // --- PEMBEKAL BARU UNTUK PERALATAN -----------------------------------------
+           if (isset($_POST['is_new_supplier_peralatan']) && $_POST['is_new_supplier_peralatan'] == 1) {
+
+                // PIC validation
+                $nama_PIC_baru = trim($_POST['nama_PIC_baru_peralatan'] ?? '');
+                $emel_PIC_baru = trim($_POST['emel_PIC_baru_peralatan'] ?? '');
+                $nama_syarikat_baru = trim($_POST['nama_syarikat_baru_peralatan'] ?? '');
+
+                if (!$nama_PIC_baru || !$emel_PIC_baru || !$nama_syarikat_baru) {
+                    throw new Exception("Sila lengkapkan Nama Syarikat, Nama PIC dan Emel PIC untuk Pembekal Peralatan Baharu.");
+                }
+
+                // Check duplicate PIC email
+                $stmtCheck = $pdo->prepare("SELECT id_PIC FROM LOOKUP_PIC WHERE emel_PIC = ?");
+                $stmtCheck->execute([$_POST['emel_PIC_baru']]);
+                if ($stmtCheck->fetch()) {
+                    throw new Exception("Emel PIC sudah wujud: " . $_POST['emel_PIC_baru']);
+                }
+
+                // Insert PIC baru
+                $stmtPIC = $pdo->prepare("
+                    INSERT INTO LOOKUP_PIC (nama_PIC, emel_PIC, notelefon_PIC, fax_PIC, jawatan_PIC)
+                    VALUES (?, ?, ?, ?, ?)
+                ");
+                $stmtPIC->execute([
+                    $nama_PIC_baru,
+                    $emel_PIC_baru,
+                    $_POST['notelefon_PIC_baru_peralatan'] ?: null,
+                    $_POST['fax_PIC_baru_peralatan'] ?: null,
+                    $_POST['jawatan_PIC_baru_peralatan'] ?: null
+                ]);
+                $id_PIC_new = $pdo->lastInsertId();
+
+                // Insert Pembekal baru
+                $stmtPB = $pdo->prepare("
+                    INSERT INTO LOOKUP_PEMBEKAL (nama_syarikat, alamat_syarikat, tempoh_kontrak, id_PIC)
+                    VALUES (?, ?, ?, ?)
+                ");
+                $stmtPB->execute([
+                    $nama_syarikat_baru,
+                    $_POST['alamat_syarikat_baru_peralatan'] ?: null,
+                    $_POST['tempoh_kontrak_baru_peralatan'] ?: null,
+                    $id_PIC_new
+                ]);
+
+                // Replace id_pembekal dengan ID baru
+                $id_pembekal = $pdo->lastInsertId();
+            }
+
             // 1. DATA PROFIL (Maklumat Entiti)
             $id_status = $_POST['id_status'] ?? null;
             $nama_entiti = trim($_POST['nama_entiti'] ?? '');
@@ -270,14 +322,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tempoh_jaminan_peralatan = trim($_POST['tempoh_jaminan_peralatan'] ?? '');
             $expired_jaminan = $_POST['expired_jaminan'] ?: null;
             $id_penyelenggaraan = $_POST['id_penyelenggaraan'] ?? null;
-            $id_pembekal = $_POST['id_pembekal'] ?? null;
-            // Pastikan nilai float/decimal di-sanitize
+            // Pastikan id_pembekal diset ke value terkini
             $kos_penyelenggaraan_tahunan = filter_var($_POST['kos_penyelenggaraan_tahunan'] ?? 0.00, FILTER_VALIDATE_FLOAT); 
             $tarikh_penyelenggaraan_terakhir = $_POST['tarikh_penyelenggaraan_terakhir'] ?: null;
             $pegawai_rujukan_peralatan = $_POST['pegawai_rujukan_peralatan'] ?? null;
             // Validation PERALATAN (Medan Wajib - berdasarkan form yang dicadangkan)
             if (!$nama_peralatan || !$id_jenisperalatan || !$siri_peralatan || !$lokasi_peralatan || !$jenama_model || !$tarikh_dibeli || !$id_penyelenggaraan || !$id_pembekal || !$pegawai_rujukan_peralatan) {
                 throw new Exception("Sila pastikan semua medan 'Maklumat Peralatan' yang wajib diisi dilengkapkan.");
+            }
+
+            // DALAM LOGIK PERALATAN (ID 2), SEBELUM BARIS 351
+            if (!is_numeric($id_pembekal) || (is_numeric($id_pembekal) && $id_pembekal < 1)) {
+                // Anda mungkin ingin menambah semakan tambahan dalam logik Peralatan (ID 2)
+                // jika anda mengesyaki nilai $id_pembekal tidak betul:
+                throw new Exception("ID Pembekal tidak sah: $id_pembekal. Pastikan anda memilih Pembekal Sedia Ada atau melengkapkan Pembekal Baharu.");
             }
 
             // 2a. Insert ke PERALATAN
@@ -467,6 +525,25 @@ end_of_post:
                 '4': document.getElementById('formPengguna')    // Pengguna
             };
 
+            // --- Elemen Global (Untuk SISTEM) ---
+            const kaedahSelect = document.getElementById('id_kaedahpembangunan');
+            const inhouseContainer = document.getElementById('pembangunanInhouseContainer'); // Kaedah Dalaman (ID 1)
+            const luarContainer = document.getElementById('pembangunanLuarContainer');   // Kaedah Pembekal (ID > 1)
+            const inhouseDalamanSelect = document.getElementById('inhouse_dalaman'); 
+            const pembekalSelectSistem = document.getElementById('id_pembekal'); // Menggunakan ID yang lebih spesifik
+            const pembekalRequiredSpanSistem = document.getElementById('pembekal_required_sistem'); // Menggunakan ID yang lebih spesifik
+            
+            // --- Logik Pembekal Baharu/PIC ---
+            const newPembekalFormDivSistem = document.getElementById('newPembekalForm'); // Menggunakan ID yang lebih spesifik
+            const newPembekalInputsSistem = newPembekalFormDivSistem ? newPembekalFormDivSistem.querySelectorAll('input, select') : [];
+            const isNewSupplierHiddenInputSistem = document.getElementById('is_new_supplier'); // Menggunakan ID yang lebih spesifik
+
+            // --- Elemen Global (Untuk PERALATAN) ---
+            const pembekalSelectPeralatan = document.getElementById('id_pembekal_peralatan'); // Menggunakan ID yang lebih spesifik
+            const newPembekalFormDivPeralatan = document.getElementById('newPembekalFormPeralatan'); // Menggunakan ID yang lebih spesifik
+            const newPembekalInputsPeralatan = newPembekalFormDivPeralatan ? newPembekalFormDivPeralatan.querySelectorAll('input, select') : [];
+            const isNewSupplierHiddenInputPeralatan = document.getElementById('is_new_supplier_peralatan');
+
             // Dapatkan semua elemen input/select dalam borang SISTEM dan PENGGUNA
             const sistemInputs = forms['1'] ? forms['1'].querySelectorAll('input, select, textarea') : [];
             const penggunaInputs = forms['4'] ? forms['4'].querySelectorAll('input, select, textarea') : [];
@@ -488,9 +565,18 @@ end_of_post:
                     forms[selectedId].querySelectorAll('input, select, textarea').forEach(el => el.disabled = false);
                     
                     // Trigger logik kaedah pembangunan untuk borang sistem jika ia dipilih (ID 1)
+                    // Logik Khusus
                     if (selectedId === '1') {
-                        // Semak status awal Kaedah Pembangunan dan Pembekal Baharu
-                        checkKaedahPembangunan(true); 
+                        // Sistem
+                        checkKaedahPembangunan(true); // Semak status awal Kaedah Pembangunan dan Pembekal Baharu
+                        checkNewPembekalPeralatan(true); // Pastikan logik Peralatan disembunyikan
+                    } else if (selectedId === '2') {
+                        // Peralatan
+                        checkNewPembekalSistem(true); // Pastikan logik Sistem disembunyikan
+                        checkNewPembekalPeralatan(false); // Semak Pembekal Baharu Peralatan
+                    } else {
+                        checkNewPembekalSistem(true);
+                        checkNewPembekalPeralatan(true);
                     }
                 }
             }
@@ -498,21 +584,40 @@ end_of_post:
             jenisSelect.addEventListener('change', toggleForms);
 
             // Jalankan sekali pada permulaan (untuk paparan selepas POST)
-            // Simpan nilai yang dipilih jika ada
             const initialSelectedId = jenisSelect.value;
             if (initialSelectedId) {
-                // Gunakan logik toggleForms untuk memaparkan borang yang dipilih
                 toggleForms();
             }
-
-            // --- Logik Sistem Khusus (Kawalan Kaedah Pembangunan & Pembekal) ---
-            const kaedahSelect = document.getElementById('id_kaedahpembangunan');
-            const inhouseContainer = document.getElementById('pembangunanInhouseContainer'); // Kaedah Dalaman (ID 1)
-            const luarContainer = document.getElementById('pembangunanLuarContainer');   // Kaedah Pembekal (ID > 1)
-            const inhouseDalamanSelect = document.getElementById('inhouse_dalaman'); 
-            const pembekalSelect = document.getElementById('id_pembekal');
-            const pembekalRequiredSpan = document.getElementById('pembekal_required'); 
             
+            // Perubahan: Fungsi checkNewPembekal diubah nama kepada checkNewPembekalSistem
+            function checkNewPembekalSistem(hide = false) {
+                const isNew = pembekalSelectSistem.value === 'NEW_SUPPLIER' && !hide;
+                
+                newPembekalFormDivSistem.style.display = isNew ? 'block' : 'none';
+                isNewSupplierHiddenInputSistem.value = isNew ? '1' : '0';
+                
+                newPembekalInputsSistem.forEach(el => {
+                    el.disabled = !isNew;
+                    // Hanya Nama Syarikat, Nama PIC, Emel PIC yang required
+                    if (el.id === 'nama_syarikat_baru' || el.id === 'nama_PIC_baru' || el.id === 'emel_PIC_baru') {
+                        if (isNew) {
+                            el.setAttribute('required', 'required');
+                        } else {
+                            el.removeAttribute('required');
+                        }
+                    }
+                });
+                
+                // Logik untuk Pembekal Baharu Peralatan: pastikan ia sentiasa disembunyikan/disabled jika Sistem dipilih
+                if (jenisSelect.value === '1' || hide) {
+                    checkNewPembekalPeralatan(true);
+                }
+            }
+            
+            if (pembekalSelectSistem) {
+                pembekalSelectSistem.addEventListener('change', () => checkNewPembekalSistem(false));
+            }
+
             // Input lain yang wajib diisi dalam Maklumat Pembangunan, Kos, dan Pengurusan Pengguna
             const requiredPenyelenggaraan = document.getElementById('id_penyelenggaraan'); 
             const requiredKategoriUser = document.getElementById('id_kategoriuser');
@@ -546,10 +651,10 @@ end_of_post:
                     inhouseContainer.style.display = 'none';
                     luarContainer.style.display = 'none';
                     inhouseDalamanSelect.disabled = true;
-                    pembekalSelect.disabled = true;
-                    pembekalSelect.removeAttribute('required');
-                    pembekalRequiredSpan.style.display = 'none';
-                    checkNewPembekal(true); // Sembunyikan borang pembekal baharu
+                    pembekalSelectSistem.disabled = true;
+                    pembekalSelectSistem.removeAttribute('required');
+                    pembekalRequiredSpanSistem.style.display = 'none';
+                    checkNewPembekalSistem(true); // Sembunyikan borang pembekal baharu
                     return;
                 }
 
@@ -561,11 +666,11 @@ end_of_post:
                     
                     inhouseDalamanSelect.disabled = false; 
 
-                    pembekalSelect.disabled = true;
-                    pembekalSelect.removeAttribute('required');
-                    pembekalRequiredSpan.style.display = 'none';
+                    pembekalSelectSistem.disabled = true;
+                    pembekalSelectSistem.removeAttribute('required');
+                    pembekalRequiredSpanSistem.style.display = 'none';
 
-                    checkNewPembekal(true); // Pastikan borang pembekal baharu disembunyikan/disabled
+                    checkNewPembekalSistem(true); // Pastikan borang pembekal baharu disembunyikan/disabled
 
                 } else {
                     // Luaran (ID > 1): Aktifkan Pembekal
@@ -574,21 +679,18 @@ end_of_post:
                     
                     inhouseDalamanSelect.disabled = true;
 
-                    pembekalSelect.disabled = false;
-                    pembekalSelect.setAttribute('required', 'required'); // Pembekal wajib untuk Kaedah Luaran
-                    pembekalRequiredSpan.style.display = 'inline';
+                    pembekalSelectSistem.disabled = false;
+                    pembekalSelectSistem.setAttribute('required', 'required'); // Pembekal wajib untuk Kaedah Luaran
+                    pembekalRequiredSpanSistem.style.display = 'inline';
 
-                    checkNewPembekal(); // Semak jika "Pembekal Baharu" dipilih
+                    checkNewPembekalSistem(false); // Semak jika "Pembekal Baharu" dipilih
                 }
             }
 
-            kaedahSelect.addEventListener('change', checkKaedahPembangunan);
+            if (kaedahSelect) {
+                kaedahSelect.addEventListener('change', checkKaedahPembangunan);
+            }
         
-            // --- Logik Pembekal Baharu/PIC ---
-            const newPembekalFormDiv = document.getElementById('newPembekalForm');
-            const newPembekalInputs = newPembekalFormDiv ? newPembekalFormDiv.querySelectorAll('input, select') : [];
-            const isNewSupplierHiddenInput = document.getElementById('is_new_supplier');
-
             function hideNewPembekalForm(isDalaman = false) {
                 newPembekalFormDiv.style.display = 'none';
                 isNewSupplierHiddenInput.value = '0';
@@ -658,6 +760,44 @@ end_of_post:
             // Semak status Kaedah Pembangunan/Pembekal Baharu pada permulaan jika ada nilai tersimpan
             if (kaedahSelect && jenisSelect.value === '1') {
                 checkKaedahPembangunan(true); 
+            }
+
+            // --- Logik Peralatan Khusus (Kawalan Pembekal Baharu) ---
+        // Fungsi baru untuk Peralatan
+        function checkNewPembekalPeralatan(hide = false) {
+            const isNew = pembekalSelectPeralatan.value === 'NEW_SUPPLIER_PERALATAN' && !hide;
+            
+            newPembekalFormDivPeralatan.style.display = isNew ? 'block' : 'none';
+            isNewSupplierHiddenInputPeralatan.value = isNew ? '1' : '0';
+            
+            newPembekalInputsPeralatan.forEach(el => {
+                el.disabled = !isNew;
+                // Hanya Nama Syarikat, Nama PIC, Emel PIC yang required
+                if (el.id === 'nama_syarikat_baru_peralatan' || el.id === 'nama_PIC_baru_peralatan' || el.id === 'emel_PIC_baru_peralatan') {
+                    if (isNew) {
+                        el.setAttribute('required', 'required');
+                    } else {
+                        el.removeAttribute('required');
+                    }
+                }
+            });
+            
+             // Logik untuk Pembekal Baharu Sistem: pastikan ia sentiasa disembunyikan/disabled jika Peralatan dipilih
+            if (jenisSelect.value === '2' || hide) {
+                    checkNewPembekalSistem(true); 
+                }
+            }
+            
+            if (pembekalSelectPeralatan) {
+                pembekalSelectPeralatan.addEventListener('change', () => checkNewPembekalPeralatan(false));
+            }
+            
+            // Panggil fungsi sekali pada permulaan jika ada POST data
+            if (jenisSelect.value === '1') {
+                // Ini akan dipanggil oleh toggleForms, tetapi kita juga boleh panggil terus untuk memastikan
+                if(pembekalSelectSistem) checkNewPembekalSistem(false);
+            } else if (jenisSelect.value === '2') {
+                if(pembekalSelectPeralatan) checkNewPembekalPeralatan(false);
             }
 
         });
