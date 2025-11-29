@@ -1,7 +1,7 @@
 <div class="section-title"><i class="bi bi-building"></i> MAKLUMAT ENTITI</div>
 <div class="row g-3 mb-4">
     <div class="col-md-4">
-        <label for="id_status" class="form-label">Status <span class="text-danger">*</span></label>
+        <label for="id_status" class="form-label">Status<span class="text-danger">*</span></label>
         <select name="id_status" id="id_status" class="form-select" required>
             <option value="">-- Pilih Status --</option>
             <?php foreach ($statuses as $s): ?>
@@ -10,7 +10,7 @@
         </select>
     </div>
     <div class="col-md-8">
-        <label for="nama_entiti" class="form-label">Nama Entiti <span class="text-danger">*</span></label>
+        <label for="nama_entiti" class="form-label">Nama Entiti<span class="text-danger">*</span></label>
         <input type="text" name="nama_entiti" id="nama_entiti" class="form-control" maxlength="100" required>
     </div>
     <div class="col-md-12">
@@ -18,7 +18,7 @@
         <textarea name="alamat_pejabat" id="alamat_pejabat" class="form-control" rows="2" maxlength="255"></textarea>
     </div>
     <div class="col-md-6">
-        <label for="id_bahagianunit" class="form-label">Bahagian/Unit <span class="text-danger">*</span></label>
+        <label for="id_bahagianunit" class="form-label">Bahagian/Unit<span class="text-danger">*</span></label>
         <select name="id_bahagianunit" id="id_bahagianunit" class="form-select" required>
             <option value="">-- Pilih Bahagian/Unit --</option>
             <?php foreach ($bahagianunits as $bu): ?>
@@ -36,7 +36,7 @@
         </select>
     </div>
     <div class="col-md-4">
-        <label for="nama_ketua" class="form-label">Nama Ketua <span class="text-danger">*</span></label>
+        <label for="nama_ketua" class="form-label">Nama Ketua Bahagian<span class="text-danger">*</span></label>
         <select name="nama_ketua" id="nama_ketua" class="form-select" required>
             <option value="">-- Pilih Pegawai --</option>
             <?php foreach ($userprofiles as $up): ?>
@@ -45,7 +45,7 @@
         </select>
     </div>
     <div class="col-md-4">
-        <label for="nama_cio" class="form-label">Nama CIO <span class="text-danger">*</span></label>
+        <label for="nama_cio" class="form-label">Nama Chief Information Officer (CIO)<span class="text-danger">*</span></label>
         <select name="nama_cio" id="nama_cio" class="form-select" required>
             <option value="">-- Pilih Pegawai --</option>
             <?php foreach ($userprofiles as $up): ?>
@@ -54,7 +54,7 @@
         </select>
     </div>
     <div class="col-md-4">
-        <label for="nama_ictso" class="form-label">Nama ICTSO <span class="text-danger">*</span></label>
+        <label for="nama_ictso" class="form-label">Nama Chief Security Officer (ICTSO)<span class="text-danger">*</span></label>
         <select name="nama_ictso" id="nama_ictso" class="form-select" required>
             <option value="">-- Pilih Pegawai --</option>
             <?php foreach ($userprofiles as $up): ?>
@@ -69,11 +69,11 @@
 <div class="section-title"><i class="bi bi-gear"></i> MAKLUMAT SISTEM</div>
 <div class="row g-3 mb-4">
     <div class="col-md-6">
-        <label for="nama_sistem" class="form-label">Nama Sistem <span class="text-danger">*</span></label>
+        <label for="nama_sistem" class="form-label">Nama Sistem<span class="text-danger">*</span></label>
         <input type="text" name="nama_sistem" id="nama_sistem" class="form-control" maxlength="100" required>
     </div>
     <div class="col-md-6">
-        <label for="id_pemilik_sistem" class="form-label">Pemilik Sistem (Bahagian/Unit) <span class="text-danger">*</span></label>
+        <label for="id_pemilik_sistem" class="form-label">Pemilik Sistem<span class="text-danger">*</span></label>
         <select name="id_pemilik_sistem" id="id_pemilik_sistem" class="form-select" required>
             <option value="">-- Pilih Bahagian/Unit --</option>
             <?php foreach ($bahagianunits as $bu): ?>
@@ -98,7 +98,7 @@
         <input type="date" name="tarikh_guna" id="tarikh_guna" class="form-control">
     </div>
     <div class="col-md-4">
-        <label for="id_kategori" class="form-label">Kategori Sistem <span class="text-danger">*</span></label>
+        <label for="id_kategori" class="form-label">Kategori Sistem<span class="text-danger">*</span></label>
         <select name="id_kategori" id="id_kategori" class="form-select" required>
             <option value="">-- Pilih Kategori --</option>
             <?php foreach ($kategoris as $k): ?>
@@ -111,7 +111,7 @@
         <input type="text" name="bil_pengguna" id="bil_pengguna" class="form-control" maxlength="50">
     </div>
     <div class="col-md-4">
-        <label for="bil_modul" class="form-label">Anggaran Bilangan Modul</label>
+        <label for="bil_modul" class="form-label">Bilangan Modul Sistem</label>
         <input type="text" name="bil_modul" id="bil_modul" class="form-control" maxlength="50">
     </div>
     <div class="col-md-4">
@@ -119,11 +119,11 @@
         <input type="text" name="bahasa_pengaturcaraan" id="bahasa_pengaturcaraan" class="form-control">
     </div>
     <div class="col-md-4">
-        <label for="pangkalan_data" class="form-label">Pangkalan Data (DBMS)</label>
+        <label for="pangkalan_data" class="form-label">Jenis Pangkalan Data</label>
         <input type="text" name="pangkalan_data" id="pangkalan_data" class="form-control">
     </div>
     <div class="col-md-4">
-        <label for="rangkaian" class="form-label">Rangkaian (Contoh: LAN, Internet)</label>
+        <label for="rangkaian" class="form-label">Rangkaian Digunakan</label>
         <input type="text" name="rangkaian" id="rangkaian" class="form-control">
     </div>
     <div class="col-md-6">
@@ -131,7 +131,7 @@
         <input type="text" name="integrasi" id="integrasi" class="form-control">
     </div>
     <div class="col-md-6">
-        <label for="id_kaedahpembangunan" class="form-label">Kaedah Pembangunan <span class="text-danger">*</span></label>
+        <label for="id_kaedahpembangunan" class="form-label">Kaedah Pembangunan<span class="text-danger">*</span></label>
         <select name="id_kaedahpembangunan" id="id_kaedahpembangunan" class="form-select" required>
             <option value="">-- Pilih Kaedah --</option>
             <?php foreach ($kaedahPembangunans as $kp): ?>
@@ -144,7 +144,7 @@
 <div id="kaedahPembangunanSpecificContainer" class="row g-3 mb-4">
 
     <div id="pembangunanInhouseContainer" style="display: none;" class="col-md-6">
-        <label for="inhouse_dalaman" class="form-label">Pembangunan Inhouse (Jika Ya, Bahagian/Unit)</label>
+        <label for="inhouse_dalaman" class="form-label">Pembangunan: Dalaman</label>
         <select name="inhouse" id="inhouse_dalaman" class="form-select">
             <option value="">-- Pilih Bahagian/Unit --</option>
             <?php foreach ($bahagianunits as $bu): ?>
@@ -154,13 +154,13 @@
     </div>
 
     <div id="pembangunanLuarContainer" style="display: none;" class="col-md-6">
-        <label for="id_pembekal" class="form-label">Pembekal Utama <span id="pembekal_required" class="text-danger" style="display: none;">*</span></label>
+        <label for="id_pembekal" class="form-label">Pembangunan: Pembekal<span id="pembekal_required" class="text-danger" style="display: none;">*</span></label>
         <select name="id_pembekal" id="id_pembekal" class="form-select">
             <option value="">-- Pilih Pembekal --</option>
             <?php foreach ($pembekals as $p): ?>
                 <option value="<?= $p['id_pembekal'] ?>"><?= $p['nama_syarikat'] ?></option>
             <?php endforeach; ?>
-            <option value="NEW_SUPPLIER">Tambah Pembekal Baru..</option>
+            <option value="NEW_SUPPLIER">+ Tambah Pembekal Baru..</option>
         </select>
     </div>
 
@@ -169,10 +169,10 @@
 <div id="newPembekalForm" class="row g-3 mt-0 mb-4" style="display: none;">
     <div class="col-md-12">
         <hr>
-        <div class="section-subtitle">Daftar Pembekal Baharu</div>
+        <div class="section-subtitle" style="font-weight: 700;">Daftar Pembekal Baru</div>
     </div>
     <div class="col-md-6">
-        <label for="nama_syarikat_baru" class="form-label">Nama Syarikat <span class="text-danger">*</span></label>
+        <label for="nama_syarikat_baru" class="form-label">Nama Syarikat<span class="text-danger">*</span></label>
         <input type="text" name="nama_syarikat_baru" id="nama_syarikat_baru" class="form-control" maxlength="100" disabled>
     </div>
     <div class="col-md-6">
@@ -185,10 +185,10 @@
     </div>
 
     <div class="col-md-12">
-        <div class="section-subtitle mt-3">Maklumat PIC (Person In Charge)</div>
+        <div class="section-subtitle mt-3" style="font-weight: 700;">Maklumat PIC</div>
     </div>
     <div class="col-md-6">
-        <label for="nama_PIC_baru" class="form-label">Nama PIC <span class="text-danger">*</span></label>
+        <label for="nama_PIC_baru" class="form-label">Nama PIC<span class="text-danger">*</span></label>
         <input type="text" name="nama_PIC_baru" id="nama_PIC_baru" class="form-control" maxlength="100" disabled>
     </div>
     <div class="col-md-6">
@@ -196,7 +196,7 @@
         <input type="text" name="jawatan_PIC_baru" id="jawatan_PIC_baru" class="form-control" maxlength="100" disabled>
     </div>
     <div class="col-md-4">
-        <label for="emel_PIC_baru" class="form-label">Emel PIC <span class="text-danger">*</span></label>
+        <label for="emel_PIC_baru" class="form-label">Emel PIC<span class="text-danger">*</span></label>
         <input type="email" name="emel_PIC_baru" id="emel_PIC_baru" class="form-control" maxlength="100" disabled>
     </div>
     <div class="col-md-4">
@@ -204,21 +204,21 @@
         <input type="text" name="notelefon_PIC_baru" id="notelefon_PIC_baru" class="form-control" maxlength="100" disabled>
     </div>
     <div class="col-md-4">
-        <label for="fax_PIC_baru" class="form-label">Fax PIC</label>
+        <label for="fax_PIC_baru" class="form-label">No. Faks PIC</label>
         <input type="text" name="fax_PIC_baru" id="fax_PIC_baru" class="form-control" maxlength="100" disabled>
     </div>
     <input type="hidden" name="is_new_supplier" id="is_new_supplier" value="0">
 </div>
 
 
-<div class="section-title mt-4"><i class="bi bi-wallet2"></i> MAKLUMAT PEMBANGUNAN & PENYELENGGARAAN</div>
+<div class="section-title mt-4"><i class="bi bi-tools"></i> MAKLUMAT PEMBANGUNAN & PENYELENGGARAAN</div>
 <div class="row g-3 mb-4">
     <div class="col-md-4">
         <label for="tarikh_dibeli" class="form-label">Tarikh Dibeli/Perjanjian</label>
         <input type="date" name="tarikh_dibeli" id="tarikh_dibeli" class="form-control">
     </div>
     <div class="col-md-4">
-        <label for="tempoh_jaminan_sistem" class="form-label">Tempoh Jaminan (Cth: 1 Tahun)</label>
+        <label for="tempoh_jaminan_sistem" class="form-label">Tempoh Jaminan (Tahun)</label>
         <input type="text" name="tempoh_jaminan_sistem" id="tempoh_jaminan_sistem" class="form-control" maxlength="50">
     </div>
     <div class="col-md-4">
@@ -226,7 +226,7 @@
         <input type="date" name="expired_jaminan_sistem" id="expired_jaminan_sistem" class="form-control">
     </div>
     <div class="col-md-6">
-        <label for="id_penyelenggaraan" class="form-label">Jenis Penyelenggaraan <span class="text-danger">*</span></label>
+        <label for="id_penyelenggaraan" class="form-label">Jenis Penyelenggaraan Sistem<span class="text-danger">*</span></label>
         <select name="id_penyelenggaraan" id="id_penyelenggaraan" class="form-select" required>
             <option value="">-- Pilih Jenis Penyelenggaraan --</option>
             <?php foreach ($penyelenggaraans as $py): ?>
@@ -264,7 +264,7 @@
     </div>
 </div>
 
-<div class="section-title mt-4"><i class="bi bi-people"></i> PENGURUSAN PENGGUNA</div>
+<div class="section-title mt-4"><i class="bi bi-people"></i> PENGURUSAN PENGGUNA & AKSES SISTEM</div>
 <div class="row g-3 mb-4">
     <div class="col-md-6">
         <label for="id_kategoriuser" class="form-label">Kategori Pengguna <span class="text-danger">*</span></label>
