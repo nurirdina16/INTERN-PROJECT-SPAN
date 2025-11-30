@@ -38,6 +38,98 @@ if (!$data) {
 }
 
 // =======================
+// FETCH PERALATAN DATA
+// =======================
+$stmt = $pdo->prepare("
+    SELECT P.*, E.*
+    FROM PROFIL P
+    INNER JOIN PERALATAN E ON P.id_profilsistem = E.id_profilsistem
+    WHERE P.id_profilsistem = ?
+");
+$stmt->execute([$id]);
+$data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$data) {
+    die("Rekod tidak dijumpai!");
+}
+
+// =======================
+// UPDATE PEMBEKAL + PIC
+// =======================
+if (!empty($_POST['id_pembekal'])) {
+    $idPembekal = $_POST['id_pembekal'];
+
+    // Update pembekal
+    $sqlPemb = "UPDATE lookup_pembekal SET
+        nama_syarikat = :nama,
+        alamat_syarikat = :alamat,
+        tempoh_kontrak = :kontrak
+        WHERE id_pembekal = :id";
+    
+    $stmtPemb = $pdo->prepare($sqlPemb);
+    $stmtPemb->execute([
+        ':nama' => $_POST['edit_nama_syarikat'],
+        ':alamat' => $_POST['edit_alamat_syarikat'],
+        ':kontrak' => $_POST['edit_tempoh_kontrak'],
+        ':id' => $idPembekal
+    ]);
+
+    // Update PIC jika ada existing_id_PIC
+    if (!empty($_POST['existing_id_PIC'])) {
+        $sqlPIC = "UPDATE lookup_PIC SET
+            nama_PIC = :nama,
+            jawatan_PIC = :jawatan,
+            emel_PIC = :emel,
+            notelefon_PIC = :telefon,
+            fax_PIC = :fax
+            WHERE id_PIC = :id";
+        
+        $stmtPIC = $pdo->prepare($sqlPIC);
+        $stmtPIC->execute([
+            ':nama' => $_POST['edit_nama_PIC'],
+            ':jawatan' => $_POST['edit_jawatan_PIC'],
+            ':emel' => $_POST['edit_emel_PIC'],
+            ':telefon' => $_POST['edit_notelefon_PIC'],
+            ':fax' => $_POST['edit_fax_PIC'],
+            ':id' => $_POST['existing_id_PIC']
+        ]);
+    }
+}
+
+// =======================
+// FETCH CURRENT PEMBEKAL + PIC
+// =======================
+$currentPembekalData = null;
+
+if ($data['id_pembekal']) {
+    $stmtPemb = $pdo->prepare("
+        SELECT p.*, pic.nama_PIC, pic.emel_PIC, pic.notelefon_PIC, pic.fax_PIC, pic.jawatan_PIC
+        FROM lookup_pembekal p
+        LEFT JOIN lookup_PIC pic ON p.id_PIC = pic.id_PIC
+        WHERE p.id_pembekal = ?
+    ");
+    $stmtPemb->execute([$data['id_pembekal']]);
+    $currentPembekalData = $stmtPemb->fetch(PDO::FETCH_ASSOC);
+}
+
+// jika user pilih pembekal baru (dropdown change)
+if (isset($_GET['pembekal']) && is_numeric($_GET['pembekal'])) {
+    $data['id_pembekal'] = intval($_GET['pembekal']);
+
+    $stmtPemb = $pdo->prepare("
+        SELECT p.*, pic.nama_PIC, pic.emel_PIC, pic.notelefon_PIC, pic.fax_PIC, pic.jawatan_PIC
+        FROM lookup_pembekal p
+        LEFT JOIN lookup_PIC pic ON p.id_PIC = pic.id_PIC
+        WHERE p.id_pembekal = ?
+    ");
+    $stmtPemb->execute([$_GET['pembekal']]);
+    $currentPembekalData = $stmtPemb->fetch(PDO::FETCH_ASSOC);
+}
+
+// Lookup pembekal
+$pembekals = $pdo->query("SELECT * FROM lookup_pembekal")->fetchAll();
+
+// =======================
 // UPDATE PROCESS
 // =======================
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -235,16 +327,84 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             value="<?= $data['tarikh_penyelenggaraan_terakhir']; ?>">
                     </div>
 
-                    <div class="col-md-6">
-                        <label>Pembekal</label>
-                        <select name="id_pembekal" class="form-select">
-                            <?php foreach ($pembekal as $row): ?>
-                                <option value="<?= $row['id_pembekal']; ?>"
-                                    <?= $row['id_pembekal'] == $data['id_pembekal'] ? 'selected' : '' ?>>
-                                    <?= $row['nama_syarikat']; ?>
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Pilih Pembekal</label>
+                        <select name="id_pembekal" id="id_pembekal" class="form-select mb-3"
+                            onchange="window.location='kemaskini_peralatan.php?id=<?= $id ?>&pembekal=' + this.value">
+                            <option value="">-- Pilih Pembekal --</option>
+                            <?php foreach ($pembekals as $p): ?>
+                                <option value="<?= $p['id_pembekal'] ?>"
+                                    <?= ($data['id_pembekal'] == $p['id_pembekal']) ? 'selected' : '' ?>>
+                                    <?= $p['nama_syarikat'] ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
+
+                        <!-- FORM EDIT PEMBEKAL -->
+                        <div id="editPembekalForm" class="p-3 border rounded-3 bg-light"
+                            style="display: <?= $data['id_pembekal'] ? 'block' : 'none' ?>;">
+
+                            <h6 class="fw-bold">Maklumat Pembekal</h6>
+
+                            <div class="row g-3">
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Nama Syarikat</label>
+                                    <input type="text" name="edit_nama_syarikat" class="form-control"
+                                        value="<?= $currentPembekalData['nama_syarikat'] ?? '' ?>">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Tempoh Kontrak</label>
+                                    <input type="text" name="edit_tempoh_kontrak" class="form-control"
+                                        value="<?= $currentPembekalData['tempoh_kontrak'] ?? '' ?>">
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label class="form-label">Alamat Syarikat</label>
+                                    <input type="text" name="edit_alamat_syarikat" class="form-control"
+                                        value="<?= $currentPembekalData['alamat_syarikat'] ?? '' ?>">
+                                </div>
+
+                                <div class="col-md-12 mt-3">
+                                    <h6 class="fw-bold">Maklumat PIC</h6>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Nama PIC</label>
+                                    <input type="text" name="edit_nama_PIC" class="form-control"
+                                        value="<?= $currentPembekalData['nama_PIC'] ?? '' ?>">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Jawatan PIC</label>
+                                    <input type="text" name="edit_jawatan_PIC" class="form-control"
+                                        value="<?= $currentPembekalData['jawatan_PIC'] ?? '' ?>">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Emel PIC</label>
+                                    <input type="email" name="edit_emel_PIC" class="form-control"
+                                        value="<?= $currentPembekalData['emel_PIC'] ?? '' ?>">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">No. Telefon PIC</label>
+                                    <input type="text" name="edit_notelefon_PIC" class="form-control"
+                                        value="<?= $currentPembekalData['notelefon_PIC'] ?? '' ?>">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Fax PIC</label>
+                                    <input type="text" name="edit_fax_PIC" class="form-control"
+                                        value="<?= $currentPembekalData['fax_PIC'] ?? '' ?>">
+                                </div>
+
+                                <input type="hidden" name="existing_id_PIC" 
+                                    value="<?= $currentPembekalData['id_PIC'] ?? '' ?>">
+
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-md-6">
