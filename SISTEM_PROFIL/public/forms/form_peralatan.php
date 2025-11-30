@@ -1,5 +1,5 @@
 <input type="hidden" name="id_jenisprofil" value="2">
-<div class="section-title"><i class="bi bi-building"></i> MAKLUMAT ENTITI (Jadual PROFIL)</div>
+<div class="section-title"><i class="bi bi-building"></i> MAKLUMAT ENTITI</div>
 <div class="row g-3 mb-4">
     <div class="col-md-4">
         <label for="id_status" class="form-label">Status <span class="text-danger">*</span></label>
