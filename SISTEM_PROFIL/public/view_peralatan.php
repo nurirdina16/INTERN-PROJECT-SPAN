@@ -142,7 +142,7 @@ try {
                         <?= htmlspecialchars($data['status']); ?>
                     </span>
 
-                    <a href="kemaskini_peralatan.php?id=<?= $data['id_profilsistem']; ?>" 
+                    <a href="kemaskini_peralatan.php?id=<?= $data['id_profilsistem']; ?>"   
                     class="btn btn-warning btn-sm ms-3">
                         <i class="bi bi-pencil-square"></i> Edit
                     </a>
