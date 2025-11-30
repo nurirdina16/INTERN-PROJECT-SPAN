@@ -164,7 +164,7 @@ try {
                 </div>
 
                 <div class="info-row">
-                    <div class="info-label">No Siri</div>
+                    <div class="info-label">Nombor Siri / ID Peralatan</div>
                     <div class="info-value"><?= $data['siri_peralatan']; ?></div>
                 </div>
 
@@ -184,17 +184,17 @@ try {
                 </div>
 
                 <div class="info-row">
-                    <div class="info-label">Tempoh Jaminan</div>
+                    <div class="info-label">Tempoh Jaminan (Warranty)</div>
                     <div class="info-value"><?= $data['tempoh_jaminan_peralatan']; ?></div>
                 </div>
 
                 <div class="info-row">
-                    <div class="info-label">Expired Jaminan</div>
+                    <div class="info-label">Tarikh Luput Jaminan (Warranty)</div>
                     <div class="info-value"><?= date('d/m/Y', strtotime($data['expired_jaminan'])); ?></div>
                 </div>
 
                 <div class="info-row">
-                    <div class="info-label">Penyelenggaraan</div>
+                    <div class="info-label">Kaedah Penyelenggaraan</div>
                     <div class="info-value"><?= $data['penyelenggaraan']; ?></div>
                 </div>
 
@@ -244,7 +244,7 @@ try {
                 <div class="view-section-title">PEGAWAI RUJUKAN PERALATAN</div>
 
                 <div class="info-row">
-                    <div class="info-label">Maklumat Pegawai</div>                
+                    <div class="info-label">Maklumat Pegawai Rujukan</div>                
                     <div class="info-value d-flex flex-column">
                         <span><?= $data['pegawai_rujukan_nama']; ?></span>
                         <span class="text-muted"><?= $data['pegawai_rujukan_jawatan']; ?></span>
