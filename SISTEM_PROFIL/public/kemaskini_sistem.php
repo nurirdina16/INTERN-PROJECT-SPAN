@@ -157,7 +157,7 @@ $pembekals          = $pdo->query("SELECT * FROM lookup_pembekal")->fetchAll();
 
                         <!-- NAMA KETUA / CIO / ICTSO -->
                         <div class="col-md-4">
-                            <label class="form-label">Nama Ketua</label>
+                            <label class="form-label">Nama Ketua Bahagian</label>
                             <select name="nama_ketua" class="form-select" required>
                                 <?php foreach ($userprofiles as $up): ?>
                                     <option value="<?= $up['id_userprofile'] ?>"

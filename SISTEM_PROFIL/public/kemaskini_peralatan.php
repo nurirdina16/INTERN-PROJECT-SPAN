@@ -243,272 +243,277 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="edit-sistem-card shadow-sm rounded-4 p-4">
             <form method="POST">
-
-                <!-- ============= MAKLUMAT PERALATAN ============= -->
-                <div class="section-title">MAKLUMAT PERALATAN</div>
-
-                <div class="row g-3 mb-4">
-
-                    <div class="col-md-6">
-                        <label>Nama Peralatan</label>
-                        <input type="text" name="nama_peralatan" class="form-control"
-                            value="<?= $data['nama_peralatan']; ?>">
+                <!-- ========== SECTION 1: MAKLUMAT ENTITI ========== -->
+                <div class="form-section">
+                    <div class="section-heading">
+                        <i class="bi bi-building"></i>
+                        <span>MAKLUMAT ENTITI</span>
                     </div>
 
-                    <div class="col-md-6">
-                        <label>Jenis Peralatan</label>
-                        <select name="id_jenisperalatan" class="form-select">
-                            <?php foreach ($jenisperalatan as $row): ?>
-                                <option value="<?= $row['id_jenisperalatan']; ?>"
-                                    <?= $row['id_jenisperalatan'] == $data['id_jenisperalatan'] ? 'selected' : '' ?>>
-                                    <?= $row['jenis_peralatan']; ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+                    <div class="row g-3 mt-1">
+                        <div class="col-md-4">
+                            <label>Status</label>
+                            <select name="id_status" class="form-select">
+                                <?php foreach ($status as $s): ?>
+                                    <option value="<?= $s['id_status']; ?>"
+                                        <?= $s['id_status'] == $data['id_status'] ? 'selected' : '' ?>>
+                                        <?= $s['status']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
 
-                    <div class="col-md-4">
-                        <label>No Siri</label>
-                        <input type="text" name="siri_peralatan" class="form-control"
-                            value="<?= $data['siri_peralatan']; ?>">
-                    </div>
+                        <div class="col-md-8">
+                            <label>Nama Entiti</label>
+                            <input type="text" name="nama_entiti" class="form-control"
+                                value="<?= $data['nama_entiti']; ?>">
+                        </div>
 
-                    <div class="col-md-4">
-                        <label>Lokasi Peralatan</label>
-                        <input type="text" name="lokasi_peralatan" class="form-control"
-                            value="<?= $data['lokasi_peralatan']; ?>">
-                    </div>
+                        <div class="col-md-12">
+                            <label>Alamat Pejabat</label>
+                            <input type="text" name="alamat_pejabat" class="form-control"
+                                value="<?= $data['alamat_pejabat']; ?>">
+                        </div>
 
-                    <div class="col-md-4">
-                        <label>Jenama / Model</label>
-                        <input type="text" name="jenama_model" class="form-control"
-                            value="<?= $data['jenama_model']; ?>">
-                    </div>
+                        <div class="col-md-6">
+                            <label>Bahagian / Unit</label>
+                            <select name="id_bahagianunit" class="form-select">
+                                <?php foreach ($bahagian as $b): ?>
+                                    <option value="<?= $b['id_bahagianunit']; ?>"
+                                        <?= $b['id_bahagianunit'] == $data['id_bahagianunit'] ? 'selected' : '' ?>>
+                                        <?= $b['bahagianunit']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
 
-                    <div class="col-md-4">
-                        <label>Tarikh Dibeli</label>
-                        <input type="date" name="tarikh_dibeli" class="form-control"
-                            value="<?= $data['tarikh_dibeli']; ?>">
-                    </div>
+                        <div class="col-md-6">
+                            <label>Carta Organisasi</label>
+                            <select name="id_carta" class="form-select">
+                                <?php foreach ($carta as $c): ?>
+                                    <option value="<?= $c['id_carta']; ?>"
+                                        <?= $c['id_carta'] == $data['id_carta'] ? 'selected' : '' ?>>
+                                        <?= $c['carta']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
 
-                    <div class="col-md-4">
-                        <label>Tempoh Jaminan</label>
-                        <input type="text" name="tempoh_jaminan_peralatan" class="form-control"
-                            value="<?= $data['tempoh_jaminan_peralatan']; ?>">
-                    </div>
+                        <div class="col-md-4">
+                            <label>Nama Ketua Bahagian</label>
+                            <select name="nama_ketua" class="form-select">
+                                <?php foreach ($pegawai as $row): ?>
+                                    <option value="<?= $row['id_userprofile']; ?>"
+                                        <?= $row['id_userprofile'] == $data['nama_ketua'] ? 'selected' : '' ?>>
+                                        <?= $row['nama_user']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
 
-                    <div class="col-md-4">
-                        <label>Expired Jaminan</label>
-                        <input type="date" name="expired_jaminan" class="form-control"
-                            value="<?= $data['expired_jaminan']; ?>">
-                    </div>
+                        <div class="col-md-4">
+                            <label>Nama CIO</label>
+                            <select name="nama_cio" class="form-select">
+                                <?php foreach ($pegawai as $row): ?>
+                                    <option value="<?= $row['id_userprofile']; ?>"
+                                        <?= $row['id_userprofile'] == $data['nama_cio'] ? 'selected' : '' ?>>
+                                        <?= $row['nama_user']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
 
-                    <div class="col-md-4">
-                        <label>Penyelenggaraan</label>
-                        <select name="id_penyelenggaraan" class="form-select">
-                            <?php foreach ($penyelenggaraan as $row): ?>
-                                <option value="<?= $row['id_penyelenggaraan']; ?>"
-                                    <?= $row['id_penyelenggaraan'] == $data['id_penyelenggaraan'] ? 'selected' : '' ?>>
-                                    <?= $row['penyelenggaraan']; ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label>Kos Penyelenggaraan Tahunan (RM)</label>
-                        <input type="number" step="0.01" name="kos_penyelenggaraan_tahunan" class="form-control"
-                            value="<?= $data['kos_penyelenggaraan_tahunan']; ?>">
-                    </div>
-
-                    <div class="col-md-4">
-                        <label>Tarikh Penyelenggaraan Terakhir</label>
-                        <input type="date" name="tarikh_penyelenggaraan_terakhir" class="form-control"
-                            value="<?= $data['tarikh_penyelenggaraan_terakhir']; ?>">
-                    </div>
-
-                    <div class="col-md-12">
-                        <label class="form-label fw-bold">Pilih Pembekal</label>
-                        <select name="id_pembekal" id="id_pembekal" class="form-select mb-3"
-                            onchange="window.location='kemaskini_peralatan.php?id=<?= $id ?>&pembekal=' + this.value">
-                            <option value="">-- Pilih Pembekal --</option>
-                            <?php foreach ($pembekals as $p): ?>
-                                <option value="<?= $p['id_pembekal'] ?>"
-                                    <?= ($data['id_pembekal'] == $p['id_pembekal']) ? 'selected' : '' ?>>
-                                    <?= $p['nama_syarikat'] ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-
-                        <!-- FORM EDIT PEMBEKAL -->
-                        <div id="editPembekalForm" class="p-3 border rounded-3 bg-light"
-                            style="display: <?= $data['id_pembekal'] ? 'block' : 'none' ?>;">
-
-                            <h6 class="fw-bold">Maklumat Pembekal</h6>
-
-                            <div class="row g-3">
-
-                                <div class="col-md-6">
-                                    <label class="form-label">Nama Syarikat</label>
-                                    <input type="text" name="edit_nama_syarikat" class="form-control"
-                                        value="<?= $currentPembekalData['nama_syarikat'] ?? '' ?>">
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label">Tempoh Kontrak</label>
-                                    <input type="text" name="edit_tempoh_kontrak" class="form-control"
-                                        value="<?= $currentPembekalData['tempoh_kontrak'] ?? '' ?>">
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label class="form-label">Alamat Syarikat</label>
-                                    <input type="text" name="edit_alamat_syarikat" class="form-control"
-                                        value="<?= $currentPembekalData['alamat_syarikat'] ?? '' ?>">
-                                </div>
-
-                                <div class="col-md-12 mt-3">
-                                    <h6 class="fw-bold">Maklumat PIC</h6>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label">Nama PIC</label>
-                                    <input type="text" name="edit_nama_PIC" class="form-control"
-                                        value="<?= $currentPembekalData['nama_PIC'] ?? '' ?>">
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label">Jawatan PIC</label>
-                                    <input type="text" name="edit_jawatan_PIC" class="form-control"
-                                        value="<?= $currentPembekalData['jawatan_PIC'] ?? '' ?>">
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label class="form-label">Emel PIC</label>
-                                    <input type="email" name="edit_emel_PIC" class="form-control"
-                                        value="<?= $currentPembekalData['emel_PIC'] ?? '' ?>">
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label class="form-label">No. Telefon PIC</label>
-                                    <input type="text" name="edit_notelefon_PIC" class="form-control"
-                                        value="<?= $currentPembekalData['notelefon_PIC'] ?? '' ?>">
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label class="form-label">Fax PIC</label>
-                                    <input type="text" name="edit_fax_PIC" class="form-control"
-                                        value="<?= $currentPembekalData['fax_PIC'] ?? '' ?>">
-                                </div>
-
-                                <input type="hidden" name="existing_id_PIC" 
-                                    value="<?= $currentPembekalData['id_PIC'] ?? '' ?>">
-
-                            </div>
+                        <div class="col-md-4">
+                            <label>Nama ICTSO</label>
+                            <select name="nama_ictso" class="form-select">
+                                <?php foreach ($pegawai as $row): ?>
+                                    <option value="<?= $row['id_userprofile']; ?>"
+                                        <?= $row['id_userprofile'] == $data['nama_ictso'] ? 'selected' : '' ?>>
+                                        <?= $row['nama_user']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
+                </div> 
 
-                    <div class="col-md-6">
-                        <label>Pegawai Rujukan</label>
-                        <select name="pegawai_rujukan_peralatan" class="form-select">
-                            <?php foreach ($pegawai as $row): ?>
-                                <option value="<?= $row['id_userprofile']; ?>"
-                                    <?= $row['id_userprofile'] == $data['pegawai_rujukan_peralatan'] ? 'selected' : '' ?>>
-                                    <?= $row['nama_user']; ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                </div>
-
-                <hr>
-
-                <!-- ============= MAKLUMAT ENTITI ============= -->
-                <div class="section-title">MAKLUMAT ENTITI</div>
-
-                <div class="row g-3">
-
-                    <div class="col-md-6">
-                        <label>Nama Entiti</label>
-                        <input type="text" name="nama_entiti" class="form-control"
-                            value="<?= $data['nama_entiti']; ?>">
+                <!-- ============= SECTION 2: MAKLUMAT PERALATAN ============= -->
+                <div class="form-section">
+                    <div class="section-heading">
+                        <i class="bi bi-tools"></i>
+                        <span>MAKLUMAT PERALATAN</span>
                     </div>
 
-                    <div class="col-md-6">
-                        <label>Alamat Pejabat</label>
-                        <input type="text" name="alamat_pejabat" class="form-control"
-                            value="<?= $data['alamat_pejabat']; ?>">
-                    </div>
+                    <div class="row g-3 mt-1">
+                        <div class="col-md-6">
+                            <label>Nama Peralatan</label>
+                            <input type="text" name="nama_peralatan" class="form-control"
+                                value="<?= $data['nama_peralatan']; ?>">
+                        </div>
 
-                    <div class="col-md-4">
-                        <label>Status</label>
-                        <select name="id_status" class="form-select">
-                            <?php foreach ($status as $s): ?>
-                                <option value="<?= $s['id_status']; ?>"
-                                    <?= $s['id_status'] == $data['id_status'] ? 'selected' : '' ?>>
-                                    <?= $s['status']; ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+                        <div class="col-md-6">
+                            <label>Jenis Peralatan</label>
+                            <select name="id_jenisperalatan" class="form-select">
+                                <?php foreach ($jenisperalatan as $row): ?>
+                                    <option value="<?= $row['id_jenisperalatan']; ?>"
+                                        <?= $row['id_jenisperalatan'] == $data['id_jenisperalatan'] ? 'selected' : '' ?>>
+                                        <?= $row['jenis_peralatan']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
 
-                    <div class="col-md-4">
-                        <label>Bahagian / Unit</label>
-                        <select name="id_bahagianunit" class="form-select">
-                            <?php foreach ($bahagian as $b): ?>
-                                <option value="<?= $b['id_bahagianunit']; ?>"
-                                    <?= $b['id_bahagianunit'] == $data['id_bahagianunit'] ? 'selected' : '' ?>>
-                                    <?= $b['bahagianunit']; ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+                        <div class="col-md-4">
+                            <label>Nombor Siri / ID Peralatan</label>
+                            <input type="text" name="siri_peralatan" class="form-control"
+                                value="<?= $data['siri_peralatan']; ?>">
+                        </div>
 
-                    <div class="col-md-4">
-                        <label>Carta Organisasi</label>
-                        <select name="id_carta" class="form-select">
-                            <?php foreach ($carta as $c): ?>
-                                <option value="<?= $c['id_carta']; ?>"
-                                    <?= $c['id_carta'] == $data['id_carta'] ? 'selected' : '' ?>>
-                                    <?= $c['carta']; ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+                        <div class="col-md-4">
+                            <label>Lokasi (Bangunan, Aras, Unit)</label>
+                            <input type="text" name="lokasi_peralatan" class="form-control"
+                                value="<?= $data['lokasi_peralatan']; ?>">
+                        </div>
 
-                    <div class="col-md-4">
-                        <label>Ketua Bahagian</label>
-                        <select name="nama_ketua" class="form-select">
-                            <?php foreach ($pegawai as $row): ?>
-                                <option value="<?= $row['id_userprofile']; ?>"
-                                    <?= $row['id_userprofile'] == $data['nama_ketua'] ? 'selected' : '' ?>>
-                                    <?= $row['nama_user']; ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+                        <div class="col-md-4">
+                            <label>Jenama / Model</label>
+                            <input type="text" name="jenama_model" class="form-control"
+                                value="<?= $data['jenama_model']; ?>">
+                        </div>
 
-                    <div class="col-md-4">
-                        <label>CIO</label>
-                        <select name="nama_cio" class="form-select">
-                            <?php foreach ($pegawai as $row): ?>
-                                <option value="<?= $row['id_userprofile']; ?>"
-                                    <?= $row['id_userprofile'] == $data['nama_cio'] ? 'selected' : '' ?>>
-                                    <?= $row['nama_user']; ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+                        <div class="col-md-4">
+                            <label>Tarikh Dibeli / Diterima</label>
+                            <input type="date" name="tarikh_dibeli" class="form-control"
+                                value="<?= $data['tarikh_dibeli']; ?>">
+                        </div>
 
-                    <div class="col-md-4">
-                        <label>ICTSO</label>
-                        <select name="nama_ictso" class="form-select">
-                            <?php foreach ($pegawai as $row): ?>
-                                <option value="<?= $row['id_userprofile']; ?>"
-                                    <?= $row['id_userprofile'] == $data['nama_ictso'] ? 'selected' : '' ?>>
-                                    <?= $row['nama_user']; ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
+                        <div class="col-md-4">
+                            <label>Tempoh Jaminan</label>
+                            <input type="text" name="tempoh_jaminan_peralatan" class="form-control"
+                                value="<?= $data['tempoh_jaminan_peralatan']; ?>">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Tarikh Luput Jaminan</label>
+                            <input type="date" name="expired_jaminan" class="form-control"
+                                value="<?= $data['expired_jaminan']; ?>">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Kaedah Penyelenggaraan</label>
+                            <select name="id_penyelenggaraan" class="form-select">
+                                <?php foreach ($penyelenggaraan as $row): ?>
+                                    <option value="<?= $row['id_penyelenggaraan']; ?>"
+                                        <?= $row['id_penyelenggaraan'] == $data['id_penyelenggaraan'] ? 'selected' : '' ?>>
+                                        <?= $row['penyelenggaraan']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Kos Penyelenggaraan Tahunan (RM)</label>
+                            <input type="number" step="0.01" name="kos_penyelenggaraan_tahunan" class="form-control"
+                                value="<?= $data['kos_penyelenggaraan_tahunan']; ?>">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Tarikh Penyelenggaraan Terakhir</label>
+                            <input type="date" name="tarikh_penyelenggaraan_terakhir" class="form-control"
+                                value="<?= $data['tarikh_penyelenggaraan_terakhir']; ?>">
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold">Nama Pembekal / Kontraktor</label>
+                            <select name="id_pembekal" id="id_pembekal" class="form-select mb-3"
+                                onchange="window.location='kemaskini_peralatan.php?id=<?= $id ?>&pembekal=' + this.value">
+                                <option value="">-- Pilih Pembekal --</option>
+                                <?php foreach ($pembekals as $p): ?>
+                                    <option value="<?= $p['id_pembekal'] ?>"
+                                        <?= ($data['id_pembekal'] == $p['id_pembekal']) ? 'selected' : '' ?>>
+                                        <?= $p['nama_syarikat'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+
+                            <!-- FORM EDIT PEMBEKAL -->
+                            <div id="editPembekalForm" class="p-3 border rounded-3 bg-light"
+                                style="display: <?= $data['id_pembekal'] ? 'block' : 'none' ?>;">
+
+                                <h6 class="fw-bold">Maklumat Pembekal</h6>
+
+                                <div class="row g-3">
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Nama Syarikat</label>
+                                        <input type="text" name="edit_nama_syarikat" class="form-control"
+                                            value="<?= $currentPembekalData['nama_syarikat'] ?? '' ?>">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Tempoh Kontrak</label>
+                                        <input type="text" name="edit_tempoh_kontrak" class="form-control"
+                                            value="<?= $currentPembekalData['tempoh_kontrak'] ?? '' ?>">
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label class="form-label">Alamat Syarikat</label>
+                                        <input type="text" name="edit_alamat_syarikat" class="form-control"
+                                            value="<?= $currentPembekalData['alamat_syarikat'] ?? '' ?>">
+                                    </div>
+
+                                    <div class="col-md-12 mt-3">
+                                        <h6 class="fw-bold">Maklumat PIC</h6>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Nama PIC</label>
+                                        <input type="text" name="edit_nama_PIC" class="form-control"
+                                            value="<?= $currentPembekalData['nama_PIC'] ?? '' ?>">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Jawatan PIC</label>
+                                        <input type="text" name="edit_jawatan_PIC" class="form-control"
+                                            value="<?= $currentPembekalData['jawatan_PIC'] ?? '' ?>">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">Emel PIC</label>
+                                        <input type="email" name="edit_emel_PIC" class="form-control"
+                                            value="<?= $currentPembekalData['emel_PIC'] ?? '' ?>">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">No. Telefon PIC</label>
+                                        <input type="text" name="edit_notelefon_PIC" class="form-control"
+                                            value="<?= $currentPembekalData['notelefon_PIC'] ?? '' ?>">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">Fax PIC</label>
+                                        <input type="text" name="edit_fax_PIC" class="form-control"
+                                            value="<?= $currentPembekalData['fax_PIC'] ?? '' ?>">
+                                    </div>
+
+                                    <input type="hidden" name="existing_id_PIC" 
+                                        value="<?= $currentPembekalData['id_PIC'] ?? '' ?>">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Pegawai Rujukan</label>
+                            <select name="pegawai_rujukan_peralatan" class="form-select">
+                                <?php foreach ($pegawai as $row): ?>
+                                    <option value="<?= $row['id_userprofile']; ?>"
+                                        <?= $row['id_userprofile'] == $data['pegawai_rujukan_peralatan'] ? 'selected' : '' ?>>
+                                        <?= $row['nama_user']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
