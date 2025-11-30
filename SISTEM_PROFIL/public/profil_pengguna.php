@@ -81,7 +81,15 @@ try {
             <?php endif; ?>
 
             <?php if (isset($_GET['error'])): ?>
-                <div class="alert alert-danger">Ralat: Gagal memadam profil pengguna.</div>
+                <div class="alert alert-danger">
+                <?php 
+                    if ($_GET['error'] == 'referenced') {
+                        echo 'Ralat: Profil pengguna tidak boleh dipadam kerana ia masih merujuk kepada rekod peralatan. Sila kemas kini rekod peralatan terlebih dahulu.';
+                    } else {
+                        echo 'Ralat: Gagal memadam profil pengguna.';
+                    }
+                ?>
+                </div>
             <?php endif; ?>
 
             <?php if (empty($profil_pengguna_list)): ?>

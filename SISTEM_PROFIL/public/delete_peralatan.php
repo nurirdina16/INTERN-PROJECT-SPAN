@@ -26,3 +26,4 @@ try {
     header("Location: profil_peralatan.php?error=db_error");
     exit;
 }
+?>

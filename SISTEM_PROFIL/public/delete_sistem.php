@@ -26,3 +26,4 @@ try {
     header("Location: profil_sistem.php?error=db_error");
     exit;
 }
+?>

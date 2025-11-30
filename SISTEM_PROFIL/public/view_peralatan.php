@@ -4,7 +4,7 @@ require_once '../app/auth.php';
 require_login();
 
 if (!isset($_GET['id'])) {
-    die("<div class='alert alert-danger'>Ralat: ID sistem tidak diberikan.</div>");
+    die("<div class='alert alert-danger'>Ralat: ID peralatan tidak diberikan.</div>");
 }
 
 $id = $_GET['id'];
