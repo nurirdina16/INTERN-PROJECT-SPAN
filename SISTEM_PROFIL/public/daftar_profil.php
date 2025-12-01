@@ -20,6 +20,7 @@ $pembekal = $pdo->query("SELECT * FROM lookup_pembekal")->fetchAll(PDO::FETCH_AS
 $penyelenggaraan = $pdo->query("SELECT * FROM lookup_penyelenggaraan")->fetchAll(PDO::FETCH_ASSOC);
 $userprofile = $pdo->query("SELECT * FROM lookup_userprofile")->fetchAll(PDO::FETCH_ASSOC);
 $carta = $pdo->query("SELECT * FROM lookup_carta")->fetchAll(PDO::FETCH_ASSOC);
+$pic = $pdo->query("SELECT * FROM lookup_pic")->fetchAll(PDO::FETCH_ASSOC);
 
 // User login
 if (!isset($_SESSION['userlog']['id_userlog'])) {
@@ -34,18 +35,99 @@ if (isset($_POST['save_jenisprofil'])) {
         $stmt->execute([
             ':jenis' => $_POST['new_jenisprofil']
         ]);
-
         // Refresh dropdown
         $jenisprofil = $pdo->query("SELECT * FROM lookup_jenisprofil")->fetchAll(PDO::FETCH_ASSOC);
-
         $alert_type = 'success';
         $alert_message = 'Jenis Profil berjaya ditambah!';
-
     } catch (Exception $e) {
         $alert_type = 'danger';
         $alert_message = 'Ralat: ' . $e->getMessage();
     }
-
+    header("Location: daftar_profil.php");
+    exit;
+}
+// TAMBAH KATEGORI BARU
+if (isset($_POST['save_kategori'])) {
+    try {
+        $stmt = $pdo->prepare("INSERT INTO lookup_kategori (kategori) VALUES (:kategori)");
+        $stmt->execute([
+            ':kategori' => $_POST['new_kategori']
+        ]);
+        // Refresh dropdown
+        $kategori = $pdo->query("SELECT * FROM lookup_kategori")->fetchAll(PDO::FETCH_ASSOC);
+        $alert_type = 'success';
+        $alert_message = 'Kategori berjaya ditambah!';
+    } catch (Exception $e) {
+        $alert_type = 'danger';
+        $alert_message = 'Ralat: ' . $e->getMessage();
+    }
+    header("Location: daftar_profil.php");
+    exit;
+}
+// TAMBAH JENIS PERALATAN BARU
+if (isset($_POST['save_jenisperalatan'])) {
+    try {
+        $stmt = $pdo->prepare("INSERT INTO lookup_jenisperalatan (jenis_peralatan) VALUES (:jenis)");
+        $stmt->execute([
+            ':jenis' => $_POST['new_jenisperalatan']
+        ]);
+        // Refresh dropdown
+        $jenisperalatan = $pdo->query("SELECT * FROM lookup_jenisperalatan")->fetchAll(PDO::FETCH_ASSOC);
+        $alert_type = 'success';
+        $alert_message = 'Jenis Peralatan berjaya ditambah!';
+    } catch (Exception $e) {
+        $alert_type = 'danger';
+        $alert_message = 'Ralat: ' . $e->getMessage();
+    }
+    header("Location: daftar_profil.php");
+    exit;
+}
+// TAMBAH PEMBEKAL BARU
+if (isset($_POST['save_pembekal'])) {
+    try {
+        $stmt = $pdo->prepare("
+            INSERT INTO lookup_pembekal (nama_syarikat, alamat_syarikat, tempoh_kontrak, id_PIC)
+            VALUES (:nama_syarikat, :alamat_syarikat, :tempoh_kontrak, :id_PIC)
+        ");
+        $stmt->execute([
+            ':nama_syarikat' => $_POST['new_nama_syarikat'],
+            ':alamat_syarikat' => $_POST['new_alamat_syarikat'] ?? null,
+            ':tempoh_kontrak' => $_POST['new_tempoh_kontrak'] ?? null,
+            ':id_PIC' => $_POST['new_id_PIC'] ?: null
+        ]);
+        // Refresh dropdown
+        $pembekal = $pdo->query("SELECT * FROM lookup_pembekal")->fetchAll(PDO::FETCH_ASSOC);
+        $alert_type = 'success';
+        $alert_message = 'Pembekal berjaya ditambah!';
+    } catch (Exception $e) {
+        $alert_type = 'danger';
+        $alert_message = 'Ralat: ' . $e->getMessage();
+    }
+    header("Location: daftar_profil.php");
+    exit;
+}
+// TAMBAH PIC BARU
+if (isset($_POST['save_pic'])) {
+    try {
+        $stmt = $pdo->prepare("
+            INSERT INTO lookup_pic (nama_PIC, emel_PIC, notelefon_PIC, fax_PIC, jawatan_PIC)
+            VALUES (:nama_PIC, :emel_PIC, :notelefon_PIC, :fax_PIC, :jawatan_PIC)
+        ");
+        $stmt->execute([
+            ':nama_PIC' => $_POST['new_nama_PIC'],
+            ':emel_PIC' => $_POST['new_emel_PIC'] ?? null,
+            ':notelefon_PIC' => $_POST['new_notelefon_PIC'] ?? null,
+            ':fax_PIC' => $_POST['new_fax_PIC'] ?? null,
+            ':jawatan_PIC' => $_POST['new_jawatan_PIC'] ?? null
+        ]);
+        // Refresh dropdown
+        $pic = $pdo->query("SELECT * FROM lookup_pic")->fetchAll(PDO::FETCH_ASSOC);
+        $alert_type = 'success';
+        $alert_message = 'PIC berjaya ditambah!';
+    } catch (Exception $e) {
+        $alert_type = 'danger';
+        $alert_message = 'Ralat: ' . $e->getMessage();
+    }
     header("Location: daftar_profil.php");
     exit;
 }
@@ -292,22 +374,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="row g-3 mb-4">
                 <div class="col-md-4">
                     <label class="form-label">Kategori</label>
-                    <select name="id_kategori" class="form-select">
-                        <option value="">-- Pilih Kategori --</option>
-                        <?php foreach ($kategori as $k): ?>
-                            <option value="<?= $k['id_kategori'] ?>"><?= $k['kategori'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <div class="input-group">
+                        <select name="id_kategori" class="form-select">
+                            <option value="">-- Pilih Kategori --</option>
+                            <?php foreach ($kategori as $k): ?>
+                                <option value="<?= $k['id_kategori'] ?>"><?= $k['kategori'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalKategori">
+                            <i class="bi bi-plus-circle"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">Jenis Peralatan</label>
-                    <select name="id_jenisperalatan" class="form-select">
-                        <option value="">-- Pilih Jenis --</option>
-                        <?php foreach ($jenisperalatan as $j): ?>
-                            <option value="<?= $j['id_jenisperalatan'] ?>"><?= $j['jenis_peralatan'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <div class="input-group">
+                        <select name="id_jenisperalatan" class="form-select">
+                            <option value="">-- Pilih Jenis --</option>
+                            <?php foreach ($jenisperalatan as $j): ?>
+                                <option value="<?= $j['id_jenisperalatan'] ?>"><?= $j['jenis_peralatan'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalJenisPeralatan">
+                            <i class="bi bi-plus-circle"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="col-md-4">
@@ -354,12 +447,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="col-md-4">
                     <label class="form-label">Pembekal</label>
-                    <select name="id_pembekal" class="form-select">
-                        <option value="">-- Pilih Pembekal --</option>
-                        <?php foreach ($pembekal as $p): ?>
-                            <option value="<?= $p['id_pembekal'] ?>"><?= $p['nama_syarikat'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <div class="input-group">
+                        <select name="id_pembekal" class="form-select">
+                            <option value="">-- Pilih Pembekal --</option>
+                            <?php foreach ($pembekal as $p): ?>
+                                <option value="<?= $p['id_pembekal'] ?>"><?= $p['nama_syarikat'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalPembekal">
+                            <i class="bi bi-plus-circle"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="col-md-4">
@@ -531,28 +629,136 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- MODAL TAMBAH JENIS PROFIL -->
     <div class="modal fade" id="modalJenisProfil" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-        <form method="POST">
-            <div class="modal-header">
-            <h5 class="modal-title">Tambah Jenis Profil</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <form method="POST">
+                <div class="modal-header">
+                <h5 class="modal-title">Tambah Jenis Profil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                <label class="form-label">Nama Jenis Profil</label>
+                <input type="text" name="new_jenisprofil" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" name="save_jenisprofil" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
             </div>
-
-            <div class="modal-body">
-            <label class="form-label">Nama Jenis Profil</label>
-            <input type="text" name="new_jenisprofil" class="form-control" required>
-            </div>
-
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-            <button type="submit" name="save_jenisprofil" class="btn btn-primary">Simpan</button>
-            </div>
-        </form>
-
         </div>
     </div>
+    <!-- MODAL: TAMBAH KATEGORI -->
+    <div class="modal fade" id="modalKategori" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="POST" class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Kategori</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <label class="form-label">Nama Kategori Baru</label>
+                    <input type="text" name="new_kategori" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" name="save_kategori" class="btn btn-primary">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- MODAL TAMBAH JENIS PERALATAN -->
+    <div class="modal fade" id="modalJenisPeralatan" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <form method="POST">
+                <div class="modal-header">
+                <h5 class="modal-title">Tambah Jenis Peralatan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                <label class="form-label">Nama Jenis Peralatan</label>
+                <input type="text" name="new_jenisperalatan" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" name="save_jenisperalatan" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+    <!-- MODAL TAMBAH PEMBEKAL -->
+    <div class="modal fade" id="modalPembekal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <form method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Pembekal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <label class="form-label">Nama Syarikat</label>
+                    <input type="text" name="new_nama_syarikat" class="form-control" required>
+                    <label class="form-label mt-2">Alamat Syarikat</label>
+                    <input type="text" name="new_alamat_syarikat" class="form-control">
+                    <label class="form-label mt-2">Tempoh Kontrak</label>
+                    <input type="text" name="new_tempoh_kontrak" class="form-control">
+                    <!--PIC-->
+                    <label class="form-label mt-2">PIC</label>
+                    <div class="input-group">
+                        <select name="new_id_PIC" class="form-select">
+                            <option value="">-- Pilih PIC --</option>
+                            <?php foreach ($pic as $p): ?>
+                                <option value="<?= $p['id_PIC'] ?>"><?= $p['nama_PIC'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalPIC">
+                            <i class="bi bi-plus-circle"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" name="save_pembekal" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+    <!-- MODAL TAMBAH PIC -->
+    <div class="modal fade" id="modalPIC" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <form method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah PIC</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <label class="form-label">Nama PIC</label>
+                    <input type="text" name="new_nama_PIC" class="form-control" required>
+                    
+                    <label class="form-label mt-2">Emel</label>
+                    <input type="email" name="new_emel_PIC" class="form-control">
+                    
+                    <label class="form-label mt-2">No Telefon</label>
+                    <input type="text" name="new_notelefon_PIC" class="form-control">
+                    
+                    <label class="form-label mt-2">Fax</label>
+                    <input type="text" name="new_fax_PIC" class="form-control">
+                    
+                    <label class="form-label mt-2">Jawatan</label>
+                    <input type="text" name="new_jawatan_PIC" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" name="save_pic" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+            </div>
+        </div>
     </div>
 
 </body>
