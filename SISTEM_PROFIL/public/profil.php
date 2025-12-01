@@ -74,7 +74,7 @@ if ($selectedJenis) {
                     style="z-index: 1055; min-width: 280px;">
                     
                     <?php if ($_GET['msg'] == 'deleted'): ?>
-                        Pengguna berjaya dipadam.
+                        Rekod berjaya dipadam.
                     <?php elseif ($_GET['msg'] == 'notfound'): ?>
                         Ralat: Pengguna tidak dijumpai.
                     <?php elseif ($_GET['msg'] == 'fkerror'): ?>
@@ -134,10 +134,10 @@ if ($selectedJenis) {
                                     <td class="text-center"><?= $index + 1 ?></td>
                                     <td><?= htmlspecialchars($p['nama']) ?></td>
                                     <td class="text-center">
-                                        <a href="<?= $selectedJenis == 3 ? 'view_pembekal.php?id=' . $p['id'] : ($selectedJenis == 4 ? 'view_pengguna.php?id=' . $p['id'] : 'view_profil.php?id=' . $p['id']) ?>" class="btn btn-sm btn-info">
+                                        <a href="<?= $selectedJenis == 3 ? 'view_supplier.php?id=' . $p['id'] : ($selectedJenis == 4 ? 'view_pengguna.php?id=' . $p['id'] : 'view_profil.php?id=' . $p['id']) ?>" class="btn btn-sm btn-info">
                                             <i class="bi bi-eye"></i> View
                                         </a>
-                                        <a href="<?= $selectedJenis == 3 ? 'delete_pembekal.php?id=' . $p['id'] : ($selectedJenis == 4 ? 'delete_pengguna.php?id=' . $p['id'] : 'delete_profil.php?id=' . $p['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Adakah anda pasti mahu padam?')">
+                                        <a href="<?= $selectedJenis == 3 ? 'delete_supplier.php?id=' . $p['id'] : ($selectedJenis == 4 ? 'delete_pengguna.php?id=' . $p['id'] : 'delete_profil.php?id=' . $p['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Adakah anda pasti mahu padam?')">
                                             <i class="bi bi-trash"></i> Delete
                                         </a>
                                     </td>
