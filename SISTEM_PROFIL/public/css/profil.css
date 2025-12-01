@@ -444,3 +444,105 @@ border-bottom: 1px solid #d5e3ef;
     border-radius: 10px !important;
     padding: 10px 18px;
 }
+
+
+/* ===========================
+   TAMBAH PENGGUNA PAGE
+   =========================== */
+
+/* Main card */
+.tambah-pengguna-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 30px 35px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: 1px solid #d9e2ec;
+    max-width: 900px;
+    margin: 0 auto 40px auto;
+}
+
+/* Section heading */
+.tambah-pengguna-card .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #004b73;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+/* Form labels */
+.tambah-pengguna-card label {
+    font-weight: 600;
+    color: #003d5c;
+    margin-bottom: 6px;
+    display: block;
+}
+
+/* Required field indicator */
+.tambah-pengguna-card .text-danger {
+    font-weight: 700;
+}
+
+/* Inputs and selects */
+.tambah-pengguna-card .form-control,
+.tambah-pengguna-card .form-select {
+    border-radius: 10px;
+    padding: 10px 12px;
+    border: 1px solid #cfd8dc;
+    transition: all 0.2s ease;
+}
+
+.tambah-pengguna-card .form-control:focus,
+.tambah-pengguna-card .form-select:focus {
+    border-color: #0077A8;
+    box-shadow: 0 0 0 4px rgba(0,119,168,0.15);
+}
+
+/* Row spacing */
+.tambah-pengguna-card .row.g-3 {
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+.tambah-pengguna-card .btn-primary {
+    background: #0077A8;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.tambah-pengguna-card .btn-primary:hover {
+    background: #004b73;
+}
+
+.tambah-pengguna-card .btn-secondary {
+    border-radius: 10px;
+    padding: 10px 20px;
+}
+
+/* Alerts floating top-right */
+#alert-container .alert {
+    border-radius: 12px;
+    padding: 15px 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* Alert links */
+#alert-container .alert a {
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .tambah-pengguna-card {
+        padding: 20px;
+    }
+}
+
