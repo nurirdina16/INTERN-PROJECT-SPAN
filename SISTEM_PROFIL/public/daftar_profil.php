@@ -27,6 +27,29 @@ if (!isset($_SESSION['userlog']['id_userlog'])) {
 }
 $id_userlog = $_SESSION['userlog']['id_userlog'];
 
+// TAMBAH JENIS PROFIL BARU
+if (isset($_POST['save_jenisprofil'])) {
+    try {
+        $stmt = $pdo->prepare("INSERT INTO lookup_jenisprofil (jenisprofil) VALUES (:jenis)");
+        $stmt->execute([
+            ':jenis' => $_POST['new_jenisprofil']
+        ]);
+
+        // Refresh dropdown
+        $jenisprofil = $pdo->query("SELECT * FROM lookup_jenisprofil")->fetchAll(PDO::FETCH_ASSOC);
+
+        $alert_type = 'success';
+        $alert_message = 'Jenis Profil berjaya ditambah!';
+
+    } catch (Exception $e) {
+        $alert_type = 'danger';
+        $alert_message = 'Ralat: ' . $e->getMessage();
+    }
+
+    header("Location: daftar_profil.php");
+    exit;
+}
+
 //  PROCESS FORM SUBMISSION
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -192,12 +215,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="col-md-6">
                     <label class="form-label">Jenis Profil</label>
-                    <select name="id_jenisprofil" class="form-select" required>
-                        <option value="">-- Pilih Jenis Profil --</option>
-                        <?php foreach ($jenisprofil as $jp): ?>
-                            <option value="<?= $jp['id_jenisprofil'] ?>"><?= $jp['jenisprofil'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <div class="input-group">
+                        <select name="id_jenisprofil" id="jenisProfilSelect" class="form-select" required>
+                            <option value="">-- Pilih Jenis Profil --</option>
+                            <?php foreach ($jenisprofil as $jp): ?>
+                                <option value="<?= $jp['id_jenisprofil'] ?>"><?= $jp['jenisprofil'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalJenisProfil">
+                            <i class="bi bi-plus-circle"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -499,6 +528,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             toastBootstrap.show();
         }
     </script>
+
+    <!-- MODAL TAMBAH JENIS PROFIL -->
+    <div class="modal fade" id="modalJenisProfil" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        <form method="POST">
+            <div class="modal-header">
+            <h5 class="modal-title">Tambah Jenis Profil</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+            <label class="form-label">Nama Jenis Profil</label>
+            <input type="text" name="new_jenisprofil" class="form-control" required>
+            </div>
+
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" name="save_jenisprofil" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+
+        </div>
+    </div>
+    </div>
 
 </body>
 </html>
