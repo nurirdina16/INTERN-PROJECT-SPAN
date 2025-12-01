@@ -301,7 +301,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <select name="id_jenisprofil" id="jenisProfilSelect" class="form-select" required>
                             <option value="">-- Pilih Jenis Profil --</option>
                             <?php foreach ($jenisprofil as $jp): ?>
-                                <option value="<?= $jp['id_jenisprofil'] ?>"><?= $jp['jenisprofil'] ?></option>
+                                <?php if (!in_array($jp['id_jenisprofil'], [3, 4])): // hide PEMBEKAL & PENGGUNA ?>
+                                    <option value="<?= $jp['id_jenisprofil'] ?>"><?= $jp['jenisprofil'] ?></option>
+                                <?php endif; ?>
                             <?php endforeach; ?>
                         </select>
 
@@ -323,7 +325,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="col-md-4">
                     <label class="form-label">Pemilik Profil</label>
-                    <select name="id_pemilik_profil" class="form-select" required>
+                    <select name="id_pemilik_profil" class="form-select">
                         <option value="">-- Pilih Bahagian / Unit --</option>
                         <?php foreach ($bahagianunit as $b): ?>
                             <option value="<?= $b['id_bahagianunit'] ?>"><?= $b['bahagianunit'] ?></option>
@@ -547,7 +549,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="col-md-6">
                     <label class="form-label">Bahagian Entiti</label>
-                    <select name="id_bahagianunit" class="form-select" required>
+                    <select name="id_bahagianunit" class="form-select">
                         <option value="">-- Pilih Bahagian / Unit --</option>
                         <?php foreach ($bahagianunit as $b): ?>
                             <option value="<?= $b['id_bahagianunit'] ?>"><?= $b['bahagianunit'] ?></option>
@@ -580,7 +582,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="col-md-6">
                     <label class="form-label">Pengurus Akses</label>
-                    <select name="pengurus_akses" class="form-select" required>
+                    <select name="pengurus_akses" class="form-select">
                         <option value="">-- Pilih Bahagian / Unit --</option>
                         <?php foreach ($bahagianunit as $b): ?>
                             <option value="<?= $b['id_bahagianunit'] ?>"><?= $b['bahagianunit'] ?></option>
@@ -741,7 +743,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="text" name="new_nama_PIC" class="form-control" required>
                     
                     <label class="form-label mt-2">Emel</label>
-                    <input type="email" name="new_emel_PIC" class="form-control">
+                    <input type="email" name="new_emel_PIC" class="form-control" required>
                     
                     <label class="form-label mt-2">No Telefon</label>
                     <input type="text" name="new_notelefon_PIC" class="form-control">
