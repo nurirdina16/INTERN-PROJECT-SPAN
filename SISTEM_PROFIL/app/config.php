@@ -1,7 +1,7 @@
 <?php
 // app/config.php
 $host = '127.0.0.1';
-$db   = 'profiling_sistem_span';
+$db   = 'sistem_profil_span';
 $user = 'root';
 $pass = ''; // default empty password
 
