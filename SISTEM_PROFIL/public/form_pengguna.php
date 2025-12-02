@@ -154,7 +154,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="text-end">
-                    <a href="profil.php?id_jenisprofil=4" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Kembali</a>
                     <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Simpan</button>
                 </div>
             </form>

@@ -181,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'id_jenisprofil' => $_POST['id_jenisprofil'],
             'nama_profil' => $_POST['nama_profil'],
             'objektif_profil' => $_POST['objektif_profil'] ?? null,
-            'id_pemilik_profil' => $_POST['id_pemilik_profil'],
+            'id_pemilik_profil' => $_POST['id_pemilik_profil'] ?: null,
 
             'tarikh_mula' => $_POST['tarikh_mula'] ?: null,
             'tarikh_siap' => $_POST['tarikh_siap'] ?: null,
@@ -228,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'nama_cio' => $_POST['nama_cio'] ?: null,
             'nama_ictso' => $_POST['nama_ictso'] ?: null,
 
-            'pengurus_akses' => $_POST['pengurus_akses'],
+            'pengurus_akses' => $_POST['pengurus_akses'] ?: null,
             'pegawai_rujukan' => $_POST['pegawai_rujukan'],
 
             'id_carta' => $_POST['id_carta'] ?: null,
@@ -301,7 +301,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <select name="id_jenisprofil" id="jenisProfilSelect" class="form-select" required>
                             <option value="">-- Pilih Jenis Profil --</option>
                             <?php foreach ($jenisprofil as $jp): ?>
-                                <?php if (!in_array($jp['id_jenisprofil'], [3, 4])): // hide PEMBEKAL & PENGGUNA ?>
+                                <?php if (!in_array($jp['id_jenisprofil'], [1, 2])): // hide PEMBEKAL & PENGGUNA ?>
                                     <option value="<?= $jp['id_jenisprofil'] ?>"><?= $jp['jenisprofil'] ?></option>
                                 <?php endif; ?>
                             <?php endforeach; ?>
@@ -339,32 +339,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Tarikh Mula</label>
+                    <label class="form-label">Tarikh Mula Pembangunan</label>
                     <input type="date" name="tarikh_mula" class="form-control">
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Tarikh Siap</label>
+                    <label class="form-label">Tarikh Siap Pembangunan</label>
                     <input type="date" name="tarikh_siap" class="form-control">
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Tarikh Guna</label>
+                    <label class="form-label">Tarikh Digunakan</label>
                     <input type="date" name="tarikh_guna" class="form-control">
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Tarikh Dibeli</label>
+                    <label class="form-label">Tarikh Dibeli / Diterima</label>
                     <input type="date" name="tarikh_dibeli" class="form-control">
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Tempoh Warranty</label>
+                    <label class="form-label">Tempoh Warranty (Tahun)</label>
                     <input type="text" name="tempoh_warranty" class="form-control">
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Expired Warranty</label>
+                    <label class="form-label">Tarikh Luput Warranty</label>
                     <input type="date" name="expired_warranty" class="form-control">
                 </div>
             </div>
@@ -374,7 +374,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p style="font-style: italic;">[sila isi maklumat yang berkenaan sahaja]</p>
 
             <div class="row g-3 mb-4">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="form-label">Kategori</label>
                     <div class="input-group">
                         <select name="id_kategori" class="form-select">
@@ -390,7 +390,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="form-label">Jenis Peralatan</label>
                     <div class="input-group">
                         <select name="id_jenisperalatan" class="form-select">
@@ -405,17 +405,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <label class="form-label">Kategori User</label>
-                    <select name="id_kategoriuser" class="form-select">
-                        <option value="">-- Pilih --</option>
-                        <?php foreach ($kategoriuser as $ku): ?>
-                            <option value="<?= $ku['id_kategoriuser'] ?>">
-                                Dalaman: <?= $ku['jenis_dalaman'] ?> | Umum: <?= $ku['jenis_umum'] ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
+                <div class="col-md-12">
+                    <label class="form-label">Kategori Jenis Pengguna:</label>
+                    <div class="row">
+                        <!-- Jenis Dalaman -->
+                        <div class="col-md-6 mb-1">
+                            <p style="font-weight: 500; font-size: 14px">Dalaman (Jabatan/Bahagian)</p>
+                            <select name="jenis_dalaman" class="form-select">
+                                <option value="">-- Pilih --</option>
+                                <option value="1">Ya</option>
+                                <option value="0">Tidak</option>
+                            </select>
+                        </div>
+                        <!-- Jenis Umum -->
+                        <div class="col-md-6 mb-1">
+                            <p style="font-weight: 500; font-size: 14px">Umum (Orang Awam)</p>
+                            <select name="jenis_umum" class="form-select">
+                                <option value="">-- Pilih --</option>
+                                <option value="1">Ya</option>
+                                <option value="0">Tidak</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" name="id_kategoriuser" id="id_kategoriuser_hidden">
                 </div>
+                <script>
+                    const kategoriData = <?= json_encode($kategoriuser) ?>;
+
+                    document.querySelector("select[name='jenis_dalaman']").addEventListener('change', updateKategoriUser);
+                    document.querySelector("select[name='jenis_umum']").addEventListener('change', updateKategoriUser);
+
+                    function updateKategoriUser() {
+                        const d = document.querySelector("select[name='jenis_dalaman']").value;
+                        const u = document.querySelector("select[name='jenis_umum']").value;
+
+                        // Cari id_kategoriuser matching pilihan
+                        const match = kategoriData.find(k =>
+                            k.jenis_dalaman == d && k.jenis_umum == u
+                        );
+
+                        document.getElementById("id_kategoriuser_hidden").value =
+                            match ? match.id_kategoriuser : "";
+                    }
+                </script>
 
                 <div class="col-md-6">
                     <label class="form-label">Bahasa Pengaturcaraan</label>
@@ -423,17 +455,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Pangkalan Data</label>
+                    <label class="form-label">Jenis Pangkalan Data</label>
                     <textarea name="pangkalan_data" class="form-control" rows="2"></textarea>
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Rangkaian</label>
+                    <label class="form-label">Rangkaian Digunakan</label>
                     <textarea name="rangkaian" class="form-control" rows="2"></textarea>
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Integrasi</label>
+                    <label class="form-label">Integrasi (Sistem Lain)</label>
                     <textarea name="integrasi" class="form-control" rows="2"></textarea>
                 </div>
 
@@ -473,12 +505,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Lokasi</label>
+                    <label class="form-label">Lokasi Diletakkan (Bangunan, Aras, Unit)</label>
                     <input type="text" name="lokasi" class="form-control">
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">No Siri</label>
+                    <label class="form-label">Nombor Siri / ID</label>
                     <input type="text" name="no_siri" class="form-control">
                 </div>
 
@@ -498,7 +530,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="col-md-8">
-                    <label class="form-label">Jenis Penyelenggaraan</label>
+                    <label class="form-label">Kaedah Penyelenggaraan</label>
                     <select name="id_penyelenggaraan" class="form-select">
                         <option value="">-- Pilih Bahagian / Unit --</option>
                         <?php foreach ($penyelenggaraan as $py): ?>
@@ -564,7 +596,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <?php
                 $pegawai_fields = [
-                    "nama_ketua" => "Nama Ketua",
+                    "nama_ketua" => "Nama Ketua Bahagian",
                     "nama_cio" => "Nama CIO",
                     "nama_ictso" => "Nama ICTSO"
                 ];
@@ -581,7 +613,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endforeach; ?>
 
                 <div class="col-md-6">
-                    <label class="form-label">Pengurus Akses</label>
+                    <label class="form-label">Pengurus Akses Pengguna</label>
                     <select name="pengurus_akses" class="form-select">
                         <option value="">-- Pilih Bahagian / Unit --</option>
                         <?php foreach ($bahagianunit as $b): ?>
@@ -601,7 +633,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="col-md-12">
-                    <label class="form-label">Carta</label>
+                    <label class="form-label">Carta Organisasi</label>
                     <select name="id_carta" class="form-select">
                         <option value="">-- Pilih Carta --</option>
                         <?php foreach ($carta as $c): ?>
@@ -740,10 +772,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="modal-body">
                     <label class="form-label">Nama PIC</label>
-                    <input type="text" name="new_nama_PIC" class="form-control" required>
+                    <input type="text" name="new_nama_PIC" class="form-control">
                     
                     <label class="form-label mt-2">Emel</label>
-                    <input type="email" name="new_emel_PIC" class="form-control" required>
+                    <input type="email" name="new_emel_PIC" class="form-control">
                     
                     <label class="form-label mt-2">No Telefon</label>
                     <input type="text" name="new_notelefon_PIC" class="form-control">

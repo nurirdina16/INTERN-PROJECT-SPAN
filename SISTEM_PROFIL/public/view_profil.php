@@ -213,7 +213,7 @@ if (!$data) {
                 </div>
 
                 <div class="info-row">
-                    <div class="info-label">Integrasi Sistem Lain</div>
+                    <div class="info-label">Integrasi (Sistem Lain)</div>
                     <div class="info-value"><?= $data['integrasi']; ?></div>
                 </div>
 

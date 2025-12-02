@@ -15,10 +15,10 @@ $profil_list = [];
 $display_add_button = false;
 
 if ($selectedJenis) {
-    if ($selectedJenis == 3) { // PEMBEKAL
+    if ($selectedJenis == 2) { // PEMBEKAL
         $stmt = $pdo->query("SELECT id_pembekal AS id, nama_syarikat AS nama FROM lookup_pembekal ORDER BY nama_syarikat ASC");
         $profil_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } elseif ($selectedJenis == 4) { // PENGGUNA
+    } elseif ($selectedJenis == 1) { // PENGGUNA
         $stmt = $pdo->query("SELECT id_userprofile AS id, nama_user AS nama FROM lookup_userprofile ORDER BY nama_user ASC");
         $profil_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $display_add_button = true; // show add button for pengguna
@@ -134,10 +134,10 @@ if ($selectedJenis) {
                                     <td class="text-center"><?= $index + 1 ?></td>
                                     <td><?= htmlspecialchars($p['nama']) ?></td>
                                     <td class="text-center">
-                                        <a href="<?= $selectedJenis == 3 ? 'view_supplier.php?id=' . $p['id'] : ($selectedJenis == 4 ? 'view_pengguna.php?id=' . $p['id'] : 'view_profil.php?id=' . $p['id']) ?>" class="btn btn-sm btn-info">
+                                        <a href="<?= $selectedJenis == 2 ? 'view_supplier.php?id=' . $p['id'] : ($selectedJenis == 1 ? 'view_pengguna.php?id=' . $p['id'] : 'view_profil.php?id=' . $p['id']) ?>" class="btn btn-sm btn-info">
                                             <i class="bi bi-eye"></i> View
                                         </a>
-                                        <a href="<?= $selectedJenis == 3 ? 'delete_supplier.php?id=' . $p['id'] : ($selectedJenis == 4 ? 'delete_pengguna.php?id=' . $p['id'] : 'delete_profil.php?id=' . $p['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Adakah anda pasti mahu padam?')">
+                                        <a href="<?= $selectedJenis == 2 ? 'delete_supplier.php?id=' . $p['id'] : ($selectedJenis == 1 ? 'delete_pengguna.php?id=' . $p['id'] : 'delete_profil.php?id=' . $p['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Adakah anda pasti mahu padam?')">
                                             <i class="bi bi-trash"></i> Delete
                                         </a>
                                     </td>
