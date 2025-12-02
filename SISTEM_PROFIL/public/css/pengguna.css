@@ -1,71 +1,108 @@
+/* Main page header */
 .main-header {
-  background: linear-gradient(90deg, #006EA0, #0096C7);
-  color: #fff;
+  color: #004b73;
   font-weight: 700;
-  font-size: 26px;
+  font-size: 24px;
   padding: 18px 25px;
   border-radius: 10px;
   display: flex;
   align-items: center;
   gap: 10px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
-/* Card Improvement */
-.section-card {
+/* Card that wraps the whole form */
+.tambah-pengguna-card {
   background: #ffffff;
-  border-radius: 12px;
-  padding: 30px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-radius: 14px;
+  padding: 35px 45px;
+  width: 100%;
+  max-width: none; /* Make form wider */
+  margin: 0 auto;    /* Center the form */
 }
 
-/* Section Title */
-.section-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #005f85;
-  position: relative;
-  padding-bottom: 8px;
-}
-.section-title::after {
-  content: "";
-  width: 50px;
-  height: 4px;
-  background: #0096C7;
-  border-radius: 2px;
-  position: absolute;
-  left: 0;
-  bottom: 0;
+/* ================================
+   FORM FIELD LAYOUT
+   ================================ */
+
+form .row {
+  margin-top: 10px;
 }
 
-/* Input Styling */
-.form-input {
-  border-radius: 8px !important;
-  padding: 10px 14px !important;
-}
-.form-input:focus {
-  border-color: #0096C7 !important;
-  box-shadow: 0 0 0 0.15rem rgba(0,150,199,0.25) !important;
-}
-
-.form-icon {
-  background: #eaf4fa;
-  border-radius: 8px 0 0 8px !important;
-  color: #006EA0;
-}
-
-/* Save Button */
-.btn-save {
-  background: linear-gradient(90deg, #006EA0, #0096C7);
-  border: none;
-  color: #fff;
+form label {
   font-weight: 600;
-  border-radius: 8px;
-}
-.btn-save:hover {
-  opacity: 0.9;
+  color: #003d5c;
+  margin-bottom: 6px;
 }
 
-.fade-alert {
-  transition: opacity 0.8s ease;
+form .form-control,
+form select.form-control {
+  border-radius: 10px;
+  padding: 10px 14px;
+  border: 1px solid #b8c6d1;
+  transition: all 0.2s ease-in-out;
+}
+
+form .form-control:focus {
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0,120,182,0.2);
+}
+
+/* ================================
+   BUTTON STYLING
+   ================================ */
+
+.btn-primary {
+  background-color: #0077b6;
+  border-radius: 10px;
+  padding: 10px 22px;
+  font-weight: 600;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #005f8b;
+}
+
+.btn-secondary {
+  border-radius: 10px;
+  padding: 10px 22px;
+  font-weight: 600;
+}
+
+/* ================================
+   SECTION TITLE (inside card)
+   ================================ */
+
+.section-title {
+  font-size: 20px !important;
+  font-weight: 700;
+  color: #004b73 !important;
+  margin-left: 5px;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Increase gap from left boundary */
+.profil-card {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+/* ================================
+   RESPONSIVE ADJUSTMENT
+   ================================ */
+
+@media (max-width: 768px) {
+  .tambah-pengguna-card {
+    padding: 25px 25px;
+  }
+
+  .main-header {
+    margin-left: 0;
+    font-size: 20px;
+  }
 }

@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/sidebar.css">
     
-    <link rel="stylesheet" href="css/profil.css">
+    <link rel="stylesheet" href="css/pengguna.css">
 
     <script src="js/sidebar.js" defer></script> 
 </head>
@@ -78,9 +78,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="content">
         <?php include 'header.php'; ?>
 
-        <div class="main-header mt-4 mb-1"><i class="bi bi-person-plus"></i> Tambah Pengguna</div>
+        <div class="main-header mt-4 mb-2"><i class="bi bi-person-plus"></i> Tambah Pengguna</div>
 
-        <div class="profil-card shadow-sm p-4 tambah-pengguna-card" style="margin-left: 0;">
+        <div class="profil-card shadow-sm p-6 tambah-pengguna-card">
             <!-- Alerts -->
             <div id="alert-container" style="position: fixed; top: 20px; right: 20px; z-index: 1050; min-width: 300px;">
                 <?php if ($success): ?>
@@ -158,7 +158,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Simpan</button>
                 </div>
             </form>
-        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
