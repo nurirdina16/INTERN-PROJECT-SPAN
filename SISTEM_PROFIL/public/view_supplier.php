@@ -74,17 +74,34 @@ try {
 
                 <div class="info-row">
                     <div class="info-label">Nama Syarikat</div>
-                    <div class="info-value"><?= $data['nama_syarikat']; ?></div>
+                    <div class="info-value"><?= htmlspecialchars($data['nama_syarikat']); ?></div>
                 </div>
 
                 <div class="info-row">
                     <div class="info-label">Alamat Syarikat</div>
-                    <div class="info-value"><?= $data['alamat_syarikat']; ?></div>
+                    <div class="info-value">
+                        <?php
+                            // Combine address neatly
+                            $alamat_full = htmlspecialchars($data['alamat1']);
+
+                            if (!empty($data['alamat2'])) {
+                                $alamat_full .= "<br>" . htmlspecialchars($data['alamat2']);
+                            }
+
+                            $alamat_full .= "<br>" .
+                                            htmlspecialchars($data['poskod']) . " " .
+                                            htmlspecialchars($data['bandar']);
+
+                            $alamat_full .= "<br>" . htmlspecialchars($data['negeri']);
+
+                            echo $alamat_full;
+                        ?>
+                    </div>
                 </div>
 
                 <div class="info-row">
-                    <div class="info-label">Tempoh Kontrak</div>
-                    <div class="info-value"><?= $data['tempoh_kontrak']; ?></div>
+                    <div class="info-label">Tempoh Kontrak (Tahun)</div>
+                    <div class="info-value"><?= htmlspecialchars($data['tempoh_kontrak']); ?></div>
                 </div>
             </div>
 

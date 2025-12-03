@@ -86,23 +86,40 @@ if (isset($_POST['save_jenisperalatan'])) {
 if (isset($_POST['save_pembekal'])) {
     try {
         $stmt = $pdo->prepare("
-            INSERT INTO lookup_pembekal (nama_syarikat, alamat_syarikat, tempoh_kontrak, id_PIC)
-            VALUES (:nama_syarikat, :alamat_syarikat, :tempoh_kontrak, :id_PIC)
+            INSERT INTO lookup_pembekal (
+                nama_syarikat, 
+                alamat1, alamat2, poskod, bandar, negeri,
+                tempoh_kontrak, 
+                id_PIC
+            ) VALUES (
+                :nama_syarikat, 
+                :alamat1, :alamat2, :poskod, :bandar, :negeri,
+                :tempoh_kontrak,
+                :id_PIC
+            )
         ");
+
         $stmt->execute([
             ':nama_syarikat' => $_POST['new_nama_syarikat'],
-            ':alamat_syarikat' => $_POST['new_alamat_syarikat'] ?? null,
-            ':tempoh_kontrak' => $_POST['new_tempoh_kontrak'] ?? null,
-            ':id_PIC' => $_POST['new_id_PIC'] ?: null
+            ':alamat1'       => $_POST['new_alamat1'] ?? null,
+            ':alamat2'       => $_POST['new_alamat2'] ?? null,
+            ':poskod'        => $_POST['new_poskod'] ?? null,
+            ':bandar'        => $_POST['new_bandar'] ?? null,
+            ':negeri'        => $_POST['new_negeri'] ?? null,
+            ':tempoh_kontrak'=> $_POST['new_tempoh_kontrak'] ?? null,
+            ':id_PIC'        => $_POST['new_id_PIC'] ?: null
         ]);
-        // Refresh dropdown
+
+        // refresh dropdown
         $pembekal = $pdo->query("SELECT * FROM lookup_pembekal")->fetchAll(PDO::FETCH_ASSOC);
+
         $alert_type = 'success';
         $alert_message = 'Pembekal berjaya ditambah!';
     } catch (Exception $e) {
         $alert_type = 'danger';
         $alert_message = 'Ralat: ' . $e->getMessage();
     }
+
     header("Location: daftar_profil.php");
     exit;
 }
@@ -733,14 +750,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <label class="form-label">Nama Syarikat</label>
+                    <!-- NAMA SYARIKAT -->
+                    <label class="form-label fw-semibold mt-3">Nama Syarikat</label>
                     <input type="text" name="new_nama_syarikat" class="form-control" required>
-                    <label class="form-label mt-2">Alamat Syarikat</label>
-                    <input type="text" name="new_alamat_syarikat" class="form-control">
-                    <label class="form-label mt-2">Tempoh Kontrak</label>
+                    <!-- ALAMAT -->
+                    <label class="form-label fw-semibold mt-3">Alamat Syarikat</label>
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <input type="text" name="new_alamat1" class="form-control" placeholder="Alamat Baris 1">
+                        </div>
+                        <div class="col-md-12">
+                            <input type="text" name="new_alamat2" class="form-control" placeholder="Alamat Baris 2 (jika ada)">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" name="new_poskod" class="form-control" placeholder="Poskod">
+                        </div>
+                        <div class="col-md-5">
+                            <input type="text" name="new_bandar" class="form-control" placeholder="Bandar">
+                        </div>
+                        <div class="col-md-3">
+                            <select name="new_negeri" class="form-select">
+                                <option value="">Negeri</option>
+                                <option>Johor</option>
+                                <option>Kedah</option>
+                                <option>Kelantan</option>
+                                <option>Melaka</option>
+                                <option>Negeri Sembilan</option>
+                                <option>Pahang</option>
+                                <option>Perak</option>
+                                <option>Perlis</option>
+                                <option>Pulau Pinang</option>
+                                <option>Sabah</option>
+                                <option>Sarawak</option>
+                                <option>Selangor</option>
+                                <option>Terengganu</option>
+                                <option>WP Kuala Lumpur</option>
+                                <option>WP Putrajaya</option>
+                                <option>WP Labuan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- TEMPOH KONTRAK -->
+                    <label class="form-label fw-semibold mt-3">Tempoh Kontrak</label>
                     <input type="text" name="new_tempoh_kontrak" class="form-control">
                     <!--PIC-->
-                    <label class="form-label mt-2">PIC</label>
+                    <label class="form-label fw-semibold mt-3">PIC</label>
                     <div class="input-group">
                         <select name="new_id_PIC" class="form-select">
                             <option value="">-- Pilih PIC --</option>

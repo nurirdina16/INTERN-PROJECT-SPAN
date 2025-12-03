@@ -73,9 +73,13 @@ try {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // PEMBEKAL
-    $nama_syarikat   = trim($_POST['nama_syarikat'] ?? '');
-    $alamat_syarikat = trim($_POST['alamat_syarikat'] ?? '');
-    $tempoh_kontrak  = trim($_POST['tempoh_kontrak'] ?? '');
+    $nama_syarikat = trim($_POST['nama_syarikat'] ?? '');
+    $alamat1       = trim($_POST['alamat1'] ?? '');
+    $alamat2       = trim($_POST['alamat2'] ?? '');
+    $poskod        = trim($_POST['poskod'] ?? '');
+    $bandar        = trim($_POST['bandar'] ?? '');
+    $negeri        = trim($_POST['negeri'] ?? '');
+    $tempoh_kontrak = trim($_POST['tempoh_kontrak'] ?? '');
 
     // id_PIC mungkin dihantar (hidden) atau kosong -> tangani
     $id_PIC_post = isset($_POST['id_PIC']) && $_POST['id_PIC'] !== '' ? intval($_POST['id_PIC']) : null;
@@ -159,27 +163,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // 2) Update pembekal (set id_PIC to final_id_PIC or NULL)
             $update = $pdo->prepare("
                 UPDATE lookup_pembekal
-                SET nama_syarikat = ?, alamat_syarikat = ?, tempoh_kontrak = ?, id_PIC = ?
+                SET nama_syarikat = ?, alamat1 = ?, alamat2 = ?, poskod = ?, bandar = ?, negeri = ?, tempoh_kontrak = ?, id_PIC = ?
                 WHERE id_pembekal = ?
             ");
 
-            // If final_id_PIC is null, pass NULL explicitly
-            if ($final_id_PIC === null) {
-                $update->bindValue(1, $nama_syarikat, PDO::PARAM_STR);
-                $update->bindValue(2, $alamat_syarikat, PDO::PARAM_STR);
-                $update->bindValue(3, $tempoh_kontrak, PDO::PARAM_STR);
-                $update->bindValue(4, null, PDO::PARAM_NULL);
-                $update->bindValue(5, $id, PDO::PARAM_INT);
-                $update->execute();
-            } else {
-                $update->execute([
-                    $nama_syarikat,
-                    $alamat_syarikat,
-                    $tempoh_kontrak,
-                    $final_id_PIC,
-                    $id
-                ]);
-            }
+            $update->execute([
+                $nama_syarikat,
+                $alamat1,
+                $alamat2,
+                $poskod,
+                $bandar,
+                $negeri,
+                $tempoh_kontrak,
+                $final_id_PIC, // kalau null pun OK
+                $id
+            ]);
 
             $pdo->commit();
 
@@ -243,18 +241,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="mb-3">
                 <label class="form-label">Nama Syarikat</label>
                 <input type="text" name="nama_syarikat" class="form-control" required
-                       value="<?= htmlspecialchars($data['nama_syarikat']); ?>">
+                    value="<?= htmlspecialchars($data['nama_syarikat']); ?>">
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Alamat Syarikat</label>
-                <textarea name="alamat_syarikat" class="form-control" rows="3" required><?= htmlspecialchars($data['alamat_syarikat']); ?></textarea>
+                <label class="form-label">Alamat 1</label>
+                <input type="text" name="alamat1" class="form-control" required
+                    value="<?= htmlspecialchars($data['alamat1']); ?>">
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Tempoh Kontrak</label>
+                <label class="form-label">Alamat 2</label>
+                <input type="text" name="alamat2" class="form-control"
+                    value="<?= htmlspecialchars($data['alamat2']); ?>">
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Poskod</label>
+                    <input type="text" name="poskod" class="form-control"
+                        value="<?= htmlspecialchars($data['poskod']); ?>">
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label">Bandar</label>
+                    <input type="text" name="bandar" class="form-control"
+                        value="<?= htmlspecialchars($data['bandar']); ?>">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Negeri</label>
+                    <input type="text" name="negeri" class="form-control"
+                        value="<?= htmlspecialchars($data['negeri']); ?>">
+                </div>
+            </div>
+
+            <div class="mb-3 mt-3">
+                <label class="form-label">Tempoh Kontrak (Tahun)</label>
                 <input type="text" name="tempoh_kontrak" class="form-control"
-                       value="<?= htmlspecialchars($data['tempoh_kontrak']); ?>">
+                    value="<?= htmlspecialchars($data['tempoh_kontrak']); ?>">
             </div>
         </div>
 
