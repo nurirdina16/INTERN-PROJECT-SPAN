@@ -1,0 +1,98 @@
+body{
+    background: #f4f7f9;
+}
+
+/* HEADER */
+.main-header {
+  color: #004b73;
+    background: #fff;
+  font-weight: 700;
+  font-size: 24px;
+  padding: 18px 25px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 25px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+/* Container */
+.dashboard-container {
+    padding: 30px;
+    min-height: 100vh;
+    border-radius: 12px;
+}
+
+/* Title */
+.dashboard-title {
+    font-weight: 700;
+    font-size: 22px;
+    color: #1f3d4e;
+    margin-bottom: 25px;
+}
+
+/* Dashboard Card */
+.dash-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 30px 20px;
+    text-align: center;
+    border: 1px solid #dbe7ed;
+    transition: all 0.25s ease;
+    position: relative;
+}
+
+/* Hover effect */
+.dash-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.10);
+    border-color: #b8d3dd;
+}
+
+/* Icon section */
+.dash-card-icon {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e7f4fa;
+    border-radius: 12px;
+    margin: 0 auto 15px auto;
+}
+
+.dash-card-icon i {
+    font-size: 26px;
+    color: #2f6f82;
+}
+
+/* Title */
+.dash-card-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #2b5564;
+    margin-bottom: 10px;
+}
+
+/* Number */
+.dash-card-number {
+    font-size: 42px;
+    font-weight: 800;
+    color: #204852;
+    margin: 15px 0;
+}
+
+/* Footer */
+.dash-card-footer {
+    font-size: 14px;
+    color: #4a707d;
+    opacity: 0.85;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dash-card-number {
+        font-size: 32px;
+    }
+}

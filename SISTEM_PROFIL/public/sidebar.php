@@ -10,8 +10,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <div class="title">S I S T E M &nbsp; P R O F I L</div>
 
     <!-- Dashboard -->
-    <a href="dashboard.php" 
-       class="nav-link <?= $current_page == 'dashboard.php' ? 'active' : '' ?>">
+    <a href="maindashboard.php" 
+       class="nav-link <?= $current_page == 'maindashboard.php' ? 'active' : '' ?>">
         <i class="bi bi-grid-1x2-fill"></i> Dashboard
     </a>
 

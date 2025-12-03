@@ -1,6 +1,3 @@
-<?php
-// header.php
-?>
 <head>
   <link rel="stylesheet" href="css/header.css">
 </head>
