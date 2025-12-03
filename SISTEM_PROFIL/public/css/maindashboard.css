@@ -1,98 +1,151 @@
-body{
-    background: #f4f7f9;
+/* ===== GLOBAL ===== */
+body {
+    background: #f2f6fa;
+    font-family: "Segoe UI", sans-serif;
+    color: #12384c;
 }
 
-/* HEADER */
+.content {
+    padding-right: 20px;
+}
+
+/* ===== PAGE TITLE ===== */
 .main-header {
-  color: #004b73;
-    background: #fff;
-  font-weight: 700;
-  font-size: 24px;
-  padding: 18px 25px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 25px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-}
-
-/* Container */
-.dashboard-container {
-    padding: 30px;
-    min-height: 100vh;
-    border-radius: 12px;
-}
-
-/* Title */
-.dashboard-title {
+    color: #0c3c60;
+    background: #ffffff;
     font-weight: 700;
-    font-size: 22px;
-    color: #1f3d4e;
+    font-size: 24px;
+    padding: 18px 26px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 25px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
 }
 
-/* Dashboard Card */
+/* ===== DASHBOARD CONTAINER ===== */
+.dashboard-container {
+    padding: 10px 10px 40px 10px;
+}
+
+/* ===== KPI GRID ===== */
+.kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 22px;
+    margin-bottom: 30px;
+}
+
+/* ===== KPI CARD ===== */
 .dash-card {
     background: #ffffff;
     border-radius: 18px;
-    padding: 30px 20px;
+    padding: 28px 25px;
     text-align: center;
-    border: 1px solid #dbe7ed;
-    transition: all 0.25s ease;
-    position: relative;
+    border: 1px solid #d3e0ea;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    transition: 0.25s ease;
 }
 
-/* Hover effect */
 .dash-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.10);
-    border-color: #b8d3dd;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.12);
 }
 
-/* Icon section */
+/* ICON */
 .dash-card-icon {
-    width: 55px;
-    height: 55px;
+    width: 60px;
+    height: 60px;
+    background: #eaf4ff;
+    border-radius: 14px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    background: #e7f4fa;
-    border-radius: 12px;
-    margin: 0 auto 15px auto;
+    align-items: center;
+    margin: 0 auto 14px;
 }
 
 .dash-card-icon i {
-    font-size: 26px;
-    color: #2f6f82;
+    font-size: 28px;
+    color: #0c3c60;
 }
 
-/* Title */
+/* TEXTS */
 .dash-card-title {
     font-size: 17px;
     font-weight: 600;
-    color: #2b5564;
-    margin-bottom: 10px;
+    margin-top: 6px;
+    color: #0c3c60;
 }
 
-/* Number */
 .dash-card-number {
-    font-size: 42px;
+    font-size: 38px;
     font-weight: 800;
-    color: #204852;
-    margin: 15px 0;
+    margin: 12px 0 5px;
+    color: #1b2e46;
 }
 
-/* Footer */
 .dash-card-footer {
     font-size: 14px;
-    color: #4a707d;
-    opacity: 0.85;
+    opacity: 0.7;
 }
 
-/* Responsive */
+/* ===== CHART + TABLE SECTION ===== */
+.section-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 25px;
+    margin-bottom: 35px;
+}
+
+/* ===== GENERIC CARD WRAPPER ===== */
+.card {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #cfe0eb;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+    padding: 20px;
+}
+
+.card h5 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0c3c60;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ===== TABLE ===== */
+.table {
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.table thead {
+    background: #0c3c60;
+    color: white;
+}
+
+.table-striped tbody tr:nth-child(even) td {
+    background: #f4f8fc;
+}
+
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
+    .main-header {
+        font-size: 20px;
+        padding: 14px 18px;
+    }
+
     .dash-card-number {
-        font-size: 32px;
+        font-size: 26px;
+    }
+
+    .section-row {
+        grid-template-columns: 1fr;
     }
 }

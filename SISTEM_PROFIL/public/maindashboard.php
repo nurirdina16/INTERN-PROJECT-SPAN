@@ -57,6 +57,41 @@ foreach ($jenis_list as $row) {
     ];
 }
 
+/* =====================  STATUS PROFIL (PIE CHART) ===================== */
+$stmtStatus = $pdo->query("
+    SELECT ls.status, COUNT(*) AS jumlah
+    FROM profil p
+    JOIN lookup_status ls ON p.id_status = ls.id_status
+    GROUP BY ls.status
+");
+$statusData = $stmtStatus->fetchAll(PDO::FETCH_ASSOC);
+
+
+/* =====================  PROFIL MENGIKUT BAHAGIAN (BAR CHART) ===================== */
+$stmtBahagian = $pdo->query("
+    SELECT bu.bahagianunit, COUNT(*) AS jumlah
+    FROM profil p
+    JOIN lookup_bahagianunit bu ON p.id_pemilik_profil = bu.id_bahagianunit
+    GROUP BY bu.bahagianunit
+    ORDER BY jumlah DESC
+");
+$bahagianData = $stmtBahagian->fetchAll(PDO::FETCH_ASSOC);
+
+
+/* =====================  KAEDAH PEMBANGUNAN (DONUT CHART) ===================== */
+$stmtKaedah = $pdo->query("
+    SELECT kp.kaedahPembangunan, COUNT(*) AS jumlah
+    FROM profil p
+    JOIN lookup_kaedahpembangunan kp ON p.id_kaedahpembangunan = kp.id_kaedahPembangunan
+    GROUP BY kp.kaedahPembangunan
+");
+$kaedahData = $stmtKaedah->fetchAll(PDO::FETCH_ASSOC);
+
+
+/* =====================  JUMLAH SEMUA SISTEM ===================== */
+$stmtTotalAll = $pdo->query("SELECT COUNT(*) AS total_semua FROM profil");
+$total_semua = $stmtTotalAll->fetch(PDO::FETCH_ASSOC)['total_semua'];
+
 ?>
 
 
@@ -74,6 +109,7 @@ foreach ($jenis_list as $row) {
     <link rel="stylesheet" href="css/maindashboard.css">
     
     <script src="js/sidebar.js" defer></script> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -86,71 +122,195 @@ foreach ($jenis_list as $row) {
 
         <div class="dashboard-container">
 
-            <div class="row mt-4">
-                <!-- JUMLAH EACH JENIS PROFIL -->
-                <div class="col-md-6">
-                    <div class="row g-4">
-                        <?php foreach ($data_kiraan as $item): ?>
-                            <div class="col-md-12">
-                                <div class="dash-card shadow-sm">
-
-                                    <div class="dash-card-icon">
-                                        <i class="bi bi-grid-fill"></i>
-                                    </div>
-
-                                    <div class="dash-card-title">
-                                        <?= htmlspecialchars($item['jenisprofil']); ?>
-                                    </div>
-
-                                    <div class="dash-card-number">
-                                        <?= $item['jumlah']; ?>
-                                    </div>
-
-                                    <div class="dash-card-footer">
-                                        Jumlah Rekod
-                                    </div>
-
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
+            <!-- ===== KPI CARD ROW ===== -->
+            <div class="kpi-row">
+                
+                <!-- TOTAL SISTEM -->
+                <div class="dash-card bg-primary text-white">
+                    <div class="dash-card-icon">
+                        <i class="bi bi-collection"></i>
                     </div>
+                    <div class="dash-card-title text-white">Jumlah Keseluruhan Sistem</div>
+                    <div class="dash-card-number"><?= $total_semua ?></div>
+                    <div class="dash-card-footer text-white-50">Semua Jenis Profil</div>
                 </div>
 
-                <!-- TABLE TAHUN PEMBANGUNAN -->
-                <div class="col-md-6">
-                    <div class="card shadow-sm p-3">
-                        <h5 class="mb-3"><i class="bi bi-calendar-range"></i> Rekod Mengikut Tahun Pembangunan</h5>
-
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Jenis Profil</th>
-                                    <?php foreach ($years as $yr): ?>
-                                        <th><?= $yr ?></th>
-                                    <?php endforeach; ?>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($data_kiraan as $item): ?>
-                                    <tr>
-                                        <td><?= htmlspecialchars($item['jenisprofil']); ?></td>
-
-                                        <?php foreach ($years as $yr): ?>
-                                            <td><?= $item['tahunData'][$yr] ?></td>
-                                        <?php endforeach; ?>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                <!-- EACH PROFILE CATEGORY -->
+                <?php foreach ($data_kiraan as $item): ?>
+                    <div class="dash-card">
+                        <div class="dash-card-icon">
+                            <i class="bi bi-grid-fill"></i>
+                        </div>
+                        <div class="dash-card-title"><?= htmlspecialchars($item['jenisprofil']); ?></div>
+                        <div class="dash-card-number"><?= $item['jumlah']; ?></div>
+                        <div class="dash-card-footer">Jumlah Rekod</div>
                     </div>
-                </div>
-
-                <!-- LINE GRAPH TAHUN PEMBANGUNAN -->
+                <?php endforeach; ?>
 
             </div>
-      
+
+            <!-- ===== TABLE & BAR GRAPH ROW ===== -->
+            <div class="section-row">
+                <div class="card">
+                    <h5><i class="bi bi-calendar-range"></i> Rekod Mengikut Tahun Pembangunan</h5>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Jenis Profil</th>
+                                <?php foreach ($years as $yr): ?>
+                                    <th><?= $yr ?></th>
+                                <?php endforeach; ?>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($data_kiraan as $item): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($item['jenisprofil']); ?></td>
+                                    <?php foreach ($years as $yr): ?>
+                                        <td><?= $item['tahunData'][$yr] ?></td>
+                                    <?php endforeach; ?>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h5><i class="bi bi-bar-chart"></i> Graf Pembangunan Profil</h5>
+                    <canvas id="profilChart"></canvas>
+                </div>
+            </div>
+
+            <!-- ===== PIE + BAR CHART ROW ===== -->
+            <div class="section-row">
+                <div class="card">
+                    <h5><i class="bi bi-pie-chart"></i> Status Profil</h5>
+                    <canvas id="statusChart"></canvas>
+                </div>
+
+                <div class="card">
+                    <h5><i class="bi bi-building"></i> Profil Mengikut Bahagian/Unit</h5>
+                    <canvas id="bahagianChart"></canvas>
+                </div>
+            </div>
+
+            <!-- ===== DONUT CHART ===== -->
+            <div class="section-row">
+                <div class="card">
+                    <h5><i class="bi bi-diagram-3"></i> Kaedah Pembangunan</h5>
+                    <canvas id="kaedahChart"></canvas>
+                </div>
+            </div>
+
         </div>
+
     </div>
+
+    <script>
+        const labels = <?= json_encode($years) ?>;
+
+        const datasets = [
+            <?php foreach($data_kiraan as $item): ?>
+            {
+                label: <?= json_encode($item['jenisprofil']) ?>,
+                data: <?= json_encode(array_values($item['tahunData'])) ?>,
+                backgroundColor: 'rgba(<?= rand(0,255) ?>, <?= rand(0,255) ?>, <?= rand(0,255) ?>, 0.5)',
+                borderColor: 'rgba(0,0,0,0.7)',
+                borderWidth: 1
+            },
+            <?php endforeach; ?>
+        ];
+
+        const ctx = document.getElementById('profilChart').getContext('2d');
+        const profilChart = new Chart(ctx, {
+            type: 'bar', // boleh tukar ke 'line' kalau mahu line chart
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Jumlah Profil Mengikut Tahun'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+    <script>
+        // ================= PIE CHART STATUS =================
+        const statusLabels = <?= json_encode(array_column($statusData, 'status')) ?>;
+        const statusCounts = <?= json_encode(array_column($statusData, 'jumlah')) ?>;
+
+        new Chart(document.getElementById("statusChart"), {
+            type: 'pie',
+            data: {
+                labels: statusLabels,
+                datasets: [{
+                    data: statusCounts,
+                    backgroundColor: statusLabels.map(() => 
+                        'rgba(' + Math.floor(Math.random()*255) + ',' + 
+                        Math.floor(Math.random()*255) + ',' + 
+                        Math.floor(Math.random()*255) + ', 0.7)'
+                    )
+                }]
+            }
+        });
+
+        // ================= BAR CHART BAHAGIAN UNIT =================
+        const bahagianLabels = <?= json_encode(array_column($bahagianData, 'bahagianunit')) ?>;
+        const bahagianCounts = <?= json_encode(array_column($bahagianData, 'jumlah')) ?>;
+
+        new Chart(document.getElementById("bahagianChart"), {
+            type: 'bar',
+            data: {
+                labels: bahagianLabels,
+                datasets: [{
+                    label: 'Bilangan Profil',
+                    data: bahagianCounts,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // ================= DONUT CHART KAEDAH PEMBANGUNAN =================
+        const kaedahLabels = <?= json_encode(array_column($kaedahData, 'kaedahPembangunan')) ?>;
+        const kaedahCounts = <?= json_encode(array_column($kaedahData, 'jumlah')) ?>;
+
+        new Chart(document.getElementById("kaedahChart"), {
+            type: 'doughnut',
+            data: {
+                labels: kaedahLabels,
+                datasets: [{
+                    data: kaedahCounts,
+                    backgroundColor: kaedahLabels.map(() => 
+                        'rgba(' + Math.floor(Math.random()*255) + ',' + 
+                        Math.floor(Math.random()*255) + ',' + 
+                        Math.floor(Math.random()*255) + ', 0.7)'
+                    )
+                }]
+            }
+        });
+    </script>
 
 </body>
 </html>
