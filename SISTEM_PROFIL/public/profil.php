@@ -14,26 +14,65 @@ $selectedJenis = $_GET['id_jenisprofil'] ?? null;
 $profil_list = [];
 $display_add_button = false;
 
+// Get jenisprofil name for selected option
+$jenisNama = null;
 if ($selectedJenis) {
-    if ($selectedJenis == 2) { // PEMBEKAL
-        $stmt = $pdo->query("SELECT id_pembekal AS id, nama_syarikat AS nama FROM lookup_pembekal ORDER BY nama_syarikat ASC");
+    $stmt = $pdo->prepare("SELECT jenisprofil FROM lookup_jenisprofil WHERE id_jenisprofil = :id");
+    $stmt->execute([':id' => $selectedJenis]);
+    $jenisNama = $stmt->fetchColumn();
+}
+
+if ($selectedJenis) {
+    if ($selectedJenis == 2) { 
+        $stmt = $pdo->query("
+            SELECT 
+                id_pembekal AS id, 
+                nama_syarikat AS nama,
+                '$jenisNama' AS jenisprofil
+            FROM lookup_pembekal 
+            ORDER BY nama_syarikat ASC
+        ");
         $profil_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } elseif ($selectedJenis == 1) { // PENGGUNA
-        $stmt = $pdo->query("SELECT id_userprofile AS id, nama_user AS nama FROM lookup_userprofile ORDER BY nama_user ASC");
+
+    } elseif ($selectedJenis == 1) { 
+        $stmt = $pdo->query("
+            SELECT 
+                id_userprofile AS id, 
+                nama_user AS nama,
+                '$jenisNama' AS jenisprofil
+            FROM lookup_userprofile 
+            ORDER BY nama_user ASC
+        ");
         $profil_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $display_add_button = true; // show add button for pengguna
+        $display_add_button = true;
     } else { 
         // NORMAL CASE: existing profil table
         $stmt = $pdo->prepare("
-            SELECT p.id_profil AS id, p.nama_profil AS nama, s.status
+            SELECT 
+                p.id_profil AS id, 
+                p.nama_profil AS nama, 
+                s.status,
+                jp.jenisprofil
             FROM profil p
             LEFT JOIN lookup_status s ON p.id_status = s.id_status
+            LEFT JOIN lookup_jenisprofil jp ON jp.id_jenisprofil = p.id_jenisprofil
             WHERE p.id_jenisprofil = :id_jenisprofil
             ORDER BY p.created_at DESC
         ");
         $stmt->execute([':id_jenisprofil' => $selectedJenis]);
         $profil_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+} else {
+    // PAPAR SEMUA PROFIL
+    $stmt = $pdo->query("
+        SELECT p.id_profil AS id, p.nama_profil AS nama, s.status, jp.jenisprofil
+        FROM profil p
+        LEFT JOIN lookup_status s ON p.id_status = s.id_status
+        LEFT JOIN lookup_jenisprofil jp ON p.id_jenisprofil = jp.id_jenisprofil
+        ORDER BY p.created_at DESC
+    ");
+    $profil_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 ?>
@@ -118,39 +157,39 @@ if ($selectedJenis) {
             </form>
 
             <!-- Profil Table -->
-            <?php if ($selectedJenis): ?>
-                <table class="table table-hover align-middle sistem-table">
-                    <thead>
-                        <tr>
-                            <th class="text-center" style="width:10%">#</th>
-                            <th>Nama</th>
-                            <th class="text-center" style="width:25%">Tindakan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if ($profil_list): ?>
-                            <?php foreach ($profil_list as $index => $p): ?>
-                                <tr>
-                                    <td class="text-center"><?= $index + 1 ?></td>
-                                    <td><?= htmlspecialchars($p['nama']) ?></td>
-                                    <td class="text-center">
-                                        <a href="<?= $selectedJenis == 2 ? 'view_supplier.php?id=' . $p['id'] : ($selectedJenis == 1 ? 'view_pengguna.php?id=' . $p['id'] : 'view_profil.php?id=' . $p['id']) ?>" class="btn btn-sm btn-info">
-                                            <i class="bi bi-eye"></i> View
-                                        </a>
-                                        <a href="<?= $selectedJenis == 2 ? 'delete_supplier.php?id=' . $p['id'] : ($selectedJenis == 1 ? 'delete_pengguna.php?id=' . $p['id'] : 'delete_profil.php?id=' . $p['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Adakah anda pasti mahu padam?')">
-                                            <i class="bi bi-trash"></i> Delete
-                                        </a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
+            <table class="table table-hover align-middle sistem-table">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="width:10%">#</th>
+                        <th>Nama</th>
+                        <th class="text-center" style="width:20%">Jenis Profil</th>
+                        <th class="text-center" style="width:20%">Tindakan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($profil_list): ?>
+                        <?php foreach ($profil_list as $index => $p): ?>
                             <tr>
-                                <td colspan="3" class="text-center">Tiada data dijumpai.</td>
+                                <td class="text-center"><?= $index + 1 ?></td>
+                                <td><?= htmlspecialchars($p['nama']) ?></td>
+                                <td class="text-center"><?= htmlspecialchars($p['jenisprofil'] ?? '-') ?></td>
+                                <td class="text-center">
+                                    <a href="<?= $selectedJenis == 2 ? 'view_supplier.php?id=' . $p['id'] : ($selectedJenis == 1 ? 'view_pengguna.php?id=' . $p['id'] : 'view_profil.php?id=' . $p['id']) ?>" class="btn btn-sm btn-info">
+                                        <i class="bi bi-eye"></i> View
+                                    </a>
+                                    <a href="<?= $selectedJenis == 2 ? 'delete_supplier.php?id=' . $p['id'] : ($selectedJenis == 1 ? 'delete_pengguna.php?id=' . $p['id'] : 'delete_profil.php?id=' . $p['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Adakah anda pasti mahu padam?')">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+                                </td>
                             </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="3" class="text-center">Tiada data dijumpai.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 
