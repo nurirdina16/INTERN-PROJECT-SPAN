@@ -21,7 +21,7 @@ $sql = "
     JPE.jenis_peralatan,
     KU.jenis_dalaman, KU.jenis_umum,
     KP.kaedahPembangunan,
-    PB.nama_syarikat, PB.alamat_syarikat, PB.tempoh_kontrak,
+    PB.nama_syarikat, PB.alamat1, PB.alamat2, PB.poskod, PB.bandar, PB.negeri, PB.tempoh_kontrak,
     PIC.nama_PIC, PIC.jawatan_PIC, PIC.emel_PIC, PIC.notelefon_PIC,
     INH.bahagianunit AS inhouse_unit,
     PA.bahagianunit AS pengurus_akses_unit,
@@ -331,7 +331,9 @@ if (!$data) {
                 </div>
                 <div class="info-row">
                     <div class="info-label">Alamat Syarikat</div>
-                    <div class="info-value"><?= $data['alamat_syarikat']; ?></div>
+                    <div class="info-value">
+                        <?= htmlspecialchars($data['alamat1'] . ' ' . $data['alamat2'] . ', ' . $data['poskod'] . ' ' . $data['bandar'] . ', ' . $data['negeri']); ?>
+                    </div>
                 </div>
                 <div class="info-row">
                     <div class="info-label">Tempoh Kontrak (Tahun)</div>

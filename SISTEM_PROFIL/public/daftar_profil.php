@@ -208,7 +208,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'expired_warranty' => $_POST['expired_warranty'] ?: null,
 
             'id_kategori' => $_POST['id_kategori'] ?: null,
-            'id_jenisperalatan' => $_POST['id_jenisperalatan'] ?: null,
+            'id_jenisperalatan' => !empty($_POST['id_jenisperalatan']) ? $_POST['id_jenisperalatan'] : null,
             'id_kategoriuser' => $_POST['id_kategoriuser'] ?: null,
 
             'bahasa_pengaturcaraan' => $_POST['bahasa_pengaturcaraan'] ?? null,
@@ -221,8 +221,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'inhouse' => $_POST['inhouse'] ?: null,
 
             'lokasi' => $_POST['lokasi'] ?? null,
-            'no_siri' => $_POST['no_siri'] ?? null,
-            'jenama_model' => $_POST['jenama_model'] ?? null,
+            'no_siri' => !empty($_POST['no_siri']) ? $_POST['no_siri'] : null,
+            'jenama_model' => !empty($_POST['jenama_model']) ? $_POST['jenama_model'] : null,
 
             'bil_pengguna' => $_POST['bil_pengguna'] ?? null,
             'bil_modul' => $_POST['bil_modul'] ?? null,
@@ -299,7 +299,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
 
-        <form method="POST" class="section-card">
+        <form method="POST" class="section-card" autocomplete="off">
             <!-- MAKLUMAT ASAS -->
             <div class="row g-3 mb-4">
                 <div class="col-md-6">
@@ -528,12 +528,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="col-md-4">
                     <label class="form-label">Nombor Siri / ID</label>
-                    <input type="text" name="no_siri" class="form-control">
+                    <input type="text" name="no_siri" class="form-control" value="" autocomplete="off">
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">Jenama / Model</label>
-                    <input type="text" name="jenama_model" class="form-control">
+                    <input type="text" name="jenama_model" class="form-control" value="" autocomplete="off">
                 </div>
 
                 <div class="col-md-6">
