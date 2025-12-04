@@ -29,9 +29,12 @@ require_login();
     <?php include 'sidebar.php'; ?>
 
     <div class="content">
-        <?php include 'header.php'; ?>
+        <!-- FIXED HEADER + HOME -->
+        <div class="sticky-top bg-white py-2 mb-3 d-flex align-items-center justify-content-between shadow-sm px-3" style="z-index: 1050;">
+            <div style="flex: 1;"><?php include 'header.php'; ?></div>
+        </div>
             
-        <div class="main-header mt-4 mb-1"><i class="bi bi-pc-display"></i> Laporan Profil</div>
+        <div class="main-header mt-4 mb-3"><i class="bi bi-pc-display"></i> Laporan Profil</div>
 
         <div class="profil-card shadow-sm p-4">
 

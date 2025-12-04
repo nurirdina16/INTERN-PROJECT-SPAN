@@ -1,4 +1,9 @@
 /* STYLE FOR ALL OF THE PROFIL DISPLAY (sistem, peralatan, supplier, pengguna */
+body {
+    background: #f2f6fa;
+    font-family: "Segoe UI", sans-serif;
+    color: #12384c;
+}
 
 /* ===========================
    PROFIL SISTEM LISTING PAGE

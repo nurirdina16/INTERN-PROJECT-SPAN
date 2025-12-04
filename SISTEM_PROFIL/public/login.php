@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $kata_laluan = $_POST['kata_laluan'];
 
     if (login($emel, $kata_laluan)) {
-        header("Location: dashboard.php");
+        header("Location: maindashboard.php");
         exit;
     } else {
         $error = "Emel atau kata laluan tidak sah.";

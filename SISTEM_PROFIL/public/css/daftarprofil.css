@@ -1,5 +1,12 @@
-body{
-    background: #f4f7f9;
+/* ===== GLOBAL ===== */
+body {
+    background: #eef3f9;
+    font-family: "Segoe UI", sans-serif;
+    color: #0f2f45;
+}
+
+.content {
+    padding-right: 22px;
 }
 
 /* HEADER */

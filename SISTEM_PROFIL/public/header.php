@@ -17,7 +17,6 @@
 
       <!-- Dropdown -->
       <div class="profile-dropdown" id="profileDropdown">
-        <a href="user_profil.php">Profil</a>
         <a href="logout.php">Logout</a>
       </div>
   </div>

@@ -57,7 +57,7 @@ foreach ($jenis_list as $row) {
     ];
 }
 
-/* =====================  STATUS PROFIL (PIE CHART) ===================== */
+// STATUS PROFIL (PIE CHART)
 $stmtStatus = $pdo->query("
     SELECT ls.status, COUNT(*) AS jumlah
     FROM profil p
@@ -66,8 +66,7 @@ $stmtStatus = $pdo->query("
 ");
 $statusData = $stmtStatus->fetchAll(PDO::FETCH_ASSOC);
 
-
-/* =====================  PROFIL MENGIKUT BAHAGIAN (BAR CHART) ===================== */
+// PROFIL MENGIKUT BAHAGIAN (BAR CHART)
 $stmtBahagian = $pdo->query("
     SELECT bu.bahagianunit, COUNT(*) AS jumlah
     FROM profil p
@@ -77,8 +76,7 @@ $stmtBahagian = $pdo->query("
 ");
 $bahagianData = $stmtBahagian->fetchAll(PDO::FETCH_ASSOC);
 
-
-/* =====================  KAEDAH PEMBANGUNAN (DONUT CHART) ===================== */
+// KAEDAH PEMBANGUNAN (DONUT CHART)
 $stmtKaedah = $pdo->query("
     SELECT kp.kaedahPembangunan, COUNT(*) AS jumlah
     FROM profil p
@@ -87,8 +85,7 @@ $stmtKaedah = $pdo->query("
 ");
 $kaedahData = $stmtKaedah->fetchAll(PDO::FETCH_ASSOC);
 
-
-/* =====================  JUMLAH SEMUA SISTEM ===================== */
+// JUMLAH SEMUA SISTEM
 $stmtTotalAll = $pdo->query("SELECT COUNT(*) AS total_semua FROM profil");
 $total_semua = $stmtTotalAll->fetch(PDO::FETCH_ASSOC)['total_semua'];
 
@@ -99,7 +96,7 @@ $total_semua = $stmtTotalAll->fetch(PDO::FETCH_ASSOC)['total_semua'];
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <title>Daftar Profil | Sistem Profil</title>
+    <title>Dashboard | Sistem Profil</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     
@@ -116,23 +113,25 @@ $total_semua = $stmtTotalAll->fetch(PDO::FETCH_ASSOC)['total_semua'];
     <?php include 'sidebar.php'; ?>
 
     <div class="content">
-        <?php include 'header.php'; ?>
+        <!-- FIXED HEADER + HOME -->
+        <div class="sticky-top bg-white py-2 mb-3 d-flex align-items-center justify-content-between shadow-sm px-3" style="z-index: 1050;">
+            <div style="flex: 1;"><?php include 'header.php'; ?></div>
+        </div>
 
-        <div class="main-header mt-4 mb-1"><i class="bi bi-speedometer2"></i>Dashboard</div>
+        <div class="main-header mt-4 mb-2"><i class="bi bi-speedometer2"></i>Dashboard</div>
 
         <div class="dashboard-container">
 
             <!-- ===== KPI CARD ROW ===== -->
             <div class="kpi-row">
-                
                 <!-- TOTAL SISTEM -->
-                <div class="dash-card bg-primary text-white">
-                    <div class="dash-card-icon">
-                        <i class="bi bi-collection"></i>
+                <div class="dash-card" style="background: linear-gradient(135deg, #0b4f89, #0a3a63); color: white;">
+                    <div class="dash-card-icon" style="background: rgba(255,255,255,0.2);">
+                        <i class="bi bi-collection" style="color:white;"></i>
                     </div>
-                    <div class="dash-card-title text-white">Jumlah Keseluruhan Sistem</div>
-                    <div class="dash-card-number"><?= $total_semua ?></div>
-                    <div class="dash-card-footer text-white-50">Semua Jenis Profil</div>
+                    <div class="dash-card-title text-white">Jumlah Keseluruhan Profil</div>
+                    <div class="dash-card-number text-white"><?= $total_semua ?></div>
+                    <div class="dash-card-footer" style="color: #e1e8f0;">Semua Jenis Profil</div>
                 </div>
 
                 <!-- EACH PROFILE CATEGORY -->
@@ -146,11 +145,17 @@ $total_semua = $stmtTotalAll->fetch(PDO::FETCH_ASSOC)['total_semua'];
                         <div class="dash-card-footer">Jumlah Rekod</div>
                     </div>
                 <?php endforeach; ?>
-
             </div>
 
-            <!-- ===== TABLE & BAR GRAPH ROW ===== -->
+            <!-- GRAPHS -->
             <div class="section-row">
+                <!-- PIE CHART -->
+                <div class="card">
+                    <h5><i class="bi bi-pie-chart"></i> Status Profil</h5>
+                    <canvas id="statusChart"></canvas>
+                </div>
+
+                <!-- TABLE -->
                 <div class="card">
                     <h5><i class="bi bi-calendar-range"></i> Rekod Mengikut Tahun Pembangunan</h5>
                     <table class="table table-bordered table-striped">
@@ -173,37 +178,18 @@ $total_semua = $stmtTotalAll->fetch(PDO::FETCH_ASSOC)['total_semua'];
                             <?php endforeach; ?>
                         </tbody>
                     </table>
-                </div>
+                </div>                
+            </div>
 
+            <!-- BAR CHART -->
+            <div class="section-row">
                 <div class="card">
                     <h5><i class="bi bi-bar-chart"></i> Graf Pembangunan Profil</h5>
                     <canvas id="profilChart"></canvas>
                 </div>
             </div>
 
-            <!-- ===== PIE + BAR CHART ROW ===== -->
-            <div class="section-row">
-                <div class="card">
-                    <h5><i class="bi bi-pie-chart"></i> Status Profil</h5>
-                    <canvas id="statusChart"></canvas>
-                </div>
-
-                <div class="card">
-                    <h5><i class="bi bi-building"></i> Profil Mengikut Bahagian/Unit</h5>
-                    <canvas id="bahagianChart"></canvas>
-                </div>
-            </div>
-
-            <!-- ===== DONUT CHART ===== -->
-            <div class="section-row">
-                <div class="card">
-                    <h5><i class="bi bi-diagram-3"></i> Kaedah Pembangunan</h5>
-                    <canvas id="kaedahChart"></canvas>
-                </div>
-            </div>
-
         </div>
-
     </div>
 
     <script>

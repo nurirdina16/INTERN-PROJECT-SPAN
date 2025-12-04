@@ -1,3 +1,9 @@
+body {
+    background: #f2f6fa;
+    font-family: "Segoe UI", sans-serif;
+    color: #12384c;
+}
+
 /* Main page header */
 .main-header {
   color: #004b73;

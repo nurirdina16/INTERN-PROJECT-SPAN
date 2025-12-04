@@ -279,15 +279,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/daftarprofil.css">
     
     <script src="js/sidebar.js" defer></script> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
     <?php include 'sidebar.php'; ?>
 
     <div class="content">
-        <?php include 'header.php'; ?>
+        <!-- FIXED HEADER + HOME -->
+        <div class="sticky-top bg-white py-2 mb-3 d-flex align-items-center justify-content-between shadow-sm px-3" style="z-index: 1050;">
+            <div style="flex: 1;"><?php include 'header.php'; ?></div>
+        </div>
 
-        <div class="main-header mt-4 mb-1"><i class="bi bi-pc-display"></i>Daftar Profil</div>
+        <div class="main-header mt-4 mb-3"><i class="bi bi-pc-display"></i>Daftar Profil</div>
 
         <!-- Toast -->
         <div class="position-fixed top-0 end-0 p-3" style="z-index:1080;">

@@ -1,88 +1,95 @@
 /* ===== GLOBAL ===== */
 body {
-    background: #f2f6fa;
+    background: #eef3f9;
     font-family: "Segoe UI", sans-serif;
-    color: #12384c;
+    color: #0f2f45;
 }
 
 .content {
-    padding-right: 20px;
+    padding-right: 22px;
 }
 
-/* ===== PAGE TITLE ===== */
+/* FREEZE HEADER DALAM PAGE DASHBOARD SAHAJA */
+.header-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 3000;
+}
+
+/* ===== PAGE HEADER ===== */
 .main-header {
     color: #0c3c60;
     background: #ffffff;
     font-weight: 700;
-    font-size: 24px;
-    padding: 18px 26px;
-    border-radius: 12px;
+    font-size: 26px;
+    padding: 20px 30px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 25px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    gap: 12px;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
 }
 
-/* ===== DASHBOARD CONTAINER ===== */
+/* ===== DASHBOARD WRAPPER ===== */
 .dashboard-container {
-    padding: 10px 10px 40px 10px;
+    padding: 10px 15px 50px 15px;
 }
 
 /* ===== KPI GRID ===== */
 .kpi-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 22px;
+    gap: 10px;
     margin-bottom: 30px;
 }
 
 /* ===== KPI CARD ===== */
 .dash-card {
     background: #ffffff;
-    border-radius: 18px;
-    padding: 28px 25px;
+    border-radius: 20px;
+    padding: 28px 26px;
     text-align: center;
-    border: 1px solid #d3e0ea;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    border: 1px solid #dbe7f2;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
     transition: 0.25s ease;
 }
 
 .dash-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 14px 28px rgba(0,0,0,0.12);
+    transform: translateY(-7px);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.12);
 }
 
 /* ICON */
 .dash-card-icon {
-    width: 60px;
-    height: 60px;
-    background: #eaf4ff;
-    border-radius: 14px;
+    width: 64px;
+    height: 64px;
+    background: #e9f3ff;
+    border-radius: 16px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 auto 14px;
+    margin: 0 auto 15px;
 }
 
 .dash-card-icon i {
-    font-size: 28px;
-    color: #0c3c60;
+    font-size: 32px;
+    color: #084b80;
 }
 
-/* TEXTS */
+/* CARD TEXT */
 .dash-card-title {
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 600;
-    margin-top: 6px;
-    color: #0c3c60;
+    margin-top: 8px;
+    color: #0b3b61;
 }
 
 .dash-card-number {
-    font-size: 38px;
+    font-size: 40px;
     font-weight: 800;
-    margin: 12px 0 5px;
-    color: #1b2e46;
+    margin: 14px 0 6px;
+    color: #142b44;
 }
 
 .dash-card-footer {
@@ -90,31 +97,31 @@ body {
     opacity: 0.7;
 }
 
-/* ===== CHART + TABLE SECTION ===== */
+/* ===== SECTION GRID ===== */
 .section-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-    gap: 25px;
-    margin-bottom: 35px;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
 }
 
-/* ===== GENERIC CARD WRAPPER ===== */
+/* ===== CHART CARD ===== */
 .card {
     background: #ffffff;
-    border-radius: 16px;
-    border: 1px solid #cfe0eb;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
-    padding: 20px;
+    border-radius: 18px;
+    border: 1px solid #d4e3ee;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+    padding: 22px 24px;
 }
 
 .card h5 {
-    font-size: 18px;
+    font-size: 19px;
     font-weight: 700;
     color: #0c3c60;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 /* ===== TABLE ===== */
@@ -122,7 +129,7 @@ body {
     border-radius: 12px;
     overflow: hidden;
     font-size: 14px;
-    margin-top: 10px;
+    margin-top: 12px;
 }
 
 .table thead {
@@ -131,18 +138,18 @@ body {
 }
 
 .table-striped tbody tr:nth-child(even) td {
-    background: #f4f8fc;
+    background: #f3f7fb;
 }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .main-header {
         font-size: 20px;
-        padding: 14px 18px;
+        padding: 14px 20px;
     }
 
     .dash-card-number {
-        font-size: 26px;
+        font-size: 30px;
     }
 
     .section-row {
