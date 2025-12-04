@@ -210,126 +210,128 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
+    <?php include 'sidebar.php'; ?>
 
-<?php include 'sidebar.php'; ?>
+    <div class="content">
+        <!-- FIXED HEADER -->
+        <div class="sticky-top bg-white py-2 mb-3 d-flex align-items-center justify-content-between shadow-sm px-3" style="z-index: 1050;">
+            <div style="flex: 1;"><?php include 'header.php'; ?></div>
+        </div>
 
-<div class="content">
-<?php include 'header.php'; ?>
+        <div class="profil-card shadow-sm p-4">
 
-<div class="profil-card shadow-sm p-4">
+            <div class="view-main-header">
+                <div class="header-wrapper">
+                    <i class="bi bi-pencil-square"></i>
+                    <span>Kemaskini Pembekal</span>
+                </div>
+            </div>
 
-    <div class="view-main-header">
-        <div class="header-wrapper">
-            <i class="bi bi-pencil-square"></i>
-            <span>Kemaskini Pembekal</span>
+            <?php if (!empty($error)): ?>
+                <div class="alert alert-danger"><?= htmlspecialchars($error); ?></div>
+            <?php endif; ?>
+
+            <form method="POST">
+
+                <!-- HANTAR ID PIC AS HIDDEN supaya server tahu kita edit existing PIC (jika ada) -->
+                <input type="hidden" name="id_PIC" value="<?= htmlspecialchars($dataPIC['id_PIC'] ?? ''); ?>">
+
+                <!-- MAKLUMAT PEMBEKAL -->
+                <div class="view-section-box">
+                    <div class="view-section-title">MAKLUMAT PEMBEKAL</div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Nama Syarikat</label>
+                        <input type="text" name="nama_syarikat" class="form-control" required
+                            value="<?= htmlspecialchars($data['nama_syarikat']); ?>">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Alamat 1</label>
+                        <input type="text" name="alamat1" class="form-control" required
+                            value="<?= htmlspecialchars($data['alamat1']); ?>">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Alamat 2</label>
+                        <input type="text" name="alamat2" class="form-control"
+                            value="<?= htmlspecialchars($data['alamat2']); ?>">
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Poskod</label>
+                            <input type="text" name="poskod" class="form-control"
+                                value="<?= htmlspecialchars($data['poskod']); ?>">
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label">Bandar</label>
+                            <input type="text" name="bandar" class="form-control"
+                                value="<?= htmlspecialchars($data['bandar']); ?>">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Negeri</label>
+                            <input type="text" name="negeri" class="form-control"
+                                value="<?= htmlspecialchars($data['negeri']); ?>">
+                        </div>
+                    </div>
+
+                    <div class="mb-3 mt-3">
+                        <label class="form-label">Tempoh Kontrak (Tahun)</label>
+                        <input type="text" name="tempoh_kontrak" class="form-control"
+                            value="<?= htmlspecialchars($data['tempoh_kontrak']); ?>">
+                    </div>
+                </div>
+
+                <!-- MAKLUMAT PIC -->
+                <div class="view-section-box">
+                    <div class="view-section-title">MAKLUMAT PIC</div>
+
+                    <!-- NAMA PIC -->
+                    <div class="mb-3">
+                        <label class="form-label">Nama PIC</label>
+                        <input type="text" name="nama_PIC" class="form-control"
+                            value="<?= htmlspecialchars($dataPIC['nama_PIC'] ?? ''); ?>">
+                    </div>
+
+                    <!-- JAWATAN PIC -->
+                    <div class="mb-3">
+                        <label class="form-label">Jawatan PIC</label>
+                        <input type="text" name="jawatan_PIC" class="form-control"
+                            value="<?= htmlspecialchars($dataPIC['jawatan_PIC'] ?? ''); ?>">
+                    </div>
+
+                    <!-- EMEL PIC -->
+                    <div class="mb-3">
+                        <label class="form-label">Emel PIC</label>
+                        <input type="email" name="emel_PIC" class="form-control"
+                            value="<?= htmlspecialchars($dataPIC['emel_PIC'] ?? ''); ?>">
+                    </div>
+
+                    <!-- TELEFON PIC -->
+                    <div class="mb-3">
+                        <label class="form-label">No Telefon PIC</label>
+                        <input type="text" name="notelefon_PIC" class="form-control"
+                            value="<?= htmlspecialchars($dataPIC['notelefon_PIC'] ?? ''); ?>">
+                    </div>
+
+                    <!-- FAX PIC -->
+                    <div class="mb-3">
+                        <label class="form-label">Fax PIC</label>
+                        <input type="text" name="fax_PIC" class="form-control"
+                            value="<?= htmlspecialchars($dataPIC['fax_PIC'] ?? ''); ?>">
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <a href="view_supplier.php?id=<?= $id; ?>" class="btn btn-secondary">Batal</a>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                </div>
+
+            </form>
+
         </div>
     </div>
-
-    <?php if (!empty($error)): ?>
-        <div class="alert alert-danger"><?= htmlspecialchars($error); ?></div>
-    <?php endif; ?>
-
-    <form method="POST">
-
-        <!-- HANTAR ID PIC AS HIDDEN supaya server tahu kita edit existing PIC (jika ada) -->
-        <input type="hidden" name="id_PIC" value="<?= htmlspecialchars($dataPIC['id_PIC'] ?? ''); ?>">
-
-        <!-- MAKLUMAT PEMBEKAL -->
-        <div class="view-section-box">
-            <div class="view-section-title">MAKLUMAT PEMBEKAL</div>
-
-            <div class="mb-3">
-                <label class="form-label">Nama Syarikat</label>
-                <input type="text" name="nama_syarikat" class="form-control" required
-                    value="<?= htmlspecialchars($data['nama_syarikat']); ?>">
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Alamat 1</label>
-                <input type="text" name="alamat1" class="form-control" required
-                    value="<?= htmlspecialchars($data['alamat1']); ?>">
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Alamat 2</label>
-                <input type="text" name="alamat2" class="form-control"
-                    value="<?= htmlspecialchars($data['alamat2']); ?>">
-            </div>
-
-            <div class="row g-3">
-                <div class="col-md-3">
-                    <label class="form-label">Poskod</label>
-                    <input type="text" name="poskod" class="form-control"
-                        value="<?= htmlspecialchars($data['poskod']); ?>">
-                </div>
-                <div class="col-md-5">
-                    <label class="form-label">Bandar</label>
-                    <input type="text" name="bandar" class="form-control"
-                        value="<?= htmlspecialchars($data['bandar']); ?>">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Negeri</label>
-                    <input type="text" name="negeri" class="form-control"
-                        value="<?= htmlspecialchars($data['negeri']); ?>">
-                </div>
-            </div>
-
-            <div class="mb-3 mt-3">
-                <label class="form-label">Tempoh Kontrak (Tahun)</label>
-                <input type="text" name="tempoh_kontrak" class="form-control"
-                    value="<?= htmlspecialchars($data['tempoh_kontrak']); ?>">
-            </div>
-        </div>
-
-        <!-- MAKLUMAT PIC -->
-        <div class="view-section-box">
-            <div class="view-section-title">MAKLUMAT PIC</div>
-
-            <!-- NAMA PIC -->
-            <div class="mb-3">
-                <label class="form-label">Nama PIC</label>
-                <input type="text" name="nama_PIC" class="form-control"
-                    value="<?= htmlspecialchars($dataPIC['nama_PIC'] ?? ''); ?>">
-            </div>
-
-            <!-- JAWATAN PIC -->
-            <div class="mb-3">
-                <label class="form-label">Jawatan PIC</label>
-                <input type="text" name="jawatan_PIC" class="form-control"
-                    value="<?= htmlspecialchars($dataPIC['jawatan_PIC'] ?? ''); ?>">
-            </div>
-
-            <!-- EMEL PIC -->
-            <div class="mb-3">
-                <label class="form-label">Emel PIC</label>
-                <input type="email" name="emel_PIC" class="form-control"
-                    value="<?= htmlspecialchars($dataPIC['emel_PIC'] ?? ''); ?>">
-            </div>
-
-            <!-- TELEFON PIC -->
-            <div class="mb-3">
-                <label class="form-label">No Telefon PIC</label>
-                <input type="text" name="notelefon_PIC" class="form-control"
-                    value="<?= htmlspecialchars($dataPIC['notelefon_PIC'] ?? ''); ?>">
-            </div>
-
-            <!-- FAX PIC -->
-            <div class="mb-3">
-                <label class="form-label">Fax PIC</label>
-                <input type="text" name="fax_PIC" class="form-control"
-                    value="<?= htmlspecialchars($dataPIC['fax_PIC'] ?? ''); ?>">
-            </div>
-        </div>
-
-        <div class="d-flex justify-content-end gap-2 mt-4">
-            <a href="view_supplier.php?id=<?= $id; ?>" class="btn btn-secondary">Batal</a>
-            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-        </div>
-
-    </form>
-
-</div>
-</div>
 
 </body>
 </html>
