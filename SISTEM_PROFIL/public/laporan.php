@@ -34,7 +34,7 @@ require_login();
             <div style="flex: 1;"><?php include 'header.php'; ?></div>
         </div>
             
-        <div class="main-header mt-4 mb-3"><i class="bi bi-pc-display"></i> Laporan Profil</div>
+        <div class="main-header mt-4 mb-3"><i class="bi bi-file-earmark-bar-graph"></i> Laporan Profil</div>
 
         <div class="profil-card shadow-sm p-4">
 

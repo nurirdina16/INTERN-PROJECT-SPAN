@@ -118,7 +118,7 @@ $total_semua = $stmtTotalAll->fetch(PDO::FETCH_ASSOC)['total_semua'];
             <div style="flex: 1;"><?php include 'header.php'; ?></div>
         </div>
 
-        <div class="main-header mt-4 mb-2"><i class="bi bi-speedometer2"></i>Dashboard</div>
+        <div class="main-header mt-4 mb-2"><i class="bi bi-grid-1x2-fill"></i>Dashboard</div>
 
         <div class="dashboard-container">
 

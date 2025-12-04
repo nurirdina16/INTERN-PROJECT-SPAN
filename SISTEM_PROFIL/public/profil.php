@@ -104,7 +104,7 @@ if ($selectedJenis) {
             <div style="flex: 1;"><?php include 'header.php'; ?></div>
         </div>
 
-        <div class="main-header mt-4 mb-3"><i class="bi bi-pc-display"></i>Senarai Profil</div>
+        <div class="main-header mt-4 mb-3"><i class="bi bi-folder2-open"></i>Senarai Profil</div>
 
         <div class="profil-card shadow-sm p-4">
             <!-- DELETE FUNCTION -->
