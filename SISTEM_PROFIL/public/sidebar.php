@@ -28,8 +28,24 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </a>
 
     <!-- Laporan -->
-    <a href="laporan.php" 
-       class="nav-link <?= $current_page == 'laporan.php' ? 'active' : '' ?>">
-        <i class="bi bi-file-earmark-bar-graph"></i> Laporan
-    </a>
+    <?php 
+        $laporan_pages = ['laporan_maklumat.php', 'laporan_statistik.php'];
+        $laporan_active = in_array($current_page, $laporan_pages) ? 'active' : '';
+        $dropdown_open = in_array($current_page, $laporan_pages) ? 'style="display:block;"' : '';
+    ?>
+    <div class="dropdown-btn <?= $laporan_active ?>">
+        <span><i class="bi bi-file-earmark-bar-graph"></i> Laporan</span>
+        <span class="dropdown-arrow">&#9662;</span>
+    </div>
+    <div class="dropdown-container" <?= $dropdown_open ?>>
+        <a href="laporan_maklumat.php"
+           class="<?= $current_page == 'laporan_maklumat.php' ? 'active' : '' ?>">
+           • Maklumat Profil
+        </a>
+        <a href="laporan_statistik.php"
+           class="<?= $current_page == 'laporan_statistik.php' ? 'active' : '' ?>">
+           • Statistik
+        </a>
+    </div>
+    
 </div>

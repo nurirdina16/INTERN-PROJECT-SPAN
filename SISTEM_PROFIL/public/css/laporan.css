@@ -7,6 +7,7 @@ body {
 /* Main page header */
 .main-header {
   color: #004b73;
+  background: #ffffff;
   font-weight: 700;
   font-size: 24px;
   padding: 18px 25px;
@@ -27,3 +28,15 @@ body {
     width: auto;
 }
 
+.short-text {
+    display: inline-block;
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.full-text {
+    display: block;
+    white-space: normal;
+}
