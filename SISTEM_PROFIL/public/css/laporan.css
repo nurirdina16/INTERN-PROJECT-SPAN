@@ -1,36 +1,135 @@
 body {
-    background: #f2f6fa;
+    background: #f4f7fb;
     font-family: "Segoe UI", sans-serif;
     color: #12384c;
 }
 
-/* Main page header */
+/* MAIN PAGE HEADER */
 .main-header {
-  color: #004b73;
-  background: #ffffff;
-  font-weight: 700;
-  font-size: 24px;
-  padding: 18px 25px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 25px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    color: #003d66;
+    background: #ffffff;
+    font-weight: 700;
+    font-size: 24px;
+    padding: 18px 25px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.10);
 }
 
-/* Card container */
+/* MAIN CARD */
 .profil-card {
     background: #ffffff;
     border-radius: 14px;
-    border: 1px solid #d9e2ec;
-    padding: 25px;
-    width: auto;
+    border: 1px solid #d7e0ea;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
+/* FILTER FORM */
+.profil-card .form-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #003d66;
+}
+
+.profil-card .form-control,
+.profil-card .form-select {
+    border-radius: 10px;
+    border: 1px solid #c6d4e1;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+.profil-card .form-control:focus,
+.profil-card .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 4px rgba(13, 110, 253, .3);
+}
+
+/* FILTER + RESET BUTTONS (Smaller & Modern) */
+.profil-card .btn-primary,
+.profil-card .btn-secondary {
+    border-radius: 8px !important;
+    padding: 6px 12px !important;
+    font-size: 13px !important;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Primary Button (Tapis) */
+.profil-card .btn-primary {
+    background: #006EA0;
+    border: none;
+}
+
+.profil-card .btn-primary:hover {
+    background: #006EA0;
+    transform: translateY(-1px);
+}
+
+/* Secondary Button (Reset) */
+.profil-card .btn-secondary {
+    background: #e4e9ee;
+    color: #003d66;
+    border: none;
+}
+
+.profil-card .btn-secondary:hover {
+    background: #d5dbe1;
+    transform: translateY(-1px);
+}
+
+/* SEARCH BAR */
+.input-group .form-control {
+    border-radius: 10px 0 0 10px;
+}
+
+.input-group .btn {
+    border-radius: 0 10px 10px 0;
+    font-weight: 600;
+}
+
+/* TABLE */
+.table {
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.table thead {
+    background: #cfe8ff;
+}
+
+.table thead th {
+    font-size: 14px;
+    font-weight: 700;
+    color: #003d66;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.table tbody td {
+    font-size: 14px;
+    vertical-align: middle;
+    background: #ffffff;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background: #f8fbff;
+}
+
+.table-bordered td, 
+.table-bordered th {
+    border-color: #d9e6f2;
+}
+
+/* MINIMIZED TEXT */
 .short-text {
     display: inline-block;
-    max-width: 300px;
+    max-width: 250px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -39,4 +138,27 @@ body {
 .full-text {
     display: block;
     white-space: normal;
+}
+
+.toggle-more {
+    font-size: 12px !important;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* FILTER BUTTONS RIGHT SIDE */
+.filter-buttons {
+  background: #003d66;  
+  position: absolute;
+    right: -10px;
+    top: 0;
+    width: 90px;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-buttons .btn {
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+    border-radius: 8px;
 }

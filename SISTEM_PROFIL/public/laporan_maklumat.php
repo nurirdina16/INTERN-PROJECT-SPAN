@@ -6,7 +6,12 @@ require_login();
 // FETCH LOOKUP DATA
 $kaedah = $pdo->query("SELECT * FROM lookup_kaedahpembangunan ORDER BY kaedahPembangunan")->fetchAll(PDO::FETCH_ASSOC);
 $pemilik = $pdo->query("SELECT * FROM lookup_bahagianunit ORDER BY bahagianunit")->fetchAll(PDO::FETCH_ASSOC);
-$jenisprofil = $pdo->query("SELECT * FROM lookup_jenisprofil ORDER BY jenisprofil")->fetchAll(PDO::FETCH_ASSOC);
+$jenisprofil = $pdo->query("
+    SELECT *
+    FROM lookup_jenisprofil
+    WHERE id_jenisprofil NOT IN (1, 2)
+    ORDER BY jenisprofil
+")->fetchAll(PDO::FETCH_ASSOC);
 
 // BUILD FILTERS
 $where = [];
@@ -149,73 +154,87 @@ function minimizeText($text, $limit = 80) {
 
         <div class="profil-card shadow-sm p-4">
             <!-- FILTER -->
-            <form method="get" class="row g-3 mb-4">
-                <!-- TARIKH MULA -->
-                <div class="col-md-2">
-                    <label class="form-label">Tarikh Mula</label>
-                    <input type="date" name="tarikh_mula" class="form-control"
-                        value="<?= $_GET['tarikh_mula'] ?? '' ?>">
-                </div>
-                <!-- TARIKH SIAP -->
-                <div class="col-md-2">
-                    <label class="form-label">Tarikh Siap</label>
-                    <input type="date" name="tarikh_siap" class="form-control"
-                        value="<?= $_GET['tarikh_siap'] ?? '' ?>">
-                </div>
-                <!-- TARIKH GUNA -->
-                <div class="col-md-2">
-                    <label class="form-label">Tarikh Guna</label>
-                    <input type="date" name="tarikh_guna" class="form-control"
-                        value="<?= $_GET['tarikh_guna'] ?? '' ?>">
-                </div>
-                <!-- KAEDAH PEMBANGUNAN -->
-                <div class="col-md-2">
-                    <label class="form-label">Kaedah Pembangunan</label>
-                    <select name="id_kaedahPembangunan" class="form-select">
-                        <option value="">Semua</option>
-                        <?php foreach ($kaedah as $k): ?>
-                            <option value="<?= $k['id_kaedahPembangunan'] ?>"
-                                <?= (($_GET['id_kaedahPembangunan'] ?? '') == $k['id_kaedahPembangunan']) ? 'selected' : '' ?>>
-                                <?= $k['kaedahPembangunan'] ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <!-- PEMILIK PROFIL -->
-                <div class="col-md-2">
-                    <label class="form-label">Pemilik Profil</label>
-                    <select name="id_pemilik_profil" class="form-select">
-                        <option value="">Semua</option>
-                        <?php foreach ($pemilik as $p): ?>
-                            <option value="<?= $p['id_bahagianunit'] ?>"
-                                <?= (($_GET['id_pemilik_profil'] ?? '') == $p['id_bahagianunit']) ? 'selected' : '' ?>>
-                                <?= $p['bahagianunit'] ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <!-- JENIS PROFIL -->
-                <div class="col-md-2">
-                    <label class="form-label">Jenis Profil</label>
-                    <select name="id_jenisprofil" class="form-select">
-                        <option value="">Semua</option>
-                        <?php foreach ($jenisprofil as $j): ?>
-                            <option value="<?= $j['id_jenisprofil'] ?>"
-                                <?= (($_GET['id_jenisprofil'] ?? '') == $j['id_jenisprofil']) ? 'selected' : '' ?>>
-                                <?= $j['jenisprofil'] ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
+            <form method="get" class="mb-4">
+
+                <!-- ROW 1: TARIKH -->
+                <div class="row g-3 mb-2">
+                    <div class="col-md-4">
+                        <label class="form-label">Tarikh Mula</label>
+                        <input type="date" name="tarikh_mula" class="form-control"
+                            value="<?= $_GET['tarikh_mula'] ?? '' ?>">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Tarikh Siap</label>
+                        <input type="date" name="tarikh_siap" class="form-control"
+                            value="<?= $_GET['tarikh_siap'] ?? '' ?>">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Tarikh Guna</label>
+                        <input type="date" name="tarikh_guna" class="form-control"
+                            value="<?= $_GET['tarikh_guna'] ?? '' ?>">
+                    </div>
                 </div>
 
-                <div class="col-12 mt-3">
-                    <button class="btn btn-primary"><i class="bi bi-funnel"></i> Tapis</button>
-                    <a href="laporan_maklumat.php" class="btn btn-secondary">Reset</a>
+                <!-- ROW 2: DROPDOWN -->
+                <div class="row g-3 align-items-end position-relative">
+
+                    <div class="col-md-3">
+                        <label class="form-label">Kaedah Pembangunan</label>
+                        <select name="id_kaedahPembangunan" class="form-select">
+                            <option value="">Semua</option>
+                            <?php foreach ($kaedah as $k): ?>
+                                <option value="<?= $k['id_kaedahPembangunan'] ?>"
+                                    <?= (($_GET['id_kaedahPembangunan'] ?? '') == $k['id_kaedahPembangunan']) ? 'selected' : '' ?>>
+                                    <?= $k['kaedahPembangunan'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Pemilik Profil</label>
+                        <select name="id_pemilik_profil" class="form-select">
+                            <option value="">Semua</option>
+                            <?php foreach ($pemilik as $p): ?>
+                                <option value="<?= $p['id_bahagianunit'] ?>"
+                                    <?= (($_GET['id_pemilik_profil'] ?? '') == $p['id_bahagianunit']) ? 'selected' : '' ?>>
+                                    <?= $p['bahagianunit'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Jenis Profil</label>
+                        <select name="id_jenisprofil" class="form-select">
+                            <option value="">Semua</option>
+                            <?php foreach ($jenisprofil as $j): ?>
+                                <option value="<?= $j['id_jenisprofil'] ?>"
+                                    <?= (($_GET['id_jenisprofil'] ?? '') == $j['id_jenisprofil']) ? 'selected' : '' ?>>
+                                    <?= $j['jenisprofil'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <!-- BUTTONS -->
+                    <div class="col-md-3 d-flex gap-2">
+                        <button class="btn btn-primary btn-sm flex-fill">
+                            <i class="bi bi-funnel"></i> Tapis
+                        </button>
+                        <a href="laporan_maklumat.php" class="btn btn-secondary btn-sm flex-fill">
+                            Reset
+                        </a>
+                    </div>
                 </div>
             </form>
 
+            <hr class="mb-4">
+
             <!-- SEARCH BAR -->
-            <form method="get" class="mb-3">
+            <form method="get" class="mb-4 mt-2">
                 <div class="input-group">
                     <input type="text" name="q" class="form-control" placeholder="Cari nama profil atau entiti..."
                         value="<?= $_GET['q'] ?? '' ?>">
@@ -223,8 +242,9 @@ function minimizeText($text, $limit = 80) {
                 </div>
             </form>
 
+
             <!-- TABLE -->
-            <div class="table-responsive mt-3">
+            <div class="table-responsive mt-4 shadow-sm">
                 <table class="table table-striped table-bordered">
                     <thead class="table-primary">
                         <tr>
