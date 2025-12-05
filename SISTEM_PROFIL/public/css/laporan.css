@@ -162,3 +162,11 @@ body {
     font-size: 12px !important;
     border-radius: 8px;
 }
+
+.stat-link { cursor:pointer; text-decoration:underline; }
+.stat-link:hover { opacity:.7; }
+
+#resultModal .modal-dialog {
+    margin-top: 100px !important;  /* adjust higher/lower if needed */
+    transition: .4s;
+}

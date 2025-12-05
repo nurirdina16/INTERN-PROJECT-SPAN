@@ -165,8 +165,24 @@ foreach ($records as $row) {
                             $total[$id]['aktif'] += $aktif;
                             $total[$id]['tidak'] += $tidak;
                         ?>
-                            <td class="text-center"><?= $aktif ?></td>
-                            <td class="text-center"><?= $tidak ?></td>
+                            <!-- Aktif -->
+                            <td class="text-center">
+                                <span class="stat-link text-primary fw-bold" 
+                                    data-tahun="<?= $tahun ?>" 
+                                    data-jenis="<?= $id ?>" 
+                                    data-status="1">
+                                    <?= $aktif ?>
+                                </span>
+                            </td>
+                            <!-- Tidak Aktif -->
+                            <td class="text-center">
+                                <span class="stat-link text-danger fw-bold"
+                                    data-tahun="<?= $tahun ?>" 
+                                    data-jenis="<?= $id ?>" 
+                                    data-status="0">
+                                    <?= $tidak ?>
+                                </span>
+                            </td>
                         <?php endforeach; ?>
                         
                     </tr>
@@ -188,6 +204,43 @@ foreach ($records as $row) {
         </div>
     </div>
 
+    <!-- MODAL -->
+    <div class="modal fade" id="resultModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Senarai Rekod Terlibat</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="modalBodyResult">
+                    <p class="text-center text-secondary">Memuat data...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.querySelectorAll(".stat-link").forEach(function(el){
+            el.addEventListener("click", function(){
+                
+                let tahun  = this.dataset.tahun;
+                let jenis  = this.dataset.jenis;
+                let status = this.dataset.status;
+
+                // Load modal
+                new bootstrap.Modal(document.getElementById('resultModal')).show();
+                document.getElementById("modalBodyResult").innerHTML = "<p class='text-center'>Loading...</p>";
+
+                // AJAX fetch
+                fetch("statistik_detail.php?tahun="+tahun+"&jenis="+jenis+"&status="+status)
+                .then(res=>res.text())
+                .then(data=>{
+                    document.getElementById("modalBodyResult").innerHTML = data;
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
