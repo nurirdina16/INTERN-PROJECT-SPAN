@@ -21,7 +21,7 @@
   padding: 0 30px;
 
   border-bottom: 1px solid #e3e9ef;
-  z-index: 3000 !important; /* Ensure header is on top */
+  z-index: 1030 !important; /* Ensure header is on top */
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 

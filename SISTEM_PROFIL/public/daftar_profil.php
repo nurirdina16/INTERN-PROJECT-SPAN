@@ -291,15 +291,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="main-header mt-3 mb-3"><i class="bi bi-pencil-square"></i>Daftar Profil</div>
 
-        <!-- Toast -->
-        <div class="position-fixed top-95 end-0 p-3" style="z-index:1080;">
-            <div id="liveToast" class="toast align-items-center text-bg-<?= $alert_type ?> border-0" role="alert">
-                <div class="d-flex">
-                    <div class="toast-body"><?= htmlspecialchars($alert_message) ?></div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        <!-- ALERT POPUP (Sama macam form_pengguna.php) -->
+        <div id="alert-container" style="position: fixed; top: 95px; right: 20px; z-index: 1050; min-width: 300px;">
+            <?php if (!empty($alert_type) && !empty($alert_message)): ?>
+                <div class="alert alert-<?= $alert_type ?> alert-dismissible fade show" role="alert">
+                    <?= htmlspecialchars($alert_message) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-            </div>
+            <?php endif; ?>
         </div>
+        <script>
+            // Auto-hide alerts after 5 seconds
+            setTimeout(() => {
+                const alerts = document.querySelectorAll('#alert-container .alert');
+                alerts.forEach(alert => {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000);
+        </script>
+
 
         <form method="POST" class="section-card" autocomplete="off">
             <!-- MAKLUMAT ASAS -->
