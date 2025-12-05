@@ -1,73 +1,51 @@
+/* CONTENT AREA */
 .content {
   margin-left: 260px;
   padding: 5px;
-  padding-top: 90px !important;   /* <-- Push content down below the fixed header */
+  padding-top: 90px !important; /* Push content below header */
+  background: transparent !important; /* FIX: Remove blue behind header */
 }
 
+/* HEADER BAR */
 .header {
+  position: fixed;
+  top: 0;
+  left: 260px;
+  right: 0;
+  height: 70px;
+
+  background-color: #ffffff !important; /* FORCE WHITE */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: fixed;        /* <-- freeze header */
-  top: 0;
-  left: 260px;            /* <-- match sidebar width */
-  right: 0;
-  height: 70px;
-  z-index: 1500;
+  padding: 0 30px;
+
+  border-bottom: 1px solid #e3e9ef;
+  z-index: 3000 !important; /* Ensure header is on top */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
+/* USERNAME */
 .header h3 {
   margin: 0;
   font-weight: 600;
+  color: #1b2e46;
 }
 
+/* PROFILE ICON */
 .header .profile-icon {
   background-color: #e9f1f8;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 30px;
+
+  font-size: 26px;
   color: #1b2e46;
-}
-
-/* Header profile dropdown */
-.profile-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.profile-dropdown {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: 60px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  min-width: 120px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  z-index: 1000;
-  flex-direction: column;
-}
-
-.profile-dropdown a {
-  display: block;
-  padding: 10px 15px;
-  text-decoration: none;
-  color: #1b2e46;
-  font-weight: 500;
-}
-
-.profile-dropdown a:hover {
-  background-color: #f1f1f1;
-}
-
-.profile-dropdown.show {
-  display: flex;
+  cursor: pointer;
 }
 
 /* WRAPPER */
@@ -75,25 +53,26 @@
   position: relative;
   display: flex;
   align-items: center;
-  cursor: pointer;
 }
 
-/* Dropdown box */
+/* DROPDOWN MENU */
 .profile-dropdown {
   display: none;
   position: absolute;
   right: 0;
   top: 60px;
+
   background-color: #fff;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 10px;
   min-width: 150px;
+
   box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-  z-index: 1000;
+  z-index: 4000;
   overflow: hidden;
 }
 
-/* Menu item */
+/* DROPDOWN LINKS */
 .profile-dropdown a {
   display: block;
   padding: 12px 15px;
@@ -107,7 +86,6 @@
   background-color: #f5f5f5;
 }
 
-/* show dropdown class */
 .profile-dropdown.show {
   display: block;
 }

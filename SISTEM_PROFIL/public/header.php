@@ -3,13 +3,11 @@
 </head>
 
 <div class="header">
-
   <!-- Nama pengguna -->
   <h3><?= htmlspecialchars($_SESSION['userlog']['nama']) ?></h3>
 
   <!-- Profile + Dropdown -->
   <div class="profile-wrapper">
-      
       <!-- Profile Icon -->
       <div class="profile-icon" id="profileToggle">
         <i class="bi bi-person-fill"></i>
@@ -20,7 +18,6 @@
         <a href="logout.php">Logout</a>
       </div>
   </div>
-
 </div>
 
 <!-- Dropdown Script -->

@@ -155,8 +155,8 @@ foreach ($records as $row) {
                     ?>
 
                     <tr>
-                        <td><?= $bil++ ?></td>
-                        <td><?= $tahun ?></td>
+                        <td class="text-center align-middle"><?= $bil++ ?></td>
+                        <td class="text-center align-middle"><?= $tahun ?></td>
 
                         <?php foreach ($jenisprofil_list as $jp): 
                             $id = $jp['id_jenisprofil'];
