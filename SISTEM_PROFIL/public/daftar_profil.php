@@ -287,11 +287,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="content">
         <!-- FIXED HEADER + HOME -->
-        <div class="sticky-top bg-white py-2 mb-3 d-flex align-items-center justify-content-between shadow-sm px-3" style="z-index: 1050;">
-            <div style="flex: 1;"><?php include 'header.php'; ?></div>
-        </div>
+        <?php include 'header.php'; ?>
 
-        <div class="main-header mt-4 mb-3"><i class="bi bi-pencil-square"></i>Daftar Profil</div>
+        <div class="main-header mt-3 mb-3"><i class="bi bi-pencil-square"></i>Daftar Profil</div>
 
         <!-- Toast -->
         <div class="position-fixed top-0 end-0 p-3" style="z-index:1080;">

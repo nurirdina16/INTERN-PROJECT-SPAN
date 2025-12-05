@@ -214,11 +214,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="content">
         <!-- FIXED HEADER -->
-        <div class="sticky-top bg-white py-2 mb-3 d-flex align-items-center justify-content-between shadow-sm px-3" style="z-index: 1050;">
-            <div style="flex: 1;"><?php include 'header.php'; ?></div>
-        </div>
+        <?php include 'header.php'; ?>
 
-        <div class="profil-card shadow-sm p-4">
+        <div class="profil-card shadow-sm p-4 mt-2">
 
             <div class="view-main-header">
                 <div class="header-wrapper">
