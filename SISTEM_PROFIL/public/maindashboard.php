@@ -51,10 +51,12 @@ foreach ($jenis_list as $row) {
 
     // Store final data
     $data_kiraan[] = [
+        'id_jenisprofil' => $row['id_jenisprofil'],
         'jenisprofil' => $row['jenisprofil'],
         'jumlah' => $jumlah,
         'tahunData' => $tahunData
     ];
+
 }
 
 // STATUS PROFIL (PIE CHART)
@@ -132,16 +134,22 @@ $total_semua = $stmtTotalAll->fetch(PDO::FETCH_ASSOC)['total_semua'];
                     <div class="dash-card-footer" style="color: #e1e8f0;">Semua Jenis Profil</div>
                 </div>
 
-                <!-- EACH PROFILE CATEGORY -->
-                <?php foreach ($data_kiraan as $item): ?>
-                    <div class="dash-card">
-                        <div class="dash-card-icon">
-                            <i class="bi bi-grid-fill"></i>
+                <!-- EACH PROFILE CATEGORY WITH CLICK -->
+                <?php foreach ($data_kiraan as $item): 
+                    $idjp = urlencode($item['id_jenisprofil']);
+                    $title = htmlspecialchars($item['jenisprofil']);
+                    $count = (int)$item['jumlah'];
+                ?>
+                    <a href="profil.php?id_jenisprofil=<?= $idjp ?>" style="text-decoration:none; color:inherit;">
+                        <div class="dash-card kpi-click">
+                            <div class="dash-card-icon">
+                                <i class="bi bi-grid-fill"></i>
+                            </div>
+                            <div class="dash-card-title"><?= $title; ?></div>
+                            <div class="dash-card-number"><?= $count; ?></div>
+                            <div class="dash-card-footer">Jumlah Rekod</div>
                         </div>
-                        <div class="dash-card-title"><?= htmlspecialchars($item['jenisprofil']); ?></div>
-                        <div class="dash-card-number"><?= $item['jumlah']; ?></div>
-                        <div class="dash-card-footer">Jumlah Rekod</div>
-                    </div>
+                    </a>
                 <?php endforeach; ?>
             </div>
 
