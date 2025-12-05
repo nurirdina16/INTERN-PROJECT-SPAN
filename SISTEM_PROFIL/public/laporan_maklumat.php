@@ -157,19 +157,19 @@ function minimizeText($text, $limit = 80) {
                 <!-- ROW 1: TARIKH -->
                 <div class="row g-3 mb-2">
                     <div class="col-md-4">
-                        <label class="form-label">Tarikh Mula</label>
+                        <label class="form-label">Tarikh Mula Pembangunan</label>
                         <input type="date" name="tarikh_mula" class="form-control"
                             value="<?= $_GET['tarikh_mula'] ?? '' ?>">
                     </div>
 
                     <div class="col-md-4">
-                        <label class="form-label">Tarikh Siap</label>
+                        <label class="form-label">Tarikh Siap Pembangunan</label>
                         <input type="date" name="tarikh_siap" class="form-control"
                             value="<?= $_GET['tarikh_siap'] ?? '' ?>">
                     </div>
 
                     <div class="col-md-4">
-                        <label class="form-label">Tarikh Guna</label>
+                        <label class="form-label">Tarikh Digunakan</label>
                         <input type="date" name="tarikh_guna" class="form-control"
                             value="<?= $_GET['tarikh_guna'] ?? '' ?>">
                     </div>

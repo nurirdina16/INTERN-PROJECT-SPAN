@@ -292,7 +292,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="main-header mt-3 mb-3"><i class="bi bi-pencil-square"></i>Daftar Profil</div>
 
         <!-- Toast -->
-        <div class="position-fixed top-0 end-0 p-3" style="z-index:1080;">
+        <div class="position-fixed top-95 end-0 p-3" style="z-index:1080;">
             <div id="liveToast" class="toast align-items-center text-bg-<?= $alert_type ?> border-0" role="alert">
                 <div class="d-flex">
                     <div class="toast-body"><?= htmlspecialchars($alert_message) ?></div>
@@ -694,8 +694,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" name="new_jenisprofil" class="form-control" required>
                 </div>
                 <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" name="save_jenisprofil" class="btn btn-primary">Simpan</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" name="save_jenisprofil" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
             </div>
@@ -714,9 +714,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="text" name="new_kategori" class="form-control" required>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" name="save_kategori" class="btn btn-primary">
-                        Simpan
-                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" name="save_kategori" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
         </div>

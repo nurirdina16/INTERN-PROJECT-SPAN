@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="profil-card shadow-sm p-6 tambah-pengguna-card">
             <!-- Alerts -->
-            <div id="alert-container" style="position: fixed; top: 20px; right: 20px; z-index: 1050; min-width: 300px;">
+            <div id="alert-container" style="position: fixed; top: 95px; right: 20px; z-index: 1050; min-width: 300px;">
                 <?php if ($success): ?>
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         Pengguna berjaya ditambah.
