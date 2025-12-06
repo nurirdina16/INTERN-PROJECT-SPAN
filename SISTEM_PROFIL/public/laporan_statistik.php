@@ -256,6 +256,34 @@ foreach ($records as $row) {
                 </tbody>
             </table>
 
+            <!-- GRAPH STATISTICS -->
+            <?php
+            $chartYears = array_keys($data); // X-axis: Years
+            $chartJenis = [];
+            $chartAktif = [];
+            $chartTidak = [];
+
+            foreach ($jenisprofil_list as $jp) {
+                if ($jenisprofil_filter != '' && $jenisprofil_filter != $jp['id_jenisprofil']) continue;
+
+                $id = $jp['id_jenisprofil'];
+                $chartJenis[$id] = $jp['jenisprofil'];
+
+                foreach ($chartYears as $y) {
+                    $aktif = $data[$y][$id]['aktif'] ?? 0;
+                    $tidak = $data[$y][$id]['tidak'] ?? 0;
+
+                    $chartAktif[$id][] = $aktif;
+                    $chartTidak[$id][] = $tidak;
+                }
+            }
+            ?>
+            <!-- CONTAINER TO DISPLAY GRAPH -->
+            <div class="mt-5 mb-4 p-3 bg-white shadow-sm rounded">
+                <h5 class="fw-bold text-primary mb-3"><i class="bi bi-bar-chart"></i> Graf Statistik</h5>
+                <canvas id="statistikChart" height="120"></canvas>
+            </div>
+
         </div>
     </div>
 
@@ -294,6 +322,84 @@ foreach ($records as $row) {
                     document.getElementById("modalBodyResult").innerHTML = data;
                 });
             });
+        });
+    </script>
+
+    <script>
+        const years   = <?= json_encode($chartYears) ?>;
+        const jenis   = <?= json_encode($chartJenis) ?>;
+        const aktif   = <?= json_encode($chartAktif) ?>;
+        const tidak   = <?= json_encode($chartTidak) ?>;
+
+        let datasets = [];
+
+        // Case 1 - JENIS FILTERED (Show Line Trend)
+        if ("<?= $jenisprofil_filter ?>" !== "") {
+            let id = Object.keys(jenis)[0]; // Single jenis only
+            datasets = [
+                {
+                    type: "line",
+                    label: jenis[id] + " (Aktif)",
+                    data: aktif[id],
+                    borderWidth: 3,
+                    tension: 0.3
+                },
+                {
+                    type: "line",
+                    label: jenis[id] + " (Tidak Aktif)",
+                    data: tidak[id],
+                    borderWidth: 3,
+                    borderDash: [5,5],
+                    tension: 0.3
+                }
+            ];
+        }
+
+        // Case 2 - STATUS FILTER ONLY (Bar Compare by Jenis)
+        else if ("<?= $status_filter ?>" !== "") {
+            let idList = Object.keys(jenis);
+            idList.forEach(id=>{
+                datasets.push({
+                    label: jenis[id],
+                    data: ("<?= $status_filter ?>"==="1" ? aktif[id] : tidak[id]),
+                    borderWidth: 1
+                });
+            });
+        }
+
+        // Case 3 - NO FILTER → Multi-Bar Chart (ALL DATA)
+        else {
+            let idList = Object.keys(jenis);
+            idList.forEach(id => {
+                datasets.push({
+                    label: jenis[id] + " (Aktif)",
+                    data: aktif[id],
+                    borderWidth: 1
+                });
+                datasets.push({
+                    label: jenis[id] + " (Tidak Aktif)",
+                    data: tidak[id],
+                    borderWidth: 1,
+                    borderDash: [5,5]
+                });
+            });
+        }
+
+        new Chart(document.getElementById('statistikChart'), {
+            type: "bar",
+            data: {
+                labels: years,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend:{ position:"bottom" }
+                },
+                scales: {
+                    y:{ beginAtZero:true }
+                }
+            }
         });
     </script>
 
