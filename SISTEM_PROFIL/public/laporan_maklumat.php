@@ -32,6 +32,11 @@ if (!empty($_GET['tarikh_guna'])) {
     $params[':tarikh_guna'] = $_GET['tarikh_guna'];
 }
 
+if (!empty($_GET['tarikh_dibeli'])) {
+    $where[] = "p.tarikh_dibeli = :tarikh_dibeli";
+    $params[':tarikh_dibeli'] = $_GET['tarikh_dibeli'];
+}
+
 if (!empty($_GET['id_kaedahPembangunan'])) {
     $where[] = "p.id_kaedahPembangunan = :id_kaedah";
     $params[':id_kaedah'] = $_GET['id_kaedahPembangunan'];
@@ -156,22 +161,28 @@ function minimizeText($text, $limit = 80) {
 
                 <!-- ROW 1: TARIKH -->
                 <div class="row g-3 mb-2">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Tarikh Mula Pembangunan</label>
                         <input type="date" name="tarikh_mula" class="form-control"
-                            value="<?= $_GET['tarikh_mula'] ?? '' ?>">
+                            value="<?= htmlspecialchars($_GET['tarikh_mula'] ?? '') ?>">
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Tarikh Siap Pembangunan</label>
                         <input type="date" name="tarikh_siap" class="form-control"
-                            value="<?= $_GET['tarikh_siap'] ?? '' ?>">
+                            value="<?= htmlspecialchars($_GET['tarikh_siap'] ?? '') ?>">
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Tarikh Digunakan</label>
                         <input type="date" name="tarikh_guna" class="form-control"
-                            value="<?= $_GET['tarikh_guna'] ?? '' ?>">
+                            value="<?= htmlspecialchars($_GET['tarikh_guna'] ?? '') ?>">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Tarikh Dibeli</label>
+                        <input type="date" name="tarikh_dibeli" class="form-control"
+                            value="<?= htmlspecialchars($_GET['tarikh_dibeli'] ?? '') ?>">
                     </div>
                 </div>
 
