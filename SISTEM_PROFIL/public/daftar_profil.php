@@ -316,7 +316,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- MAKLUMAT ASAS -->
             <div class="row g-3 mb-4">
                 <div class="col-md-6">
-                    <label class="form-label">Status</label>
+                    <label>Status <span class="text-danger">*</span></label>
                     <select name="id_status" class="form-select" required>
                         <option value="">-- Pilih Status --</option>
                         <?php foreach ($status_list as $s): ?>
@@ -326,7 +326,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Jenis Profil</label>
+                    <label>Jenis Profil <span class="text-danger">*</span></label>
                     <div class="input-group">
                         <select name="id_jenisprofil" id="jenisProfilSelect" class="form-select" required>
                             <option value="">-- Pilih Jenis Profil --</option>
@@ -349,7 +349,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <div class="row g-3 mb-4">
                 <div class="col-md-8">
-                    <label class="form-label">Nama Profil</label>
+                    <label>Nama Profil <span class="text-danger">*</span></label>
                     <input type="text" name="nama_profil" class="form-control" required>
                 </div>
 
@@ -653,7 +653,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Pegawai Rujukan</label>
+                    <label>Pegawai Rujukan <span class="text-danger">*</span></label>
                     <select name="pegawai_rujukan" class="form-select" required>
                         <option value="">-- Pilih --</option>
                             <?php foreach ($userprofile as $u): ?>
@@ -680,7 +680,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         </form>
     </div>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
@@ -697,12 +697,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="modal-content">
             <form method="POST">
                 <div class="modal-header">
-                <h5 class="modal-title">Tambah Jenis Profil</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title">Tambah Jenis Profil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                <label class="form-label">Nama Jenis Profil</label>
-                <input type="text" name="new_jenisprofil" class="form-control" required>
+                    <label>Nama Jenis Profil <span class="text-danger">*</span></label>
+                    <input type="text" name="new_jenisprofil" class="form-control" required>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -721,7 +721,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <label class="form-label">Nama Kategori Baru</label>
+                    <label class="form-label">Nama </label>
+                    <label>Nama Kategori Baru <span class="text-danger">*</span></label>
                     <input type="text" name="new_kategori" class="form-control" required>
                 </div>
                 <div class="modal-footer">
@@ -741,7 +742,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                <label class="form-label">Nama Jenis Peralatan</label>
+                <label>Nama Jenis Peralatan <span class="text-danger">*</span></label>
                 <input type="text" name="new_jenisperalatan" class="form-control" required>
                 </div>
                 <div class="modal-footer">
@@ -763,7 +764,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="modal-body">
                     <!-- NAMA SYARIKAT -->
-                    <label class="form-label fw-semibold mt-3">Nama Syarikat</label>
+                    <label>Nama Syarikat <span class="text-danger">*</span></label>
                     <input type="text" name="new_nama_syarikat" class="form-control" required>
                     <!-- ALAMAT -->
                     <label class="form-label fw-semibold mt-3">Alamat Syarikat</label>

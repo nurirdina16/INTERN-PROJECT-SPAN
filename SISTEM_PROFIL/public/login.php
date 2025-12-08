@@ -50,12 +50,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="d-grid mb-4">
             <button type="submit" class="btn btn-primary">Log Masuk</button>
         </div>
-    <!-- -->
+     <!--
         <div class="extra-links">
-            <a href="lupa_katalaluan.php">Lupa Kata Laluan?</a><br>
+             <a href="lupa_katalaluan.php">Lupa Kata Laluan?</a><br> 
             <a href="register.php">Belum ada akaun? Daftar sekarang</a>
         </div>
-    
+    -->
+        
     </form>
 </div>
 
