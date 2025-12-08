@@ -712,7 +712,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
-    <!-- MODAL: TAMBAH KATEGORI -->
+    <!-- MODAL TAMBAH KATEGORI -->
     <div class="modal fade" id="modalKategori" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <form method="POST" class="modal-content">
@@ -861,6 +861,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('show.bs.modal', function (e) {
+            const modal = e.target;
+            const dialog = modal.querySelector('.modal-dialog');
+
+            if (dialog) {
+                dialog.style.marginTop = '30px';
+                dialog.style.position = 'relative';
+                dialog.style.zIndex = '9999';
+            }
+        });
+    </script>
 
 </body>
 </html>

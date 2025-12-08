@@ -114,13 +114,17 @@ body {
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-.modal {
-    top: 120px !important;
+.modal-dialog {
+    margin-top: 30px !important;
 }
 
-.modal,
-.modal-backdrop {
-    z-index: 9999 !important;
+.modal {
+    z-index: 2000 !important;
 }
+
+.modal-backdrop {
+    z-index: 1990 !important;
+}
+
 
 
