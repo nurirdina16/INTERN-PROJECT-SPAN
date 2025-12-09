@@ -44,7 +44,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </a>
         <a href="laporan_statistik.php"
            class="<?= $current_page == 'laporan_statistik.php' ? 'active' : '' ?>">
-           • Statistik
+           • Statistik Profil
         </a>
     </div>
     
