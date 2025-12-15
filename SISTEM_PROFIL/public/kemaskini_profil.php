@@ -241,44 +241,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endforeach; ?>
                     </select>
 
-                    <label class="form-label mt-2">Objektif Profil</label>
-                    <textarea name="objektif_profil" class="form-control" rows="3"><?= $data['objektif_profil']; ?></textarea>
-
-                    <label class="form-label mt-2">Pemilik Profil</label>
-                    <select name="id_pemilik_profil" class="form-select">
-                        <?php foreach ($lookup_bahagianunit as $bu): ?>
-                        <option value="<?= $bu['id_bahagianunit']; ?>" <?= $data['id_pemilik_profil']==$bu['id_bahagianunit']?'selected':''; ?>>
-                            <?= $bu['bahagianunit']; ?>
-                        </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <!-- SECTION 1 — MAKLUMAT PROFIL -->
-                <div class="card p-3 mt-3">
-                    <h5>Maklumat Profil</h5>
-
-                    <label class="form-label">Nama Profil</label>
-                    <input type="text" name="nama_profil" class="form-control" value="<?= $data['nama_profil']; ?>">
-
-                    <label class="form-label mt-2">Status</label>
-                    <select name="id_status" class="form-select">
-                        <?php foreach ($lookup_status as $s): ?>
-                        <option value="<?= $s['id_status']; ?>" <?= $data['id_status']==$s['id_status']?'selected':''; ?>>
-                            <?= $s['status']; ?>
-                        </option>
-                        <?php endforeach; ?>
-                    </select>
-
-                    <label class="form-label mt-2">Jenis Profil</label>
-                    <select name="id_jenisprofil" class="form-select">
-                        <?php foreach ($lookup_jenisprofil as $jp): ?>
-                        <option value="<?= $jp['id_jenisprofil']; ?>" <?= $data['id_jenisprofil']==$jp['id_jenisprofil']?'selected':''; ?>>
-                            <?= $jp['jenisprofil']; ?>
-                        </option>
-                        <?php endforeach; ?>
-                    </select>
-
                     <label class="form-label mt-2">Pemilik Profil</label>
                     <select name="id_pemilik_profil" class="form-select">
                         <?php foreach ($lookup_bahagianunit as $bu): ?>
