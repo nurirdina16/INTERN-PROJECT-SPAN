@@ -5,6 +5,18 @@ $tahun  = $_GET['tahun'];
 $jenis  = $_GET['jenis'];
 $status = $_GET['status'];
 
+// Ubah dari 0/1 ke id_status sebenar
+if ($status == '0') $status = 2;
+elseif ($status == '1') $status = 1;
+
+$where = " WHERE p.id_jenisprofil = :jenis AND p.id_status = :status ";
+$params = ['jenis'=>$jenis,'status'=>$status];
+
+if($tahun !== 'all'){
+    $where .= " AND YEAR(p.tarikh_mula) = :tahun ";
+    $params['tahun'] = $tahun;
+}
+
 $query = $pdo->prepare("
     SELECT 
         p.nama_profil,
@@ -15,12 +27,10 @@ $query = $pdo->prepare("
     FROM profil p
     JOIN lookup_status s ON p.id_status = s.id_status
     JOIN lookup_jenisprofil lp ON lp.id_jenisprofil = p.id_jenisprofil
-    WHERE YEAR(p.tarikh_mula) = :tahun
-      AND p.id_jenisprofil = :jenis
-      AND p.id_status = :status
+    $where
 ");
+$query->execute($params);
 
-$query->execute(['tahun'=>$tahun,'jenis'=>$jenis,'status'=>$status]);
 $data = $query->fetchAll(PDO::FETCH_ASSOC);
 
 if (!$data) {

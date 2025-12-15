@@ -3,7 +3,7 @@ require_once '../app/config.php';
 require_once '../app/auth.php';
 require_login();
 
-// BUILD FILTERS sama macam laporan_maklumat.php
+// Build filters sama macam laporan_maklumat.php
 $where = [];
 $params = [];
 
@@ -42,7 +42,7 @@ if (!empty($_GET['q'])) {
 
 $where_sql = $where ? "WHERE " . implode(" AND ", $where) : "";
 
-// AMBIL DATA
+// Query ikut table display sama
 $sql = "
 SELECT p.*, 
     k.kaedahPembangunan,
@@ -93,24 +93,43 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 header("Content-Disposition: attachment; filename=laporan_maklumat.xls");
 
-// TABLE
+// Susunan column ikut table HTML
+$columns = [
+    'status', 'jenisprofil', 'nama_profil', 'nama_entiti', 'objektif_profil',
+    'pemilik_unit', 'tarikh_mula', 'tarikh_siap', 'tarikh_guna', 'bil_pengguna',
+    'bil_modul', 'kategori', 'bahasa_pengaturcaraan', 'pangkalan_data', 'rangkaian',
+    'integrasi', 'tarikh_dibeli', 'tempoh_warranty', 'expired_warranty',
+    'kos_perkakasan', 'kos_perisian', 'kos_lesen_perisian', 'kos_penyelenggaraan',
+    'kos_lain', 'description_kos', 'kos_keseluruhan', 'jenis_peralatan', 'lokasi',
+    'no_siri', 'jenama_model', 'jenis_dalaman', 'jenis_umum', 'pengurus_akses_unit',
+    'kaedahPembangunan', 'nama_pembekal', 'inhouse_unit', 'penyelenggaraan',
+    'tarikh_akhir_penyelenggaraan', 'pegawai_rujukan_nama', 'alamat_pejabat',
+    'bahagian_unit', 'ketua_nama', 'cio_nama', 'ictso_nama', 'carta'
+];
+
+// Buat table
 echo "<table border='1'>";
+
+// Header
 echo "<tr>";
-if (!empty($results)) {
-    foreach (array_keys($results[0]) as $col) {
-        echo "<th>" . htmlspecialchars($col) . "</th>";
+foreach ($columns as $col) {
+    echo "<th>" . htmlspecialchars($col) . "</th>";
+}
+echo "</tr>";
+
+// Data
+foreach ($results as $r) {
+    echo "<tr>";
+    foreach ($columns as $col) {
+        $val = $r[$col] ?? '';
+        // Convert boolean fields ke YA / TIDAK
+        if ($col == 'jenis_dalaman' || $col == 'jenis_umum') {
+            $val = $val ? 'YA' : 'TIDAK';
+        }
+        echo "<td>" . htmlspecialchars($val) . "</td>";
     }
     echo "</tr>";
-
-    foreach ($results as $row) {
-        echo "<tr>";
-        foreach ($row as $val) {
-            echo "<td>" . htmlspecialchars($val) . "</td>";
-        }
-        echo "</tr>";
-    }
-} else {
-    echo "<td colspan='10'>Tiada rekod ditemui</td></tr>";
 }
+
 echo "</table>";
 exit;

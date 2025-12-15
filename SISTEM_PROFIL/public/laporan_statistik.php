@@ -215,19 +215,48 @@ foreach ($records as $row) {
                                 $total[$id]['tidak'] += $tidak;
                             ?>
 
-                            <?php if($status_filter == ''): ?>
-                                <td class="text-center text-primary fw-bold"><?= $aktif ?></td>
-                                <td class="text-center text-danger fw-bold"><?= $tidak ?></td>
-
-                            <?php elseif($status_filter == '1'): ?>
-                                <!-- Hanya Aktif -->
-                                <td class="text-center text-primary fw-bold"><?= $aktif ?></td>
-
-                            <?php elseif($status_filter == '0'): ?>
-                                <!-- Hanya Tidak Aktif -->
-                                <td class="text-center text-danger fw-bold"><?= $tidak ?></td>
-
-                            <?php endif; ?>
+                                <?php if($status_filter == ''): ?>
+                                    <td class="text-center text-primary fw-bold">
+                                        <a href="javascript:void(0)" 
+                                        class="stat-link text-decoration-none" 
+                                        data-tahun="<?= $tahun ?>" 
+                                        data-jenis="<?= $id ?>" 
+                                        data-status="1">
+                                        <?= $aktif ?>
+                                        </a>
+                                    </td>
+                                    <td class="text-center text-danger fw-bold">
+                                        <a href="javascript:void(0)" 
+                                        class="stat-link text-decoration-none" 
+                                        data-tahun="<?= $tahun ?>" 
+                                        data-jenis="<?= $id ?>" 
+                                        data-status="0">
+                                        <?= $tidak ?>
+                                        </a>
+                                    </td>
+                                <?php elseif($status_filter == '1'): ?>
+                                    <!-- Hanya Aktif -->
+                                    <td class="text-center text-primary fw-bold">
+                                        <a href="javascript:void(0)" 
+                                        class="stat-link text-decoration-none" 
+                                        data-tahun="<?= $tahun ?>" 
+                                        data-jenis="<?= $id ?>" 
+                                        data-status="1">
+                                        <?= $aktif ?>
+                                        </a>
+                                    </td>
+                                <?php elseif($status_filter == '0'): ?>
+                                    <!-- Hanya Tidak Aktif -->
+                                    <td class="text-center text-danger fw-bold">
+                                        <a href="javascript:void(0)" 
+                                        class="stat-link text-decoration-none" 
+                                        data-tahun="<?= $tahun ?>" 
+                                        data-jenis="<?= $id ?>" 
+                                        data-status="0">
+                                        <?= $tidak ?>
+                                        </a>
+                                    </td>
+                                <?php endif; ?>
 
                             <?php endforeach; ?>
                         </tr>
@@ -292,7 +321,7 @@ foreach ($records as $row) {
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">Senarai Rekod Terlibat</h5>
+                    <h5 class="modal-title">Senarai Rekod</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body" id="modalBodyResult">
