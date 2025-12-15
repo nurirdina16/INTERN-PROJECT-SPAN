@@ -156,6 +156,14 @@ foreach ($records as $row) {
                     </a>
                 </div>
             </form>
+
+            <!-- EXPORT EXCEL -->
+            <div class="mb-3 text-end">
+                <a href="laporan_statistik_export.php?tahun=<?= $tahun_filter ?>&status=<?= $status_filter ?>&jenisprofil=<?= $jenisprofil_filter ?>" 
+                class="btn btn-success">
+                <i class="bi bi-file-earmark-excel"></i> Export Excel
+                </a>
+            </div>
             
             <!--TABLE-->
             <table class="table table-bordered table-striped">
