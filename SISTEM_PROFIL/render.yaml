@@ -1,6 +1,0 @@
-services:
-  - type: web
-    name: sistem-profil
-    env: docker
-    plan: free
-    autoDeploy: true

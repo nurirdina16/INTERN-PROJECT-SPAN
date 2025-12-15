@@ -251,6 +251,10 @@ function minimizeText($text, $limit = 80) {
                 </div>
             </form>
 
+            <!-- EXPORT EXCEL -->
+            <a href="laporan_export.php?<?= $_SERVER['QUERY_STRING'] ?>" class="btn btn-success btn-sm mb-3">
+                <i class="bi bi-file-earmark-excel"></i> Export CSV
+            </a>
 
             <!-- TABLE -->
             <div class="table-responsive mt-4 shadow-sm">
