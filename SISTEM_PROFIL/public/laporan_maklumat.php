@@ -253,7 +253,7 @@ function minimizeText($text, $limit = 80) {
 
             <!-- EXPORT EXCEL -->
             <a href="laporan_maklumat_export.php?<?= $_SERVER['QUERY_STRING'] ?>" class="btn btn-success btn-sm mb-3">
-                <i class="bi bi-file-earmark-excel"></i> Export CSV
+                <i class="bi bi-file-earmark-excel"></i> Export Excel
             </a>
 
             <!-- TABLE -->
