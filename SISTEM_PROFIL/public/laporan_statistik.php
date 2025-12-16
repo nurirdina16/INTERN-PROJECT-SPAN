@@ -59,7 +59,12 @@ $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $data = [];
 
 foreach ($records as $row) {
-    $tahun = $row['tahun'] ?? 'Tiada Tahun';
+    if ($row['tahun'] === null || $row['tahun'] == 0) {
+        $tahun = 'Tiada Tahun';
+    } else {
+        $tahun = $row['tahun'];
+    }
+    
     $jenis = $row['id_jenisprofil'];
     $status = $row['id_status'];
 

@@ -12,7 +12,10 @@ elseif ($status == '1') $status = 1;
 $where = " WHERE p.id_jenisprofil = :jenis AND p.id_status = :status ";
 $params = ['jenis'=>$jenis,'status'=>$status];
 
-if($tahun !== 'all'){
+if ($tahun === 'Tiada Tahun') {
+    $where .= " AND (p.tarikh_mula IS NULL OR YEAR(p.tarikh_mula) = 0) ";
+}
+elseif ($tahun !== 'all' && $tahun !== '') {
     $where .= " AND YEAR(p.tarikh_mula) = :tahun ";
     $params['tahun'] = $tahun;
 }

@@ -239,7 +239,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             'nama_entiti' => $_POST['nama_entiti'] ?? null,
             'alamat_pejabat' => $_POST['alamat_pejabat'] ?? null,
-            'id_bahagianunit' => $_POST['id_bahagianunit'],
+            'id_bahagianunit' => !empty($_POST['id_bahagianunit']) 
+                ? $_POST['id_bahagianunit'] 
+                : null,
 
             'nama_ketua' => $_POST['nama_ketua'] ?: null,
             'nama_cio' => $_POST['nama_cio'] ?: null,
