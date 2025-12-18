@@ -3,9 +3,7 @@ require_once '../app/config.php';
 require_once '../app/auth.php';
 require_login();
 
-// ===================================
 // VALIDATE ID
-// ===================================
 if (!isset($_GET['id'])) {
     header("Location: profil_pengguna.php");
     exit;
@@ -15,15 +13,11 @@ $id = intval($_GET['id']);
 $alert_type = '';
 $alert_message = '';
 
-// ===================================
 // FETCH LOOKUP BAHAGIAN/UNIT
-// ===================================
 $bahagian_list = $pdo->query("SELECT * FROM lookup_bahagianunit ORDER BY bahagianunit ASC")
                      ->fetchAll(PDO::FETCH_ASSOC);
 
-// ===================================
 // FETCH DATA PENGGUNA
-// ===================================
 try {
     $stmt = $pdo->prepare("
         SELECT 
@@ -49,10 +43,7 @@ try {
     die("<div class='alert alert-danger m-4'>SQL Error: " . $e->getMessage() . "</div>");
 }
 
-
-// ===================================
 // PROCESS UPDATE
-// ===================================
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $nama_user      = $_POST['nama_user'] ?? '';
