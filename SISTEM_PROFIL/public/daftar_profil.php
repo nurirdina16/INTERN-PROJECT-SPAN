@@ -723,7 +723,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <label class="form-label">Nama </label>
                     <label>Nama Kategori Baru <span class="text-danger">*</span></label>
                     <input type="text" name="new_kategori" class="form-control" required>
                 </div>

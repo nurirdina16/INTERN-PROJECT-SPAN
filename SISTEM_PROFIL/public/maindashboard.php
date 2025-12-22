@@ -215,7 +215,7 @@ $total_semua = $stmtTotalAll->fetch(PDO::FETCH_ASSOC)['total_semua'];
 
         const ctx = document.getElementById('profilChart').getContext('2d');
         const profilChart = new Chart(ctx, {
-            type: 'bar', // boleh tukar ke 'line' kalau mahu line chart
+            type: 'bar', 
             data: {
                 labels: labels,
                 datasets: datasets

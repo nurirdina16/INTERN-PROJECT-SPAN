@@ -11,9 +11,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $id = intval($_GET['id']);
 
-// =====================
 // CHECK EXISTING USER
-// =====================
 $stmt = $pdo->prepare("SELECT * FROM lookup_userprofile WHERE id_userprofile = :id");
 $stmt->execute([':id' => $id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -23,9 +21,7 @@ if (!$user) {
     exit;
 }
 
-// ===============================
 // TRY DELETE (HANDLE FK ERROR)
-// ===============================
 try {
     $stmt = $pdo->prepare("DELETE FROM lookup_userprofile WHERE id_userprofile = :id");
     $stmt->execute([':id' => $id]);

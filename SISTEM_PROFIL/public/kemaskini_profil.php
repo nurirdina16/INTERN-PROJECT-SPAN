@@ -3,9 +3,7 @@ require_once '../app/config.php';
 require_once '../app/auth.php';
 require_login();
 
-// =============================
 // VALIDATE ID PROFIL
-// =============================
 if (!isset($_GET['id'])) {
     die("Ralat: ID Profil tidak diberikan.");
 }
@@ -14,9 +12,7 @@ $id = intval($_GET['id']);
 $alert_type = '';
 $alert_message = '';
 
-// =============================
 // FETCH EXISTING PROFIL RECORD
-// =============================
 $stmt = $pdo->prepare("SELECT * FROM profil WHERE id_profil = :id");
 $stmt->execute(['id' => $id]);
 $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -25,9 +21,7 @@ if (!$data) {
     die("Ralat: Rekod profil tidak dijumpai!");
 }
 
-// =============================
 // FETCH ALL LOOKUP TABLES
-// =============================
 function fetchLookup($pdo, $table, $order = "ASC") {
     return $pdo->query("SELECT * FROM $table ORDER BY 1 $order")->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -44,9 +38,7 @@ $lookup_penyelenggaraan = fetchLookup($pdo, "lookup_penyelenggaraan");
 $lookup_userprofile     = fetchLookup($pdo, "lookup_userprofile");
 $lookup_carta           = fetchLookup($pdo, "lookup_carta");
 
-// =============================
 // PROCESS UPDATE FORM SUBMISSION
-// =============================
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // AUTO CALCULATE TOTAL COST

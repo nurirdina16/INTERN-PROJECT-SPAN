@@ -265,13 +265,13 @@ function minimizeText($text, $limit = 80) {
                             <th>Jenis Profil</th>
                             <th>Nama Profil</th>
                             <th>Nama Entiti</th>
-                            <th>Objektif</th>
+                            <th>Objektif Profil</th>
                             <th>Pemilik Profil</th>
                             <th>Tarikh Mula</th>
                             <th>Tarikh Siap</th>
                             <th>Tarikh Guna</th>
-                            <th>Bil Pengguna</th>
-                            <th>Bil Modul</th>
+                            <th>Bilangan Pengguna</th>
+                            <th>Bilangan Modul</th>
                             <th>Kategori</th>
                             <th>Bahasa Pengaturcaraan</th>
                             <th>Pangkalan Data</th>
@@ -285,24 +285,24 @@ function minimizeText($text, $limit = 80) {
                             <th>Kos Lesen</th>
                             <th>Kos Penyelenggaraan</th>
                             <th>Kos Lain</th>
-                            <th>Description Kos</th>
+                            <th>Keterangan Kos</th>
                             <th>Kos Keseluruhan</th>
                             <th>Jenis Peralatan</th>
                             <th>Lokasi</th>
                             <th>No Siri</th>
                             <th>Jenama Model</th>
-                            <th>Kategori User Dalaman</th>
-                            <th>Kategori User Umum</th>
+                            <th>Kategori Pengguna Dalaman</th>
+                            <th>Kategori Pengguna Umum</th>
                             <th>Pengurus Akses</th>
                             <th>Kaedah Pembangunan</th>
-                            <th>Pembekal</th>
-                            <th>Inhouse</th>
-                            <th>Penyelenggaraan</th>
+                            <th>Kaedah Pembekal</th>
+                            <th>Kaedah Dalaman</th>
+                            <th>Kaedah Penyelenggaraan</th>
                             <th>Tarikh Akhir Penyelenggaraan</th>
                             <th>Pegawai Rujukan</th>
-                            <th>Alamat Pejabat</th>
-                            <th>Bahagian Unit</th>
-                            <th>Nama Ketua</th>
+                            <th>Alamat Pejabat Entiti</th>
+                            <th>Bahagian/Unit Entiti</th>
+                            <th>Nama Ketua Bahagian</th>
                             <th>Nama CIO</th>
                             <th>Nama ICTSO</th>
                             <th>Carta</th>

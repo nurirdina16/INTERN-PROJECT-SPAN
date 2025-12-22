@@ -12,9 +12,7 @@ $id = intval($_GET['id']);
 $error = null;
 $success = null;
 
-// ==========================
 // FETCH PEMBEKAL BERDASARKAN ID
-// ==========================
 try {
     $stmt = $pdo->prepare("SELECT * FROM lookup_pembekal WHERE id_pembekal = ?");
     $stmt->execute([$id]);
@@ -29,9 +27,7 @@ try {
 }
 
 
-// ==========================
 // Jika ada id_PIC, ambil data PIC, kalau tiada set kosong
-// ==========================
 $dataPIC = [
     'id_PIC' => null,
     'nama_PIC' => '',
@@ -50,14 +46,11 @@ if (!empty($data['id_PIC'])) {
             $dataPIC = $f;
         }
     } catch (Exception $e) {
-        // jangan die; cuma warn
         $error = "Ralat ambil data PIC: " . $e->getMessage();
     }
 }
 
-// ==========================
 // FETCH SENARAI PIC UNTUK DROPDOWN (optional jika anda mahu dropdown juga)
-// ==========================
 try {
     $stmtPIC = $pdo->prepare("SELECT id_PIC, nama_PIC FROM lookup_pic ORDER BY nama_PIC ASC");
     $stmtPIC->execute();
@@ -67,9 +60,7 @@ try {
 }
 
 
-// ==========================
 // UPDATE JIKA POST
-// ==========================
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // PEMBEKAL
