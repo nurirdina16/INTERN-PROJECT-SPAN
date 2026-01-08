@@ -15,7 +15,7 @@ $sql = "
 
     -- LOOKUP FIELDS
     S.status,
-    S2.statusprojek,
+    S2.status_projek AS statusprojek,
     JP.jenisprofil,
     B1.bahagianunit AS pemilik_profil,
     K.kategori,
