@@ -21,6 +21,8 @@ $penyelenggaraan = $pdo->query("SELECT * FROM lookup_penyelenggaraan")->fetchAll
 $userprofile = $pdo->query("SELECT * FROM lookup_userprofile")->fetchAll(PDO::FETCH_ASSOC);
 $carta = $pdo->query("SELECT * FROM lookup_carta")->fetchAll(PDO::FETCH_ASSOC);
 $pic = $pdo->query("SELECT * FROM lookup_pic")->fetchAll(PDO::FETCH_ASSOC);
+$statusprojek_list = $pdo->query("SELECT * FROM lookup_statusprojek")->fetchAll(PDO::FETCH_ASSOC);
+
 
 // User login
 if (!isset($_SESSION['userlog']['id_userlog'])) {
@@ -156,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "INSERT INTO profil (
             id_userlog, id_status, id_jenisprofil, nama_profil, objektif_profil,
             id_pemilik_profil, tarikh_mula, tarikh_siap, tarikh_guna,
-            tarikh_dibeli, tempoh_warranty, expired_warranty,
+            tarikh_dibeli, tempoh_warranty, expired_warranty, id_statusprojek, tarikh_jangka_siap,
             id_kategori, id_jenisperalatan, id_kategoriuser,
             bahasa_pengaturcaraan, pangkalan_data, rangkaian, integrasi,
             id_kaedahpembangunan, id_pembekal, inhouse,
@@ -173,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ) VALUES (
             :id_userlog, :id_status, :id_jenisprofil, :nama_profil, :objektif_profil,
             :id_pemilik_profil, :tarikh_mula, :tarikh_siap, :tarikh_guna,
-            :tarikh_dibeli, :tempoh_warranty, :expired_warranty,
+            :tarikh_dibeli, :tempoh_warranty, :expired_warranty, :id_statusprojek, :tarikh_jangka_siap,
             :id_kategori, :id_jenisperalatan, :id_kategoriuser,
             :bahasa_pengaturcaraan, :pangkalan_data, :rangkaian, :integrasi,
             :id_kaedahpembangunan, :id_pembekal, :inhouse,
@@ -206,6 +208,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'tarikh_dibeli' => $_POST['tarikh_dibeli'] ?: null,
             'tempoh_warranty' => $_POST['tempoh_warranty'] ?: null,
             'expired_warranty' => $_POST['expired_warranty'] ?: null,
+            'id_statusprojek' => $_POST['id_statusprojek'],
+            'tarikh_jangka_siap' => $_POST['tarikh_jangka_siap'] ?: null,
 
             'id_kategori' => $_POST['id_kategori'] ?: null,
             'id_jenisperalatan' => !empty($_POST['id_jenisperalatan']) ? $_POST['id_jenisperalatan'] : null,
@@ -370,32 +374,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <textarea name="objektif_profil" class="form-control" rows="3"></textarea>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="form-label">Tarikh Mula Pembangunan</label>
                     <input type="date" name="tarikh_mula" class="form-control">
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="form-label">Tarikh Siap Pembangunan</label>
                     <input type="date" name="tarikh_siap" class="form-control">
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="form-label">Tarikh Digunakan</label>
                     <input type="date" name="tarikh_guna" class="form-control">
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="form-label">Tarikh Dibeli / Diterima</label>
                     <input type="date" name="tarikh_dibeli" class="form-control">
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-5">
+                    <label>Status Projek</label>
+                    <select name="id_statusprojek" class="form-select">
+                        <option value="">-- Pilih Status Projek --</option>
+                        <?php foreach ($statusprojek_list as $s): ?>
+                            <option value="<?= $s['id_statusprojek'] ?>"><?= $s['status_projek'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="col-md-5">
+                    <label class="form-label">Tarikh Jangka Siap Projek</label>
+                    <input type="date" name="tarikh_jangka_siap" class="form-control">
+                </div>
+
+                <div class="col-md-5">
                     <label class="form-label">Tempoh Warranty (Tahun)</label>
                     <input type="text" name="tempoh_warranty" class="form-control">
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-5">
                     <label class="form-label">Tarikh Luput Warranty</label>
                     <input type="date" name="expired_warranty" class="form-control">
                 </div>
