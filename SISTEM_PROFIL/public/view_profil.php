@@ -15,6 +15,7 @@ $sql = "
 
     -- LOOKUP FIELDS
     S.status,
+    S2.statusprojek,
     JP.jenisprofil,
     B1.bahagianunit AS pemilik_profil,
     K.kategori,
@@ -52,6 +53,7 @@ $sql = "
 
     FROM profil P
     LEFT JOIN lookup_status S ON P.id_status = S.id_status
+    LEFT JOIN lookup_statusprojek S2 ON P.id_statusprojek = S2.id_statusprojek    
     LEFT JOIN lookup_jenisprofil JP ON P.id_jenisprofil = JP.id_jenisprofil
     LEFT JOIN lookup_bahagianunit B1 ON P.id_pemilik_profil = B1.id_bahagianunit
     LEFT JOIN lookup_kategori K ON P.id_kategori = K.id_kategori
@@ -150,6 +152,11 @@ if (!$data) {
                 </div>
 
                 <div class="info-row">
+                    <div class="info-label">Status Projek</div>
+                    <div class="info-value"><?= $data['statusprojek']; ?></div>
+                </div>
+
+                <div class="info-row">
                     <div class="info-label">Tarikh Mula Pembangunan</div>
                     <div class="info-value"><?= $data['tarikh_mula']; ?></div>
                 </div>
@@ -167,6 +174,11 @@ if (!$data) {
                 <div class="info-row">
                     <div class="info-label">Tarikh Dibeli / Diterima</div>
                     <div class="info-value"><?= $data['tarikh_dibeli']; ?></div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-label">Tarikh Jangka Siap Projek</div>
+                    <div class="info-value"><?= $data['tarikh_jangka_siap']; ?></div>
                 </div>
                 
                 <div class="info-row">

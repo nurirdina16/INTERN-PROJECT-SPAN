@@ -37,6 +37,7 @@ $lookup_pembekal        = fetchLookup($pdo, "lookup_pembekal");
 $lookup_penyelenggaraan = fetchLookup($pdo, "lookup_penyelenggaraan");
 $lookup_userprofile     = fetchLookup($pdo, "lookup_userprofile");
 $lookup_carta           = fetchLookup($pdo, "lookup_carta");
+$lookup_statusprojek    = fetchLookup($pdo, "lookup_statusprojek");
 
 // PROCESS UPDATE FORM SUBMISSION
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -62,9 +63,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             nama_profil = :nama_profil,
             objektif_profil = :objektif_profil,
             id_pemilik_profil = :id_pemilik_profil,
+            id_statusprojek = :id_statusprojek,
             tarikh_mula = :tarikh_mula,
             tarikh_siap = :tarikh_siap,
             tarikh_guna = :tarikh_guna,
+            tarikh_jangka_siap = :tarikh_jangka_siap,
             id_kategori = :id_kategori,
             bil_pengguna = :bil_pengguna,
             bil_modul = :bil_modul,
@@ -113,9 +116,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'nama_profil' => $_POST['nama_profil'],
         'objektif_profil' => $_POST['objektif_profil'],
         'id_pemilik_profil' => $_POST['id_pemilik_profil'],
+        'id_statusprojek' => $_POST['id_statusprojek'],
         'tarikh_mula' => $_POST['tarikh_mula'],
         'tarikh_siap' => $_POST['tarikh_siap'],
         'tarikh_guna' => $_POST['tarikh_guna'],
+        'tarikh_jangka_siap' => $_POST['tarikh_jangka_siap'],
         'id_kategori' => $_POST['id_kategori'],
         'bil_pengguna' => $_POST['bil_pengguna'],
         'bil_modul' => $_POST['bil_modul'],
@@ -242,6 +247,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endforeach; ?>
                     </select>
 
+                    <label class="form-label mt-2">Status Projek</label>
+                    <select name="id_statusprojek" class="form-select">
+                        <?php foreach ($lookup_statusprojek as $s): ?>
+                        <option value="<?= $s['id_statusprojek']; ?>" <?= $data['id_statusprojek']==$s['id_statusprojek']?'selected':''; ?>>
+                            <?= $s['status_projek']; ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+
                     <label class="form-label mt-2">Objektif Profil</label>
                     <textarea name="objektif_profil" class="form-control" rows="3"><?= $data['objektif_profil']; ?></textarea>
 
@@ -269,6 +283,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="col-md-4">
                             <label class="form-label">Tarikh Dibeli / Diterima</label>
                             <input type="date" name="tarikh_dibeli" class="form-control" value="<?= $data['tarikh_dibeli']; ?>">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Tarikh Jangka Siap Projek</label>
+                            <input type="date" name="tarikh_jangka_siap" class="form-control" value="<?= $data['tarikh_jangka_siap']; ?>">
                         </div>
                     </div>
                 </div>
