@@ -71,6 +71,7 @@ $sql = "
         b4.bahagianunit AS bahagian_unit,
         j.jenisprofil,
         s.status,
+        s2.status_projek,
         kat.kategori,
         peny.penyelenggaraan,
         ku.jenis_dalaman,
@@ -90,6 +91,7 @@ $sql = "
     LEFT JOIN lookup_bahagianunit b4 ON p.id_bahagianunit = b4.id_bahagianunit
     LEFT JOIN lookup_jenisprofil j ON p.id_jenisprofil = j.id_jenisprofil
     LEFT JOIN lookup_status s ON p.id_status = s.id_status
+    LEFT JOIN lookup_statusprojek s2 ON p.id_statusprojek = s2.id_statusprojek
     LEFT JOIN lookup_kategori kat ON p.id_kategori = kat.id_kategori
     LEFT JOIN lookup_penyelenggaraan peny ON p.id_penyelenggaraan = peny.id_penyelenggaraan
     LEFT JOIN lookup_kategoriuser ku ON p.id_kategoriuser = ku.id_kategoriuser
@@ -267,9 +269,11 @@ function minimizeText($text, $limit = 80) {
                             <th>Nama Entiti</th>
                             <th>Objektif Profil</th>
                             <th>Pemilik Profil</th>
+                            <th>Status Projek</th>
                             <th>Tarikh Mula</th>
                             <th>Tarikh Siap</th>
                             <th>Tarikh Guna</th>
+                            <th>Tarikh Jangka Siap</th>
                             <th>Bilangan Pengguna</th>
                             <th>Bilangan Modul</th>
                             <th>Kategori</th>
@@ -285,8 +289,8 @@ function minimizeText($text, $limit = 80) {
                             <th>Kos Lesen</th>
                             <th>Kos Penyelenggaraan</th>
                             <th>Kos Lain</th>
-                            <th>Keterangan Kos</th>
                             <th>Kos Keseluruhan</th>
+                            <th>Keterangan Kos</th>
                             <th>Jenis Peralatan</th>
                             <th>Lokasi</th>
                             <th>No Siri</th>
@@ -321,9 +325,11 @@ function minimizeText($text, $limit = 80) {
                                     <td><?= $r['nama_entiti'] ?></td>
                                     <td><?= minimizeText($r['objektif_profil'], 50) ?></td>
                                     <td><?= $r['pemilik_unit'] ?></td>
+                                    <td><?= $r['status_projek'] ?></td>
                                     <td><?= $r['tarikh_mula'] ?></td>
                                     <td><?= $r['tarikh_siap'] ?></td>
                                     <td><?= $r['tarikh_guna'] ?></td>
+                                    <td><?= $r['tarikh_jangka_siap'] ?></td>
                                     <td><?= $r['bil_pengguna'] ?></td>
                                     <td><?= $r['bil_modul'] ?></td>
                                     <td><?= $r['kategori'] ?></td>
@@ -339,8 +345,8 @@ function minimizeText($text, $limit = 80) {
                                     <td><?= $r['kos_lesen_perisian'] ?></td>
                                     <td><?= $r['kos_penyelenggaraan'] ?></td>
                                     <td><?= $r['kos_lain'] ?></td>
-                                    <td><?= $r['description_kos'] ?></td>
                                     <td><?= $r['kos_keseluruhan'] ?></td>
+                                    <td><?= $r['description_kos'] ?></td>
                                     <td><?= $r['jenis_peralatan'] ?></td>
                                     <td><?= $r['lokasi'] ?></td>
                                     <td><?= $r['no_siri'] ?></td>
