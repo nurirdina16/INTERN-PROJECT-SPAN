@@ -395,7 +395,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="col-md-5">
-                    <label>Status Projek</label>
+                    <label>Status Projek <span class="text-danger">*</span></label>
                     <select name="id_statusprojek" class="form-select">
                         <option value="">-- Pilih Status Projek --</option>
                         <?php foreach ($statusprojek_list as $s): ?>
